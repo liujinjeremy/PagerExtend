@@ -5,25 +5,25 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import tech.threekilogram.viewpager.BannerView;
 import tech.threekilogram.viewpager.adapter.BasePagerAdapter;
 
 /**
  * @author Liujin 2018-09-16:8:37
  */
-public class AdapterFragment extends Fragment {
+public class BannerFragment extends Fragment {
 
-      private ViewPager mViewPager;
+      private BannerView mBanner;
 
-      public static AdapterFragment newInstance ( ) {
+      public static BannerFragment newInstance ( ) {
 
-            return new AdapterFragment();
+            return new BannerFragment();
       }
 
       @Nullable
@@ -33,7 +33,7 @@ public class AdapterFragment extends Fragment {
           @Nullable ViewGroup container,
           @Nullable Bundle savedInstanceState ) {
 
-            return inflater.inflate( R.layout.fragment_maxcount, container, false );
+            return inflater.inflate( R.layout.fragment_banner, container, false );
       }
 
       @Override
@@ -44,8 +44,10 @@ public class AdapterFragment extends Fragment {
 
       private void initView ( @NonNull final View itemView ) {
 
-            mViewPager = itemView.findViewById( R.id.banner );
-            mViewPager.setAdapter( new FragmentAdapter() );
+            mBanner = itemView.findViewById( R.id.banner );
+            mBanner.setPagerAdapter( new FragmentAdapter() );
+            mBanner.setPageMargin( TypedValue.COMPLEX_UNIT_DIP, 16 );
+            // mBanner.startLoop();
       }
 
       private class FragmentAdapter extends BasePagerAdapter<String, TextView> {

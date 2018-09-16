@@ -25,4 +25,11 @@ public interface OnPagerScrollObserver {
        *     向负方向(一般是向右)滚动时,nextPosition是当前item的上一个item,offset从-1变化为0
        */
       void onNext ( int nextPosition, float offset );
+
+      /**
+       * 当页面选定时回调
+       *
+       * @param position 选中的位置
+       */
+      void onPageSelected ( int position );
 }

@@ -46,7 +46,7 @@ public class TypeAdapterFragment extends Fragment {
 
       private void initView ( @NonNull final View itemView ) {
 
-            mViewPager = itemView.findViewById( R.id.viewPager );
+            mViewPager = itemView.findViewById( R.id.banner );
             mViewPager.setAdapter( new FragmentAdapter() );
       }
 

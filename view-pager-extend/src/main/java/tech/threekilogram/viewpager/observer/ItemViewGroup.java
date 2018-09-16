@@ -2,7 +2,7 @@ package tech.threekilogram.viewpager.observer;
 
 /**
  * Created by LiuJin on 2017-12-31:9:03
- * item容器,用于{@link ScrollObserver}
+ * item容器,用于{@link OnPageChangeScrollListener}
  *
  * @author wuxio
  */

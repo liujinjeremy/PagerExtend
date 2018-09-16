@@ -59,6 +59,13 @@ public class MainActivity extends AppCompatActivity {
                               break;
                         case R.id.menu02:
                               changeFragment( TypeAdapterFragment.newInstance() );
+                              break;
+                        case R.id.menu03:
+                              changeFragment( ExtendPagerFragment.newInstance() );
+                              break;
+                        case R.id.menu04:
+                              changeFragment( BannerFragment.newInstance() );
+                              break;
                         default:
                               break;
                   }

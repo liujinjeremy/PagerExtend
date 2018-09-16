@@ -10,21 +10,21 @@ import android.widget.Scroller;
  * @author liujin
  */
 @SuppressWarnings("WeakerAccess")
-public class DurationAddableScroller extends Scroller {
+public class DurationChangedScroller extends Scroller {
 
       private int mDurationAdded = 0;
 
-      public DurationAddableScroller ( Context context ) {
+      public DurationChangedScroller ( Context context ) {
 
             super( context );
       }
 
-      public DurationAddableScroller ( Context context, Interpolator interpolator ) {
+      public DurationChangedScroller ( Context context, Interpolator interpolator ) {
 
             super( context, interpolator );
       }
 
-      public DurationAddableScroller (
+      public DurationChangedScroller (
           Context context, Interpolator interpolator, boolean flywheel ) {
 
             super( context, interpolator, flywheel );
