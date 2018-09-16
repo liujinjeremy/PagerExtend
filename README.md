@@ -171,3 +171,25 @@ mBanner.setPagerAdapter( pagerAdapter );
 mBanner.startLoop(); //开始轮播
 mBanner.stopLoop(); //结束轮播
 ```
+
+* 增加滚动时间
+
+```
+mBanner.addScrollDuration( 500 );
+```
+
+* 设置页间距
+
+```
+mBanner.setPageMargin( TypedValue.COMPLEX_UNIT_DIP, 16 );
+```
+
+* 设置指示器
+
+```
+DotView dotView = new DotView( getContext() );
+dotView.setupWithBanner( mBanner, Gravity.BOTTOM | Gravity.RIGHT, 50 );
+```
+
+![](img/pic04.gif)
+
