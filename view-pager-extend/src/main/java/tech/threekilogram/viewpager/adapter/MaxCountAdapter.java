@@ -1,4 +1,4 @@
-package tech.threekilogram.viewpager;
+package tech.threekilogram.viewpager.adapter;
 
 import android.database.DataSetObserver;
 import android.os.Parcelable;

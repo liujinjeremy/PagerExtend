@@ -2,9 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
       <group android:checkableBehavior="single">
+
+            <item
+                android:id="@+id/menu01"
+                android:title="测试BaseAdapter"/>
+
+            <item
+                android:id="@+id/menu02"
+                android:title="测试BaseTypeAdapter"/>
+
             <item
                 android:id="@+id/menu00"
-                android:title="MaxCountAdapter"/>
+                android:title="测试MaxCountAdapter"/>
 
       </group>
 
