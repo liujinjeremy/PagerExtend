@@ -1,5 +1,28 @@
 ## ViewPager 工具集
 
+### 引入
+
+**Step 1.** Add the JitPack repository to your build file
+
+Add it in your root build.gradle at the end of repositories:
+
+```
+	allprojects {
+		repositories {
+			...
+			maven { url 'https://jitpack.io' }
+		}
+	}
+```
+
+**Step 2.** Add the dependency
+
+```
+	dependencies {
+	        implementation 'com.github.threekilogram:ViewPagerExtend:1.0.1'
+	}
+```
+
 ### BasePagerAdapter
 
 > 简化PagerAdapter使用,使其增加view复用,自动响应数据变化,更易读
@@ -192,4 +215,3 @@ dotView.setupWithBanner( mBanner, Gravity.BOTTOM | Gravity.RIGHT, 50 );
 ```
 
 ![](img/pic04.gif)
-
