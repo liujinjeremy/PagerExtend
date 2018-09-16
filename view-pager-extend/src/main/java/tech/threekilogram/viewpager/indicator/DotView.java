@@ -119,7 +119,11 @@ public class DotView extends View {
 
       public void setupWithBanner ( final BannerView bannerView, int gravity, int margin ) {
 
-            mDotCount = bannerView.getItemCount();
+            int count = bannerView.getItemCount();
+            setDotCount( count );
+            int position = bannerView.getCurrentItemPosition();
+            position = bannerView.getAdapterPosition( position );
+            setSelected( position );
 
             FrameLayout.LayoutParams params = new LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
