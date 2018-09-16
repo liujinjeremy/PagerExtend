@@ -18,6 +18,11 @@ public class ExtendViewPager extends ViewPager {
        */
       protected DurationChangedScroller mScroller;
 
+      /**
+       * 入过为true,表示调用了{@link #requestLayout()}
+       */
+      protected boolean mCallSuperRequestLayout;
+
       public ExtendViewPager ( Context context ) {
 
             this( context, null );
@@ -33,6 +38,19 @@ public class ExtendViewPager extends ViewPager {
 
             //反射获得 scroller
             attachViewPagerScroller();
+      }
+
+      @Override
+      public void requestLayout ( ) {
+
+            mCallSuperRequestLayout = true;
+            super.requestLayout();
+            mCallSuperRequestLayout = false;
+      }
+
+      public boolean isCallSuperRequestLayout ( ) {
+
+            return mCallSuperRequestLayout;
       }
 
       /**

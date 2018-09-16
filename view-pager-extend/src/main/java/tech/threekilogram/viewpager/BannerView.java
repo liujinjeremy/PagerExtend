@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.MotionEvent;
@@ -22,6 +23,8 @@ import tech.threekilogram.viewpager.observer.PagerScroll;
  *     轮播图,包含一个LoopViewPager,也可以配置指示器
  */
 public class BannerView extends FrameLayout {
+
+      private static final String TAG = BannerView.class.getSimpleName();
 
       /**
        * pager
@@ -51,6 +54,13 @@ public class BannerView extends FrameLayout {
        * pager scroll
        */
       private PagerScroll                mPagerScroll;
+
+      /**
+       * 记录自己的measureSpec,用于{@link #requestLayout()}重新测量{@link #mViewPager}
+       */
+      private int     mWidthMeasureSpec;
+      private int     mHeightMeasureSpec;
+      private boolean mSkipSelfRequestLayout;
 
       public BannerView ( @NonNull Context context ) {
 
@@ -95,10 +105,20 @@ public class BannerView extends FrameLayout {
       }
 
       @Override
+      protected void onMeasure ( int widthMeasureSpec, int heightMeasureSpec ) {
+
+            mWidthMeasureSpec = widthMeasureSpec;
+            mHeightMeasureSpec = heightMeasureSpec;
+
+            super.onMeasure( widthMeasureSpec, heightMeasureSpec );
+      }
+
+      @Override
       public boolean dispatchTouchEvent ( MotionEvent ev ) {
 
             /* cancel loop when touch */
             mLoopHandler.clearLoopToNextAtDelayed();
+            mSkipSelfRequestLayout = true;
 
             /* start loop when finger up if in looping state */
             int action = ev.getAction();
@@ -110,6 +130,40 @@ public class BannerView extends FrameLayout {
             }
 
             return super.dispatchTouchEvent( ev );
+      }
+
+      @Override
+      public void requestLayout ( ) {
+
+            if( mViewPager != null
+                && mViewPager.isCallSuperRequestLayout()
+                && !mSkipSelfRequestLayout ) {
+
+                  int right = mViewPager.getRight();
+                  int bottom = mViewPager.getBottom();
+
+                  if( right != 0 && bottom != 0 ) {
+
+                        measureChildWithMargins(
+                            mViewPager,
+                            mWidthMeasureSpec,
+                            0,
+                            mHeightMeasureSpec,
+                            0
+                        );
+                        mViewPager.layout(
+                            mViewPager.getLeft(),
+                            mViewPager.getTop(),
+                            right,
+                            bottom
+                        );
+                  }
+
+                  return;
+            }
+
+            mSkipSelfRequestLayout = false;
+            super.requestLayout();
       }
 
       @Override
@@ -232,6 +286,26 @@ public class BannerView extends FrameLayout {
       }
 
       /**
+       * 添加滚动监听
+       *
+       * @param onPageChangeListener 监听
+       */
+      public void addOnPageChangeListener ( OnPageChangeListener onPageChangeListener ) {
+
+            mViewPager.addOnPageChangeListener( onPageChangeListener );
+      }
+
+      /**
+       * 删除滚动监听
+       *
+       * @param onPageChangeListener 需要删除的监听
+       */
+      public void removeOnPageChangeListener ( OnPageChangeListener onPageChangeListener ) {
+
+            mViewPager.removeOnPageChangeListener( onPageChangeListener );
+      }
+
+      /**
        * 设置滚动方向监听
        */
       public void setOnPagerScrollListener ( OnPagerScrollListener onPagerScrollListener ) {
@@ -276,6 +350,9 @@ public class BannerView extends FrameLayout {
 
             private void loopToNextAtDelayed ( int delayed ) {
 
+                  if( hasMessages( WHAT_LOOP ) ) {
+                        return;
+                  }
                   sendEmptyMessageDelayed( WHAT_LOOP, delayed );
                   isCleared = false;
             }

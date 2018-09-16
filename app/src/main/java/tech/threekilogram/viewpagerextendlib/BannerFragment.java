@@ -49,7 +49,8 @@ public class BannerFragment extends Fragment {
             mBanner = itemView.findViewById( R.id.banner );
             mBanner.setPagerAdapter( new FragmentAdapter() );
             mBanner.setPageMargin( TypedValue.COMPLEX_UNIT_DIP, 16 );
-            // mBanner.startLoop();
+            mBanner.startLoop();
+            mBanner.addScrollDuration( 500 );
 //            mBanner.setOnPagerScrollListener( new OnPagerScrollListener() {
 //
 //                  @Override
