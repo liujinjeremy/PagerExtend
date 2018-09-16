@@ -222,6 +222,39 @@ public class BannerView extends FrameLayout {
       }
 
       /**
+       * 获取当前item的位置索引
+       *
+       * @return 位置索引
+       */
+      public int getCurrentItemPosition ( ) {
+
+            int currentItem = mViewPager.getCurrentItem();
+            return mMaxCountAdapter.getAdapterPosition( currentItem );
+      }
+
+      /**
+       * 转换banner索引为实际索引
+       *
+       * @param position banner 位置
+       *
+       * @return 实际索引位置
+       */
+      public int getAdapterPosition ( int position ) {
+
+            return mMaxCountAdapter.getAdapterPosition( position );
+      }
+
+      /**
+       * 获取当前有多少个条目
+       *
+       * @return 总item数量
+       */
+      public int getItemCount ( ) {
+
+            return mMaxCountAdapter.getAdapterCount();
+      }
+
+      /**
        * 增加滚动时间
        */
       public void addScrollDuration ( int addTime ) {
@@ -307,7 +340,7 @@ public class BannerView extends FrameLayout {
       }
 
       /**
-       * 添加滚动监听
+       * 添加滚动监听,需要转换一下位置才能得到正确的索引位置{@link #getAdapterPosition(int)}
        *
        * @param onPageChangeListener 监听
        */

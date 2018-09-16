@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import tech.threekilogram.viewpager.BannerView;
 import tech.threekilogram.viewpager.adapter.BasePagerAdapter;
+import tech.threekilogram.viewpager.indicator.DotView;
 
 /**
  * @author Liujin 2018-09-16:8:37
@@ -47,7 +48,8 @@ public class BannerFragment extends Fragment {
       private void initView ( @NonNull final View itemView ) {
 
             mBanner = itemView.findViewById( R.id.banner );
-            mBanner.setPagerAdapter( new FragmentAdapter() );
+            FragmentAdapter pagerAdapter = new FragmentAdapter();
+            mBanner.setPagerAdapter( pagerAdapter );
             mBanner.setPageMargin( TypedValue.COMPLEX_UNIT_DIP, 16 );
             mBanner.startLoop();
             mBanner.addScrollDuration( 500 );
@@ -73,6 +75,9 @@ public class BannerFragment extends Fragment {
 //                        Log.e( TAG, "onPageSelected : " + position );
 //                  }
 //            } );
+
+            DotView dotView = new DotView( getContext() );
+            dotView.setupWithBanner( mBanner, Gravity.BOTTOM | Gravity.RIGHT, 50 );
       }
 
       private class FragmentAdapter extends BasePagerAdapter<String, TextView> {

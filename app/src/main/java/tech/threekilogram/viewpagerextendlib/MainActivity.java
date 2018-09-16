@@ -69,6 +69,9 @@ public class MainActivity extends AppCompatActivity {
                         case R.id.menu05:
                               changeFragment( ScrollObserverFragment.newInstance() );
                               break;
+                        case R.id.menu06:
+                              changeFragment( DotViewFragment.newInstance() );
+                              break;
                         default:
                               break;
                   }
