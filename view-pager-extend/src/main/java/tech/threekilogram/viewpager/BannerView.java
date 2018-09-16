@@ -23,12 +23,33 @@ import tech.threekilogram.viewpager.observer.PagerScroll;
  */
 public class BannerView extends FrameLayout {
 
+      /**
+       * pager
+       */
       private ExtendViewPager            mViewPager;
+      /**
+       * adapter has max count
+       */
       private MaxCountAdapter            mMaxCountAdapter;
+      /**
+       * start loop
+       */
       private BannerOnPageChangeListener mOnPagerScrollListener;
+      /**
+       * help loop
+       */
       private LoopHandler                mLoopHandler;
+      /**
+       * true is looping
+       */
       private boolean                    isAutoLoop;
+      /**
+       * loop time
+       */
       private int                        mLoopTime;
+      /**
+       * pager scroll
+       */
       private PagerScroll                mPagerScroll;
 
       public BannerView ( @NonNull Context context ) {
@@ -48,6 +69,9 @@ public class BannerView extends FrameLayout {
             init();
       }
 
+      /**
+       * init field
+       */
       private void init ( ) {
 
             mViewPager = new ExtendViewPager( getContext() );
@@ -60,10 +84,11 @@ public class BannerView extends FrameLayout {
 
             super.onFinishInflate();
 
+            /* 添加pager */
             addView( mViewPager, 0 );
             mViewPager.addOnPageChangeListener( mOnPagerScrollListener );
 
-            //设为false支持pager裁剪
+            /* 支持pager裁剪 */
             setClipChildren( false );
             setClipToPadding( false );
             mViewPager.setClip( false );
@@ -72,12 +97,12 @@ public class BannerView extends FrameLayout {
       @Override
       public boolean dispatchTouchEvent ( MotionEvent ev ) {
 
+            /* cancel loop when touch */
             mLoopHandler.clearLoopToNextAtDelayed();
 
+            /* start loop when finger up if in looping state */
             int action = ev.getAction();
-            if( action == MotionEvent.ACTION_UP
-                || action == MotionEvent.ACTION_OUTSIDE
-                || action == MotionEvent.ACTION_CANCEL ) {
+            if( action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_OUTSIDE ) {
 
                   if( isAutoLoop ) {
                         mLoopHandler.loopToNextAtDelayed( mLoopTime );
@@ -91,14 +116,21 @@ public class BannerView extends FrameLayout {
       protected void onDetachedFromWindow ( ) {
 
             super.onDetachedFromWindow();
+            /* release */
             mLoopHandler.removeCallbacksAndMessages( null );
       }
 
+      /**
+       * 获取banner中pager
+       */
       public ExtendViewPager getViewPager ( ) {
 
             return mViewPager;
       }
 
+      /**
+       * 为banner设置pager adapter
+       */
       public void setPagerAdapter ( PagerAdapter pagerAdapter ) {
 
             mMaxCountAdapter = new MaxCountAdapter( pagerAdapter );
@@ -106,32 +138,52 @@ public class BannerView extends FrameLayout {
             mViewPager.setCurrentItem( mMaxCountAdapter.getStartPosition() );
       }
 
+      /**
+       * 获取设置的pager adapter
+       */
       public PagerAdapter getPagerAdapter ( ) {
 
             return mMaxCountAdapter == null ? null : mMaxCountAdapter.getPagerAdapter();
       }
 
+      /**
+       * 增加滚动时间
+       */
       public void addScrollDuration ( int addTime ) {
 
             mViewPager.setDurationAdded( addTime );
       }
 
+      /**
+       * 滑动到下一个页面
+       */
       public void loopToNextPage ( ) {
 
             int currentItem = mViewPager.getCurrentItem();
             mViewPager.setCurrentItem( currentItem + 1, true );
       }
 
+      /**
+       * true : 正在loop
+       */
       public boolean isAutoLoop ( ) {
 
             return isAutoLoop;
       }
 
+      /**
+       * 开始loop
+       */
       public void startLoop ( ) {
 
             startLoop( 2400 );
       }
 
+      /**
+       * 开始loop
+       *
+       * @param loopTime loop间隔
+       */
       public void startLoop ( int loopTime ) {
 
             if( isAutoLoop ) {
@@ -143,6 +195,9 @@ public class BannerView extends FrameLayout {
             }
       }
 
+      /**
+       * 结束loop
+       */
       public void stopLoop ( ) {
 
             if( isAutoLoop ) {
@@ -152,6 +207,12 @@ public class BannerView extends FrameLayout {
             }
       }
 
+      /**
+       * 为pager设置pageMargin
+       *
+       * @param unit 单位
+       * @param marginSize 尺寸
+       */
       public void setPageMargin ( int unit, float marginSize ) {
 
             float dimension = TypedValue.applyDimension(
@@ -162,12 +223,18 @@ public class BannerView extends FrameLayout {
             setPageMargin( (int) dimension );
       }
 
+      /**
+       * 为pager设置pageMargin
+       */
       public void setPageMargin ( int marginPixels ) {
 
             mViewPager.setPageMargin( marginPixels );
       }
 
-      public void setOnPagerScrollObserver ( OnPagerScrollListener onPagerScrollListener ) {
+      /**
+       * 设置滚动方向监听
+       */
+      public void setOnPagerScrollListener ( OnPagerScrollListener onPagerScrollListener ) {
 
             if( mPagerScroll == null ) {
                   mPagerScroll = new PagerScroll( mViewPager );
@@ -181,7 +248,10 @@ public class BannerView extends FrameLayout {
             }
       }
 
-      public OnPagerScrollListener getOnPagerScrollObserver ( ) {
+      /**
+       * 获取设置的滚动监听
+       */
+      public OnPagerScrollListener getOnPagerScrollListener ( ) {
 
             if( mPagerScroll == null ) {
                   return null;
@@ -190,7 +260,7 @@ public class BannerView extends FrameLayout {
       }
 
       /**
-       * 发送延时消息
+       * 辅助发送延时消息
        */
       private static class LoopHandler extends Handler {
 
@@ -234,7 +304,7 @@ public class BannerView extends FrameLayout {
       }
 
       /**
-       * 连接viewPager
+       * 连接{@link ExtendViewPager}和{@link LoopHandler}
        */
       private class BannerOnPageChangeListener implements ViewPager.OnPageChangeListener {
 
@@ -257,10 +327,13 @@ public class BannerView extends FrameLayout {
       }
 
       /**
-       * 观察滚动
+       * 观察滚动,辅助转换position为正确位置
        */
       private class BannerOnPagerScrollListener implements OnPagerScrollListener {
 
+            /**
+             * 用户设置的监听
+             */
             private OnPagerScrollListener mOnPagerScrollListener;
 
             private BannerOnPagerScrollListener (
