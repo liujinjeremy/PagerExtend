@@ -50,7 +50,7 @@ public class BannerFragment extends Fragment {
             mBanner.setPagerAdapter( new FragmentAdapter() );
             mBanner.setPageMargin( TypedValue.COMPLEX_UNIT_DIP, 16 );
             // mBanner.startLoop();
-//            mBanner.setOnPagerScrollObserver( new OnPagerScrollObserver() {
+//            mBanner.setOnPagerScrollListener( new OnPagerScrollListener() {
 //
 //                  @Override
 //                  public void onCurrent ( int currentPosition, float offset ) {

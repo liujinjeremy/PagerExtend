@@ -21,7 +21,7 @@ public class PagerScroll {
        */
       private ItemViewGroup              mItemViewGroup;
       /**
-       * 连接{@link #mPager}和{@link OnPagerScrollObserver}
+       * 连接{@link #mPager}和{@link OnPagerScrollListener}
        */
       private OnPageChangeScrollListener mOnPageChangeScrollListener;
 
@@ -54,21 +54,21 @@ public class PagerScroll {
       /**
        * 设置滚动监听,当为null时,将会清除监听
        */
-      public void setOnPagerScrollObserver ( OnPagerScrollObserver observer ) {
+      public void setOnPagerScrollListener ( OnPagerScrollListener listener ) {
 
             if( mOnPageChangeScrollListener == null ) {
                   mOnPageChangeScrollListener = new OnPageChangeScrollListener( mItemViewGroup );
             }
-            mOnPageChangeScrollListener.setOnPagerScrollObserver( observer );
+            mOnPageChangeScrollListener.setOnPagerScrollListener( listener );
 
             /* 防止重复添加监听 */
             mPager.removeOnPageChangeListener( mOnPageChangeScrollListener );
             mPager.addOnPageChangeListener( mOnPageChangeScrollListener );
       }
 
-      public OnPagerScrollObserver getOnPagerScrollObserver ( ) {
+      public OnPagerScrollListener getOnPagerScrollListener ( ) {
 
             return mOnPageChangeScrollListener == null ? null
-                : mOnPageChangeScrollListener.getOnPagerScrollObserver();
+                : mOnPageChangeScrollListener.getOnPagerScrollListener();
       }
 }

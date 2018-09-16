@@ -14,7 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import tech.threekilogram.viewpager.adapter.BasePagerAdapter;
-import tech.threekilogram.viewpager.observer.OnPagerScrollObserver;
+import tech.threekilogram.viewpager.observer.OnPagerScrollListener;
 import tech.threekilogram.viewpager.observer.PagerScroll;
 
 /**
@@ -52,7 +52,7 @@ public class ScrollObserverFragment extends Fragment {
             mViewPager = itemView.findViewById( R.id.banner );
             mViewPager.setAdapter( new FragmentAdapter() );
             PagerScroll pagerScroll = new PagerScroll( mViewPager );
-            pagerScroll.setOnPagerScrollObserver( new OnPagerScrollObserver() {
+            pagerScroll.setOnPagerScrollListener( new OnPagerScrollListener() {
 
                   @Override
                   public void onCurrent ( int currentPosition, float offset ) {

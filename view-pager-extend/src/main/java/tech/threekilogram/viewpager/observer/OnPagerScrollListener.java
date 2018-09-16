@@ -7,7 +7,7 @@ import android.support.v4.view.ViewPager;
  *
  * @author wuxio
  */
-public interface OnPagerScrollObserver {
+public interface OnPagerScrollListener {
 
       /**
        * 当前正在显示页面滚动情况

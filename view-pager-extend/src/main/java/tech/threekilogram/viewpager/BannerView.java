@@ -13,7 +13,7 @@ import android.view.MotionEvent;
 import android.widget.FrameLayout;
 import java.lang.ref.WeakReference;
 import tech.threekilogram.viewpager.adapter.MaxCountAdapter;
-import tech.threekilogram.viewpager.observer.OnPagerScrollObserver;
+import tech.threekilogram.viewpager.observer.OnPagerScrollListener;
 import tech.threekilogram.viewpager.observer.PagerScroll;
 
 /**
@@ -23,13 +23,13 @@ import tech.threekilogram.viewpager.observer.PagerScroll;
  */
 public class BannerView extends FrameLayout {
 
-      private ExtendViewPager             mViewPager;
-      private MaxCountAdapter             mMaxCountAdapter;
-      private BannerOnPagerScrollListener mOnPagerScrollListener;
-      private LoopHandler                 mLoopHandler;
-      private boolean                     isAutoLoop;
-      private int                         mLoopTime;
-      private PagerScroll                 mPagerScroll;
+      private ExtendViewPager            mViewPager;
+      private MaxCountAdapter            mMaxCountAdapter;
+      private BannerOnPageChangeListener mOnPagerScrollListener;
+      private LoopHandler                mLoopHandler;
+      private boolean                    isAutoLoop;
+      private int                        mLoopTime;
+      private PagerScroll                mPagerScroll;
 
       public BannerView ( @NonNull Context context ) {
 
@@ -51,7 +51,7 @@ public class BannerView extends FrameLayout {
       private void init ( ) {
 
             mViewPager = new ExtendViewPager( getContext() );
-            mOnPagerScrollListener = new BannerOnPagerScrollListener();
+            mOnPagerScrollListener = new BannerOnPageChangeListener();
             mLoopHandler = new LoopHandler( this );
       }
 
@@ -167,26 +167,26 @@ public class BannerView extends FrameLayout {
             mViewPager.setPageMargin( marginPixels );
       }
 
-      public void setOnPagerScrollObserver ( OnPagerScrollObserver onPagerScrollObserver ) {
+      public void setOnPagerScrollObserver ( OnPagerScrollListener onPagerScrollListener ) {
 
             if( mPagerScroll == null ) {
                   mPagerScroll = new PagerScroll( mViewPager );
             }
-            if( onPagerScrollObserver == null ) {
-                  mPagerScroll.setOnPagerScrollObserver( null );
+            if( onPagerScrollListener == null ) {
+                  mPagerScroll.setOnPagerScrollListener( null );
             } else {
-                  mPagerScroll.setOnPagerScrollObserver(
-                      new BannerOnPagerScrollObserver( onPagerScrollObserver )
+                  mPagerScroll.setOnPagerScrollListener(
+                      new BannerOnPagerScrollListener( onPagerScrollListener )
                   );
             }
       }
 
-      public OnPagerScrollObserver getOnPagerScrollObserver ( ) {
+      public OnPagerScrollListener getOnPagerScrollObserver ( ) {
 
             if( mPagerScroll == null ) {
                   return null;
             }
-            return mPagerScroll.getOnPagerScrollObserver();
+            return mPagerScroll.getOnPagerScrollListener();
       }
 
       /**
@@ -236,9 +236,9 @@ public class BannerView extends FrameLayout {
       /**
        * 连接viewPager
        */
-      private class BannerOnPagerScrollListener implements ViewPager.OnPageChangeListener {
+      private class BannerOnPageChangeListener implements ViewPager.OnPageChangeListener {
 
-            BannerOnPagerScrollListener ( ) { }
+            BannerOnPageChangeListener ( ) { }
 
             @Override
             public void onPageScrolled (
@@ -259,40 +259,40 @@ public class BannerView extends FrameLayout {
       /**
        * 观察滚动
        */
-      private class BannerOnPagerScrollObserver implements OnPagerScrollObserver {
+      private class BannerOnPagerScrollListener implements OnPagerScrollListener {
 
-            private OnPagerScrollObserver mOnPagerScrollObserver;
+            private OnPagerScrollListener mOnPagerScrollListener;
 
-            private BannerOnPagerScrollObserver (
-                OnPagerScrollObserver onPagerScrollObserver ) {
+            private BannerOnPagerScrollListener (
+                OnPagerScrollListener onPagerScrollListener ) {
 
-                  mOnPagerScrollObserver = onPagerScrollObserver;
+                  mOnPagerScrollListener = onPagerScrollListener;
             }
 
             @Override
             public void onCurrent ( int currentPosition, float offset ) {
 
-                  if( mOnPagerScrollObserver != null ) {
+                  if( mOnPagerScrollListener != null ) {
                         int position = mMaxCountAdapter.getAdapterPosition( currentPosition );
-                        mOnPagerScrollObserver.onCurrent( position, offset );
+                        mOnPagerScrollListener.onCurrent( position, offset );
                   }
             }
 
             @Override
             public void onNext ( int nextPosition, float offset ) {
 
-                  if( mOnPagerScrollObserver != null ) {
+                  if( mOnPagerScrollListener != null ) {
                         int position = mMaxCountAdapter.getAdapterPosition( nextPosition );
-                        mOnPagerScrollObserver.onNext( position, offset );
+                        mOnPagerScrollListener.onNext( position, offset );
                   }
             }
 
             @Override
             public void onPageSelected ( int position ) {
 
-                  if( mOnPagerScrollObserver != null ) {
+                  if( mOnPagerScrollListener != null ) {
                         position = mMaxCountAdapter.getAdapterPosition( position );
-                        mOnPagerScrollObserver.onPageSelected( position );
+                        mOnPagerScrollListener.onPageSelected( position );
                   }
             }
       }

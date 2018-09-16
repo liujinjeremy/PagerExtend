@@ -4,7 +4,7 @@ import android.support.v4.view.ViewPager;
 
 /**
  * Created by LiuJin on 2017-12-31:8:45
- * viewPager滚动时的观察者,滚动时会通知 OnPagerScrollObserver 当前滚动的position,下个将要显示的position,以及进度值
+ * viewPager滚动时的观察者,滚动时会通知 OnPagerScrollListener 当前滚动的position,下个将要显示的position,以及进度值
  *
  * @author liujin
  */
@@ -33,7 +33,7 @@ class OnPageChangeScrollListener implements ViewPager.OnPageChangeListener {
       /**
        * 滚动时回调
        */
-      private OnPagerScrollObserver mOnPagerScrollObserver;
+      private OnPagerScrollListener mOnPagerScrollListener;
 
       /**
        * 创建
@@ -48,23 +48,23 @@ class OnPageChangeScrollListener implements ViewPager.OnPageChangeListener {
       /**
        * 设置监听
        */
-      void setOnPagerScrollObserver ( OnPagerScrollObserver onPagerScrollObserver ) {
+      void setOnPagerScrollListener ( OnPagerScrollListener onPagerScrollListener ) {
 
-            mOnPagerScrollObserver = onPagerScrollObserver;
+            mOnPagerScrollListener = onPagerScrollListener;
       }
 
       /**
        * 获取设置的监听
        */
-      OnPagerScrollObserver getOnPagerScrollObserver ( ) {
+      OnPagerScrollListener getOnPagerScrollListener ( ) {
 
-            return mOnPagerScrollObserver;
+            return mOnPagerScrollListener;
       }
 
       @Override
       public void onPageScrolled ( int position, float positionOffset, int positionOffsetPixels ) {
 
-            if( mOnPagerScrollObserver == null ) {
+            if( mOnPagerScrollListener == null ) {
                   return;
             }
 
@@ -77,19 +77,19 @@ class OnPageChangeScrollListener implements ViewPager.OnPageChangeListener {
 
                         if( isLeft ) {
                               if( mStartIndex != itemPosition ) {
-                                    mOnPagerScrollObserver.onCurrent( mStartIndex, -1.f );
-                                    mOnPagerScrollObserver.onNext( mNextIndex, 0.f );
+                                    mOnPagerScrollListener.onCurrent( mStartIndex, -1.f );
+                                    mOnPagerScrollListener.onNext( mNextIndex, 0.f );
                               } else {
-                                    mOnPagerScrollObserver.onCurrent( mStartIndex, 0.f );
-                                    mOnPagerScrollObserver.onNext( mNextIndex, 1.f );
+                                    mOnPagerScrollListener.onCurrent( mStartIndex, 0.f );
+                                    mOnPagerScrollListener.onNext( mNextIndex, 1.f );
                               }
                         } else {
                               if( mStartIndex != itemPosition ) {
-                                    mOnPagerScrollObserver.onCurrent( mStartIndex, 1.f );
-                                    mOnPagerScrollObserver.onNext( mNextIndex, 0.f );
+                                    mOnPagerScrollListener.onCurrent( mStartIndex, 1.f );
+                                    mOnPagerScrollListener.onNext( mNextIndex, 0.f );
                               } else {
-                                    mOnPagerScrollObserver.onCurrent( mStartIndex, 0.f );
-                                    mOnPagerScrollObserver.onNext( mNextIndex, -1.f );
+                                    mOnPagerScrollListener.onCurrent( mStartIndex, 0.f );
+                                    mOnPagerScrollListener.onNext( mNextIndex, -1.f );
                               }
                         }
                         return;
@@ -101,16 +101,16 @@ class OnPageChangeScrollListener implements ViewPager.OnPageChangeListener {
                         if( mNextIndex == mItemViewGroup.getItemCount() ) {
                               mNextIndex = 0;
                         }
-                        mOnPagerScrollObserver.onCurrent( mStartIndex, -positionOffset );
-                        mOnPagerScrollObserver.onNext( mNextIndex, 1 - positionOffset );
+                        mOnPagerScrollListener.onCurrent( mStartIndex, -positionOffset );
+                        mOnPagerScrollListener.onNext( mNextIndex, 1 - positionOffset );
                   } else {
                         isLeft = false;
                         mNextIndex = position;
                         if( mStartIndex == 0 ) {
                               mNextIndex = mItemViewGroup.getItemCount() - 1;
                         }
-                        mOnPagerScrollObserver.onCurrent( mStartIndex, 1 - positionOffset );
-                        mOnPagerScrollObserver.onNext( mNextIndex, -positionOffset );
+                        mOnPagerScrollListener.onCurrent( mStartIndex, 1 - positionOffset );
+                        mOnPagerScrollListener.onNext( mNextIndex, -positionOffset );
                   }
             }
 
@@ -128,16 +128,16 @@ class OnPageChangeScrollListener implements ViewPager.OnPageChangeListener {
                         if( mNextIndex == mItemViewGroup.getItemCount() ) {
                               mNextIndex = 0;
                         }
-                        mOnPagerScrollObserver.onCurrent( mStartIndex, -positionOffset );
-                        mOnPagerScrollObserver.onNext( mNextIndex, 1 - positionOffset );
+                        mOnPagerScrollListener.onCurrent( mStartIndex, -positionOffset );
+                        mOnPagerScrollListener.onNext( mNextIndex, 1 - positionOffset );
                   } else {
                         isLeft = false;
                         mNextIndex = position;
                         if( mStartIndex == 0 ) {
                               mNextIndex = mItemViewGroup.getItemCount() - 1;
                         }
-                        mOnPagerScrollObserver.onCurrent( mStartIndex, 1 - positionOffset );
-                        mOnPagerScrollObserver.onNext( mNextIndex, -positionOffset );
+                        mOnPagerScrollListener.onCurrent( mStartIndex, 1 - positionOffset );
+                        mOnPagerScrollListener.onNext( mNextIndex, -positionOffset );
                   }
             }
       }
@@ -145,8 +145,8 @@ class OnPageChangeScrollListener implements ViewPager.OnPageChangeListener {
       @Override
       public void onPageSelected ( int position ) {
 
-            if( mOnPagerScrollObserver != null ) {
-                  mOnPagerScrollObserver.onPageSelected( position );
+            if( mOnPagerScrollListener != null ) {
+                  mOnPagerScrollListener.onPageSelected( position );
             }
       }
 
