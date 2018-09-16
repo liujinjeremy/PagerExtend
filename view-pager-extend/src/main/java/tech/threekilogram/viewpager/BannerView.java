@@ -11,6 +11,8 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import java.lang.ref.WeakReference;
 import tech.threekilogram.viewpager.adapter.MaxCountAdapter;
@@ -130,6 +132,25 @@ public class BannerView extends FrameLayout {
             }
 
             return super.dispatchTouchEvent( ev );
+      }
+
+      public void addWrapView ( View child, int gravity ) {
+
+            addView( child, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, gravity );
+      }
+
+      public void addView ( View child, int width, int height, int gravity ) {
+
+            LayoutParams params = new LayoutParams( width, height );
+            params.gravity = gravity;
+            addView( child, params );
+      }
+
+      @Override
+      public void addView ( View child, int index, ViewGroup.LayoutParams params ) {
+
+            mSkipSelfRequestLayout = true;
+            super.addView( child, index, params );
       }
 
       @Override
