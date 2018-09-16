@@ -13,6 +13,8 @@ import android.view.MotionEvent;
 import android.widget.FrameLayout;
 import java.lang.ref.WeakReference;
 import tech.threekilogram.viewpager.adapter.MaxCountAdapter;
+import tech.threekilogram.viewpager.observer.OnPagerScrollObserver;
+import tech.threekilogram.viewpager.observer.PagerScroll;
 
 /**
  * @author LiuJin
@@ -27,6 +29,7 @@ public class BannerView extends FrameLayout {
       private LoopHandler                 mLoopHandler;
       private boolean                     isAutoLoop;
       private int                         mLoopTime;
+      private PagerScroll                 mPagerScroll;
 
       public BannerView ( @NonNull Context context ) {
 
@@ -59,7 +62,6 @@ public class BannerView extends FrameLayout {
 
             addView( mViewPager, 0 );
             mViewPager.addOnPageChangeListener( mOnPagerScrollListener );
-            addScrollDuration( 500 );
 
             //设为false支持pager裁剪
             setClipChildren( false );
@@ -165,6 +167,28 @@ public class BannerView extends FrameLayout {
             mViewPager.setPageMargin( marginPixels );
       }
 
+      public void setOnPagerScrollObserver ( OnPagerScrollObserver onPagerScrollObserver ) {
+
+            if( mPagerScroll == null ) {
+                  mPagerScroll = new PagerScroll( mViewPager );
+            }
+            if( onPagerScrollObserver == null ) {
+                  mPagerScroll.setOnPagerScrollObserver( null );
+            } else {
+                  mPagerScroll.setOnPagerScrollObserver(
+                      new BannerOnPagerScrollObserver( onPagerScrollObserver )
+                  );
+            }
+      }
+
+      public OnPagerScrollObserver getOnPagerScrollObserver ( ) {
+
+            if( mPagerScroll == null ) {
+                  return null;
+            }
+            return mPagerScroll.getOnPagerScrollObserver();
+      }
+
       /**
        * 发送延时消息
        */
@@ -230,5 +254,46 @@ public class BannerView extends FrameLayout {
 
             @Override
             public void onPageScrollStateChanged ( int state ) { }
+      }
+
+      /**
+       * 观察滚动
+       */
+      private class BannerOnPagerScrollObserver implements OnPagerScrollObserver {
+
+            private OnPagerScrollObserver mOnPagerScrollObserver;
+
+            private BannerOnPagerScrollObserver (
+                OnPagerScrollObserver onPagerScrollObserver ) {
+
+                  mOnPagerScrollObserver = onPagerScrollObserver;
+            }
+
+            @Override
+            public void onCurrent ( int currentPosition, float offset ) {
+
+                  if( mOnPagerScrollObserver != null ) {
+                        int position = mMaxCountAdapter.getAdapterPosition( currentPosition );
+                        mOnPagerScrollObserver.onCurrent( position, offset );
+                  }
+            }
+
+            @Override
+            public void onNext ( int nextPosition, float offset ) {
+
+                  if( mOnPagerScrollObserver != null ) {
+                        int position = mMaxCountAdapter.getAdapterPosition( nextPosition );
+                        mOnPagerScrollObserver.onNext( position, offset );
+                  }
+            }
+
+            @Override
+            public void onPageSelected ( int position ) {
+
+                  if( mOnPagerScrollObserver != null ) {
+                        position = mMaxCountAdapter.getAdapterPosition( position );
+                        mOnPagerScrollObserver.onPageSelected( position );
+                  }
+            }
       }
 }

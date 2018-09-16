@@ -23,6 +23,10 @@
                 android:id="@+id/menu04"
                 android:title="测试Banner"/>
 
+            <item
+                android:id="@+id/menu05"
+                android:title="测试ScrollObserver"/>
+
       </group>
 
 </menu>

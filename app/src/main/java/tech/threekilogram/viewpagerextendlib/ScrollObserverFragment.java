@@ -5,27 +5,30 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import tech.threekilogram.viewpager.BannerView;
 import tech.threekilogram.viewpager.adapter.BasePagerAdapter;
+import tech.threekilogram.viewpager.observer.OnPagerScrollObserver;
+import tech.threekilogram.viewpager.observer.PagerScroll;
 
 /**
  * @author Liujin 2018-09-16:8:37
  */
-public class BannerFragment extends Fragment {
+public class ScrollObserverFragment extends Fragment {
 
-      private static final String TAG = BannerFragment.class.getSimpleName();
+      private static final String TAG = ScrollObserverFragment.class.getSimpleName();
 
-      private BannerView mBanner;
+      private ViewPager mViewPager;
 
-      public static BannerFragment newInstance ( ) {
+      public static ScrollObserverFragment newInstance ( ) {
 
-            return new BannerFragment();
+            return new ScrollObserverFragment();
       }
 
       @Nullable
@@ -35,7 +38,7 @@ public class BannerFragment extends Fragment {
           @Nullable ViewGroup container,
           @Nullable Bundle savedInstanceState ) {
 
-            return inflater.inflate( R.layout.fragment_banner, container, false );
+            return inflater.inflate( R.layout.fragment_maxcount, container, false );
       }
 
       @Override
@@ -46,32 +49,31 @@ public class BannerFragment extends Fragment {
 
       private void initView ( @NonNull final View itemView ) {
 
-            mBanner = itemView.findViewById( R.id.banner );
-            mBanner.setPagerAdapter( new FragmentAdapter() );
-            mBanner.setPageMargin( TypedValue.COMPLEX_UNIT_DIP, 16 );
-            // mBanner.startLoop();
-//            mBanner.setOnPagerScrollObserver( new OnPagerScrollObserver() {
-//
-//                  @Override
-//                  public void onCurrent ( int currentPosition, float offset ) {
-//
-//                        String format = String.format( "%.4f", offset );
-//                        Log.e( TAG, "onCurrent : " + currentPosition + " " + format );
-//                  }
-//
-//                  @Override
-//                  public void onNext ( int nextPosition, float offset ) {
-//
-//                        String format = String.format( "%.4f", offset );
-//                        Log.e( TAG, "onNext : " + nextPosition + " " + format );
-//                  }
-//
-//                  @Override
-//                  public void onPageSelected ( int position ) {
-//
-//                        Log.e( TAG, "onPageSelected : " + position );
-//                  }
-//            } );
+            mViewPager = itemView.findViewById( R.id.banner );
+            mViewPager.setAdapter( new FragmentAdapter() );
+            PagerScroll pagerScroll = new PagerScroll( mViewPager );
+            pagerScroll.setOnPagerScrollObserver( new OnPagerScrollObserver() {
+
+                  @Override
+                  public void onCurrent ( int currentPosition, float offset ) {
+
+                        String format = String.format( "%.4f", offset );
+                        Log.e( TAG, "onCurrent : " + currentPosition + " " + format );
+                  }
+
+                  @Override
+                  public void onNext ( int nextPosition, float offset ) {
+
+                        String format = String.format( "%.4f", offset );
+                        Log.e( TAG, "onNext : " + nextPosition + " " + format );
+                  }
+
+                  @Override
+                  public void onPageSelected ( int position ) {
+
+                        Log.e( TAG, "onPageSelected : " + position );
+                  }
+            } );
       }
 
       private class FragmentAdapter extends BasePagerAdapter<String, TextView> {

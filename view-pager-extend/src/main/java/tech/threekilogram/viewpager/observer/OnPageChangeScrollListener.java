@@ -13,39 +13,58 @@ class OnPageChangeScrollListener implements ViewPager.OnPageChangeListener {
       /**
        * 用于获取当前pager状态
        */
-      private ItemViewGroup         mPager;
-      /**
-       * 滚动时回调
-       */
-      private OnPagerScrollObserver mObserver;
-
+      private ItemViewGroup         mItemViewGroup;
       /**
        * 当前滚动状态
        */
-      private int     mCurrentState;
+      private int                   mCurrentState;
       /**
        * 当前条目索引
        */
-      private int     mStartIndex;
+      private int                   mStartIndex;
       /**
        * 滚动时下一个条目索引
        */
-      private int     mNextIndex;
+      private int                   mNextIndex;
       /**
        * 是否象征方向滚动
        */
-      private boolean isLeft;
+      private boolean               isLeft;
+      /**
+       * 滚动时回调
+       */
+      private OnPagerScrollObserver mOnPagerScrollObserver;
 
-      OnPageChangeScrollListener ( ItemViewGroup pager, OnPagerScrollObserver observer ) {
+      /**
+       * 创建
+       *
+       * @param pager pager
+       */
+      OnPageChangeScrollListener ( ItemViewGroup pager ) {
 
-            mPager = pager;
-            mObserver = observer;
+            mItemViewGroup = pager;
+      }
+
+      /**
+       * 设置监听
+       */
+      void setOnPagerScrollObserver ( OnPagerScrollObserver onPagerScrollObserver ) {
+
+            mOnPagerScrollObserver = onPagerScrollObserver;
+      }
+
+      /**
+       * 获取设置的监听
+       */
+      OnPagerScrollObserver getOnPagerScrollObserver ( ) {
+
+            return mOnPagerScrollObserver;
       }
 
       @Override
       public void onPageScrolled ( int position, float positionOffset, int positionOffsetPixels ) {
 
-            if( mObserver == null ) {
+            if( mOnPagerScrollObserver == null ) {
                   return;
             }
 
@@ -54,23 +73,23 @@ class OnPageChangeScrollListener implements ViewPager.OnPageChangeListener {
                   final float endFlag = 0.f;
 
                   if( positionOffset == endFlag ) {
-                        int itemPosition = mPager.getCurrentItemPosition();
+                        int itemPosition = mItemViewGroup.getCurrentItemPosition();
 
                         if( isLeft ) {
                               if( mStartIndex != itemPosition ) {
-                                    mObserver.onCurrent( mStartIndex, -1.f );
-                                    mObserver.onNext( mNextIndex, 0.f );
+                                    mOnPagerScrollObserver.onCurrent( mStartIndex, -1.f );
+                                    mOnPagerScrollObserver.onNext( mNextIndex, 0.f );
                               } else {
-                                    mObserver.onCurrent( mStartIndex, 0.f );
-                                    mObserver.onNext( mNextIndex, 1.f );
+                                    mOnPagerScrollObserver.onCurrent( mStartIndex, 0.f );
+                                    mOnPagerScrollObserver.onNext( mNextIndex, 1.f );
                               }
                         } else {
                               if( mStartIndex != itemPosition ) {
-                                    mObserver.onCurrent( mStartIndex, 1.f );
-                                    mObserver.onNext( mNextIndex, 0.f );
+                                    mOnPagerScrollObserver.onCurrent( mStartIndex, 1.f );
+                                    mOnPagerScrollObserver.onNext( mNextIndex, 0.f );
                               } else {
-                                    mObserver.onCurrent( mStartIndex, 0.f );
-                                    mObserver.onNext( mNextIndex, -1.f );
+                                    mOnPagerScrollObserver.onCurrent( mStartIndex, 0.f );
+                                    mOnPagerScrollObserver.onNext( mNextIndex, -1.f );
                               }
                         }
                         return;
@@ -79,19 +98,19 @@ class OnPageChangeScrollListener implements ViewPager.OnPageChangeListener {
                   if( mStartIndex == position ) {
                         isLeft = true;
                         mNextIndex = mStartIndex + 1;
-                        if( mNextIndex == mPager.getItemCount() ) {
+                        if( mNextIndex == mItemViewGroup.getItemCount() ) {
                               mNextIndex = 0;
                         }
-                        mObserver.onCurrent( mStartIndex, -positionOffset );
-                        mObserver.onNext( mNextIndex, 1 - positionOffset );
+                        mOnPagerScrollObserver.onCurrent( mStartIndex, -positionOffset );
+                        mOnPagerScrollObserver.onNext( mNextIndex, 1 - positionOffset );
                   } else {
                         isLeft = false;
                         mNextIndex = position;
                         if( mStartIndex == 0 ) {
-                              mNextIndex = mPager.getItemCount() - 1;
+                              mNextIndex = mItemViewGroup.getItemCount() - 1;
                         }
-                        mObserver.onCurrent( mStartIndex, 1 - positionOffset );
-                        mObserver.onNext( mNextIndex, -positionOffset );
+                        mOnPagerScrollObserver.onCurrent( mStartIndex, 1 - positionOffset );
+                        mOnPagerScrollObserver.onNext( mNextIndex, -positionOffset );
                   }
             }
 
@@ -106,19 +125,19 @@ class OnPageChangeScrollListener implements ViewPager.OnPageChangeListener {
                   if( mStartIndex == position ) {
                         isLeft = true;
                         mNextIndex = mStartIndex + 1;
-                        if( mNextIndex == mPager.getItemCount() ) {
+                        if( mNextIndex == mItemViewGroup.getItemCount() ) {
                               mNextIndex = 0;
                         }
-                        mObserver.onCurrent( mStartIndex, -positionOffset );
-                        mObserver.onNext( mNextIndex, 1 - positionOffset );
+                        mOnPagerScrollObserver.onCurrent( mStartIndex, -positionOffset );
+                        mOnPagerScrollObserver.onNext( mNextIndex, 1 - positionOffset );
                   } else {
                         isLeft = false;
                         mNextIndex = position;
                         if( mStartIndex == 0 ) {
-                              mNextIndex = mPager.getItemCount() - 1;
+                              mNextIndex = mItemViewGroup.getItemCount() - 1;
                         }
-                        mObserver.onCurrent( mStartIndex, 1 - positionOffset );
-                        mObserver.onNext( mNextIndex, -positionOffset );
+                        mOnPagerScrollObserver.onCurrent( mStartIndex, 1 - positionOffset );
+                        mOnPagerScrollObserver.onNext( mNextIndex, -positionOffset );
                   }
             }
       }
@@ -126,7 +145,9 @@ class OnPageChangeScrollListener implements ViewPager.OnPageChangeListener {
       @Override
       public void onPageSelected ( int position ) {
 
-            mObserver.onPageSelected( position );
+            if( mOnPagerScrollObserver != null ) {
+                  mOnPagerScrollObserver.onPageSelected( position );
+            }
       }
 
       @Override
@@ -134,7 +155,7 @@ class OnPageChangeScrollListener implements ViewPager.OnPageChangeListener {
 
             mCurrentState = state;
             if( state == ViewPager.SCROLL_STATE_DRAGGING || state == ViewPager.SCROLL_STATE_IDLE ) {
-                  mStartIndex = mPager.getCurrentItemPosition();
+                  mStartIndex = mItemViewGroup.getCurrentItemPosition();
             }
       }
 }
