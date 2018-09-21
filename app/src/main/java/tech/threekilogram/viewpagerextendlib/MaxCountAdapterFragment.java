@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import tech.threekilogram.viewpager.adapter.BasePagerAdapter;
-import tech.threekilogram.viewpager.adapter.MaxCountAdapter;
+import tech.threekilogram.viewpager.adapter.MaxValueAdapter;
 
 /**
  * @author Liujin 2018-09-16:8:37
@@ -46,7 +46,7 @@ public class MaxCountAdapterFragment extends Fragment {
       private void initView ( @NonNull final View itemView ) {
 
             mViewPager = itemView.findViewById( R.id.banner );
-            MaxCountAdapter adapter = new MaxCountAdapter( new FragmentAdapter() );
+            MaxValueAdapter adapter = new MaxValueAdapter( new FragmentAdapter() );
             mViewPager.setAdapter( adapter );
             mViewPager.setCurrentItem( adapter.getStartPosition() );
       }

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tech.threekilogram.viewpager.LoopHandlerFrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/LoopFrame"
+    android:layout_width="match_parent"
+    android:background="@color/orange"
+    android:layout_height="match_parent">
+
+</tech.threekilogram.viewpager.LoopHandlerFrameLayout>

@@ -9,7 +9,6 @@ import java.lang.reflect.Field;
 /**
  * @author LiuJin
  * @date 2017-12-25
- *     为viewpager 增加 自动轮播功能
  */
 public class ExtendViewPager extends ViewPager {
 

@@ -9,10 +9,6 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.FrameLayout.LayoutParams;
-import tech.threekilogram.viewpager.BannerView;
 
 /**
  * @author LiuJin
@@ -117,51 +113,51 @@ public class DotView extends View {
             invalidate();
       }
 
-      public void setupWithBanner ( final BannerView bannerView, int gravity, int margin ) {
-
-            int count = bannerView.getItemCount();
-            setDotCount( count );
-            int position = bannerView.getCurrentItemPosition();
-            position = bannerView.getAdapterPosition( position );
-            setSelected( position );
-
-            FrameLayout.LayoutParams params = new LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            );
-            params.gravity = gravity;
-            params.leftMargin = margin;
-            params.topMargin = margin;
-            params.rightMargin = margin;
-            params.bottomMargin = margin;
-
-            bannerView.addView(
-                this,
-                params
-            );
-
-            if( mOnPageChangeListener != null ) {
-                  bannerView.removeOnPageChangeListener( mOnPageChangeListener );
-            }
-
-            mOnPageChangeListener = new OnPageChangeListener() {
-
-                  @Override
-                  public void onPageScrolled (
-                      int position, float positionOffset, int positionOffsetPixels ) { }
-
-                  @Override
-                  public void onPageSelected ( int position ) {
-
-                        position = bannerView.getAdapterPosition( position );
-                        setSelected( position );
-                  }
-
-                  @Override
-                  public void onPageScrollStateChanged ( int state ) { }
-            };
-            bannerView.addOnPageChangeListener( mOnPageChangeListener );
-      }
+//      public void setupWithBanner ( final LoopHandlerFrameLayout loopHandlerFrameLayout, int gravity, int margin ) {
+//
+//            int count = loopHandlerFrameLayout.getItemCount();
+//            setDotCount( count );
+//            int position = loopHandlerFrameLayout.getCurrentItemPosition();
+//            position = loopHandlerFrameLayout.getAdapterPosition( position );
+//            setSelected( position );
+//
+//            FrameLayout.LayoutParams params = new LayoutParams(
+//                ViewGroup.LayoutParams.WRAP_CONTENT,
+//                ViewGroup.LayoutParams.WRAP_CONTENT
+//            );
+//            params.gravity = gravity;
+//            params.leftMargin = margin;
+//            params.topMargin = margin;
+//            params.rightMargin = margin;
+//            params.bottomMargin = margin;
+//
+//            loopHandlerFrameLayout.addView(
+//                this,
+//                params
+//            );
+//
+//            if( mOnPageChangeListener != null ) {
+//                  loopHandlerFrameLayout.removeOnPageChangeListener( mOnPageChangeListener );
+//            }
+//
+//            mOnPageChangeListener = new OnPageChangeListener() {
+//
+//                  @Override
+//                  public void onPageScrolled (
+//                      int position, float positionOffset, int positionOffsetPixels ) { }
+//
+//                  @Override
+//                  public void onPageSelected ( int position ) {
+//
+//                        position = loopHandlerFrameLayout.getAdapterPosition( position );
+//                        setSelected( position );
+//                  }
+//
+//                  @Override
+//                  public void onPageScrollStateChanged ( int state ) { }
+//            };
+//            loopHandlerFrameLayout.addOnPageChangeListener( mOnPageChangeListener );
+//      }
 
       @Override
       protected void onMeasure ( int widthMeasureSpec, int heightMeasureSpec ) {

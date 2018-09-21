@@ -4,11 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-      <tech.threekilogram.viewpager.BannerView
+      <tech.threekilogram.viewpager.LoopHandlerFrameLayout
           android:id="@+id/banner"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:padding="16dp">
-      </tech.threekilogram.viewpager.BannerView>
+      </tech.threekilogram.viewpager.LoopHandlerFrameLayout>
 
 </FrameLayout>

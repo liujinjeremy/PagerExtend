@@ -63,14 +63,17 @@ public class MainActivity extends AppCompatActivity {
                         case R.id.menu03:
                               changeFragment( ExtendPagerFragment.newInstance() );
                               break;
-                        case R.id.menu04:
-                              changeFragment( BannerFragment.newInstance() );
-                              break;
                         case R.id.menu05:
                               changeFragment( ScrollObserverFragment.newInstance() );
                               break;
                         case R.id.menu06:
                               changeFragment( DotViewFragment.newInstance() );
+                              break;
+                        case R.id.menu07:
+                              changeFragment( RecyclerPagerFragment.newInstance() );
+                              break;
+                        case R.id.menu08:
+                              changeFragment( LoopHandlerFrameTestFragment.newInstance() );
                               break;
                         default:
                               break;

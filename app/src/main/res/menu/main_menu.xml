@@ -17,11 +17,7 @@
 
             <item
                 android:id="@+id/menu03"
-                android:title="测试ExtendAdapter"/>
-
-            <item
-                android:id="@+id/menu04"
-                android:title="测试Banner"/>
+                android:title="测试ExtendPager"/>
 
             <item
                 android:id="@+id/menu05"
@@ -30,6 +26,14 @@
             <item
                 android:id="@+id/menu06"
                 android:title="测试Dot"/>
+
+            <item
+                android:id="@+id/menu07"
+                android:title="测试RecyclerPager"/>
+
+            <item
+                android:id="@+id/menu08"
+                android:title="测试LoopHandler"/>
 
       </group>
 
