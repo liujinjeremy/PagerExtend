@@ -16,42 +16,42 @@ import java.lang.ref.WeakReference;
  * @author LiuJin
  * @date 2017-12-25
  */
-public class LoopHandlerFrameLayout extends FrameLayout {
+public class LoopHandlerLayout extends FrameLayout {
 
-      private static final String TAG = LoopHandlerFrameLayout.class.getSimpleName();
+      private static final String TAG = LoopHandlerLayout.class.getSimpleName();
 
       /**
        * help startLoop
        */
-      private LoopHandler    mLoopHandler;
+      protected LoopHandler    mLoopHandler;
       /**
        * true is looping
        */
-      private boolean        isAutoLoop;
+      protected boolean        isAutoLoop;
       /**
        * startLoop time
        */
-      private int            mLoopTime;
+      protected int            mLoopTime;
       /**
        * 设置loop时行为,并且在合适的时候loop下一个
        */
-      private OnLoopListener mOnLoopListener;
+      protected OnLoopListener mOnLoopListener;
       /**
        * flag for touch paused
        */
-      private boolean isTouchPaused = false;
+      protected boolean isTouchPaused = false;
 
-      public LoopHandlerFrameLayout ( @NonNull Context context ) {
+      public LoopHandlerLayout ( @NonNull Context context ) {
 
             this( context, null );
       }
 
-      public LoopHandlerFrameLayout ( @NonNull Context context, @Nullable AttributeSet attrs ) {
+      public LoopHandlerLayout ( @NonNull Context context, @Nullable AttributeSet attrs ) {
 
             this( context, attrs, 0 );
       }
 
-      public LoopHandlerFrameLayout (
+      public LoopHandlerLayout (
           @NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr ) {
 
             super( context, attrs, defStyleAttr );
@@ -61,7 +61,7 @@ public class LoopHandlerFrameLayout extends FrameLayout {
       /**
        * init field
        */
-      private void init ( ) {
+      protected void init ( ) {
 
             mLoopHandler = new LoopHandler( this );
       }
@@ -156,9 +156,9 @@ public class LoopHandlerFrameLayout extends FrameLayout {
             /**
              * ref to view
              */
-            private WeakReference<LoopHandlerFrameLayout> mRef;
+            private WeakReference<LoopHandlerLayout> mRef;
 
-            LoopHandler ( LoopHandlerFrameLayout banner ) {
+            LoopHandler ( LoopHandlerLayout banner ) {
 
                   mRef = new WeakReference<>( banner );
             }
@@ -186,20 +186,20 @@ public class LoopHandlerFrameLayout extends FrameLayout {
             @Override
             public void handleMessage ( Message msg ) {
 
-                  LoopHandlerFrameLayout loopHandlerFrameLayout = mRef.get();
-                  if( loopHandlerFrameLayout == null ) {
+                  LoopHandlerLayout loopHandlerLayout = mRef.get();
+                  if( loopHandlerLayout == null ) {
                         return;
                   }
 
                   if( msg.what == WHAT_LOOP ) {
-                        OnLoopListener loopListener = loopHandlerFrameLayout.mOnLoopListener;
+                        OnLoopListener loopListener = loopHandlerLayout.mOnLoopListener;
                         if( loopListener != null ) {
-                              loopListener.onLoop( loopHandlerFrameLayout );
+                              loopListener.onLoop( loopHandlerLayout );
                         }
-                        if( loopHandlerFrameLayout.isAutoLoop ) {
+                        if( loopHandlerLayout.isAutoLoop ) {
                               sendEmptyMessageDelayed(
                                   WHAT_LOOP,
-                                  loopHandlerFrameLayout.mLoopTime
+                                  loopHandlerLayout.mLoopTime
                               );
                         }
                   }
@@ -216,6 +216,6 @@ public class LoopHandlerFrameLayout extends FrameLayout {
              *
              * @param layout 布局
              */
-            void onLoop ( LoopHandlerFrameLayout layout );
+            void onLoop ( LoopHandlerLayout layout );
       }
 }

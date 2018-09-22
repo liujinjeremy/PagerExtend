@@ -7,7 +7,22 @@
       <tech.threekilogram.viewpager.pager.ExtendViewPager
           android:id="@+id/banner"
           android:layout_width="match_parent"
-          android:layout_height="match_parent">
+          android:layout_height="match_parent"
+          android:layout_marginBottom="50dp">
       </tech.threekilogram.viewpager.pager.ExtendViewPager>
 
+
+      <Button
+          android:id="@+id/toNextItem"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="bottom|start"
+          android:text="toNextItem"/>
+
+      <Button
+          android:id="@+id/toPrevItem"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="bottom|end"
+          android:text="toPrevItem"/>
 </FrameLayout>

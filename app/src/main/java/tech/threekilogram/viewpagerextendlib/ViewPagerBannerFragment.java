@@ -9,65 +9,56 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 import tech.threekilogram.viewpager.adapter.BasePagerAdapter;
-import tech.threekilogram.viewpager.pager.ExtendViewPager;
+import tech.threekilogram.viewpager.banner.ViewPagerBanner;
 
 /**
- * @author Liujin 2018-09-16:8:37
+ * @author Liujin 2018-09-22:8:53
  */
-public class ExtendPagerFragment extends Fragment implements OnClickListener {
+public class ViewPagerBannerFragment extends Fragment {
 
-      private ExtendViewPager mViewPager;
-      private Button          mToNextItem;
-      private Button          mToPrevItem;
+      private static final String TAG = ViewPagerBannerFragment.class.getSimpleName();
+      private ViewPagerBanner mBanner;
 
-      public static ExtendPagerFragment newInstance ( ) {
+      public static ViewPagerBannerFragment newInstance ( ) {
 
-            return new ExtendPagerFragment();
+            Bundle args = new Bundle();
+
+            ViewPagerBannerFragment fragment = new ViewPagerBannerFragment();
+            fragment.setArguments( args );
+            return fragment;
       }
 
       @Nullable
       @Override
       public View onCreateView (
-          @NonNull LayoutInflater inflater,
-          @Nullable ViewGroup container,
+          @NonNull LayoutInflater inflater, @Nullable ViewGroup container,
           @Nullable Bundle savedInstanceState ) {
 
-            return inflater.inflate( R.layout.fragment_extend_pager, container, false );
+            return inflater.inflate( R.layout.fragment_view_pager_banner, container, false );
       }
 
       @Override
       public void onViewCreated ( @NonNull View view, @Nullable Bundle savedInstanceState ) {
 
+            super.onViewCreated( view, savedInstanceState );
             initView( view );
       }
 
       private void initView ( @NonNull final View itemView ) {
 
-            mViewPager = itemView.findViewById( R.id.banner );
-            mViewPager.setAdapter( new FragmentAdapter() );
+            mBanner = itemView.findViewById( R.id.banner );
+            mBanner.setPagerAdapter( new FragmentAdapter() );
+            mBanner.post( new Runnable() {
 
-            mToNextItem = itemView.findViewById( R.id.toNextItem );
-            mToNextItem.setOnClickListener( this );
-            mToPrevItem = itemView.findViewById( R.id.toPrevItem );
-            mToPrevItem.setOnClickListener( this );
-      }
+                  @Override
+                  public void run ( ) {
 
-      @Override
-      public void onClick ( View v ) {
-
-            if( v.getId() == R.id.toNextItem ) {
-                  mViewPager.smoothScrollToNextItem( 1000 );
-                  return;
-            }
-
-            if( v.getId() == R.id.toPrevItem ) {
-                  mViewPager.smoothScrollToPrevItem( 1000 );
-            }
+                        mBanner.startLoop();
+                  }
+            } );
       }
 
       private class FragmentAdapter extends BasePagerAdapter<String, TextView> {

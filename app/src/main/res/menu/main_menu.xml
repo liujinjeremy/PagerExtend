@@ -35,6 +35,10 @@
                 android:id="@+id/menu08"
                 android:title="测试LoopHandler"/>
 
+            <item
+                android:id="@+id/menu09"
+                android:title="测试ViewPagerBanner"/>
+
       </group>
 
 </menu>

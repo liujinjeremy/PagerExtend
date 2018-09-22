@@ -11,8 +11,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
-import tech.threekilogram.viewpager.banner.LoopHandlerFrameLayout;
-import tech.threekilogram.viewpager.banner.LoopHandlerFrameLayout.OnLoopListener;
+import tech.threekilogram.viewpager.banner.LoopHandlerLayout;
+import tech.threekilogram.viewpager.banner.LoopHandlerLayout.OnLoopListener;
 
 /**
  * @author Liujin 2018-09-21:23:23
@@ -20,7 +20,7 @@ import tech.threekilogram.viewpager.banner.LoopHandlerFrameLayout.OnLoopListener
 public class LoopHandlerFrameTestFragment extends Fragment {
 
       private static final String TAG = LoopHandlerFrameTestFragment.class.getSimpleName();
-      private LoopHandlerFrameLayout mLoopFrame;
+      private LoopHandlerLayout mLoopFrame;
 
       public static LoopHandlerFrameTestFragment newInstance ( ) {
 
@@ -58,7 +58,7 @@ public class LoopHandlerFrameTestFragment extends Fragment {
                   private int mCount = 0;
 
                   @Override
-                  public void onLoop ( LoopHandlerFrameLayout layout ) {
+                  public void onLoop ( LoopHandlerLayout layout ) {
 
                         Log.e( TAG, "onLoop : " + ++mCount );
                   }

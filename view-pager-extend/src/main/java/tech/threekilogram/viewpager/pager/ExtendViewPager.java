@@ -47,6 +47,37 @@ public class ExtendViewPager extends ViewPager {
             mCallSuperRequestLayout = false;
       }
 
+      public void setCurrentItem ( int item, boolean smoothScroll, int scrollDurationAdded ) {
+
+            if( mScroller != null ) {
+                  mScroller.setDurationAdded( scrollDurationAdded );
+            }
+            super.setCurrentItem( item, smoothScroll );
+            if( mScroller != null ) {
+                  mScroller.setDurationAdded( 0 );
+            }
+      }
+
+      public void smoothScrollToNextItem ( ) {
+
+            setCurrentItem( getCurrentItem() + 1, true );
+      }
+
+      public void smoothScrollToNextItem ( int scrollDurationAdded ) {
+
+            setCurrentItem( getCurrentItem() + 1, true, scrollDurationAdded );
+      }
+
+      public void smoothScrollToPrevItem ( ) {
+
+            setCurrentItem( getCurrentItem() - 1, true );
+      }
+
+      public void smoothScrollToPrevItem ( int scrollDurationAdded ) {
+
+            setCurrentItem( getCurrentItem() - 1, true, scrollDurationAdded );
+      }
+
       public boolean isCallSuperRequestLayout ( ) {
 
             return mCallSuperRequestLayout;
@@ -59,30 +90,6 @@ public class ExtendViewPager extends ViewPager {
 
             setClipChildren( b );
             setClipToPadding( b );
-      }
-
-      /**
-       * 设置增加滚动时间
-       *
-       * @param addedDuration 增加的时间
-       */
-      public void setDurationAdded ( int addedDuration ) {
-
-            if( mScroller != null ) {
-                  mScroller.setDurationAdded( addedDuration );
-            }
-      }
-
-      /**
-       * 获取设置的滚动时间增加
-       */
-      public int getDurationAdded ( ) {
-
-            if( mScroller != null ) {
-                  return mScroller.getDurationAdded();
-            } else {
-                  return 0;
-            }
       }
 
       public void abortScroller ( ) {

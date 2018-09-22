@@ -75,6 +75,9 @@ public class MainActivity extends AppCompatActivity {
                         case R.id.menu08:
                               changeFragment( LoopHandlerFrameTestFragment.newInstance() );
                               break;
+                        case R.id.menu09:
+                              changeFragment( ViewPagerBannerFragment.newInstance() );
+                              break;
                         default:
                               break;
                   }
