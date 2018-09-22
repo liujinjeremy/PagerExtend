@@ -60,6 +60,7 @@ public class ViewPagerBannerFragment extends Fragment {
                         mBanner.startLoop();
                   }
             } );
+            mBanner.setPageMargin( 40 );
 
             DotView dotView = new DotView( getContext() );
             dotView.setupWithBanner( mBanner, Gravity.BOTTOM | Gravity.END, 50 );

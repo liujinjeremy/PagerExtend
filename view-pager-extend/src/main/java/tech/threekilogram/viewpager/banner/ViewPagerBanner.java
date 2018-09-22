@@ -10,7 +10,6 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v4.view.ViewPager.PageTransformer;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import java.util.ArrayList;
 import tech.threekilogram.viewpager.adapter.MaxCountAdapter;
@@ -20,8 +19,6 @@ import tech.threekilogram.viewpager.pager.ExtendViewPager;
  * @author Liujin 2018-09-22:8:27
  */
 public class ViewPagerBanner extends LoopHandlerLayout {
-
-      private static final String TAG = ViewPagerBanner.class.getSimpleName();
 
       /**
        * 展示界面的pager
@@ -56,22 +53,17 @@ public class ViewPagerBanner extends LoopHandlerLayout {
       }
 
       @Override
-      protected void init ( ) {
-
-            super.init();
-      }
-
-      @Override
       protected void onFinishInflate ( ) {
 
             super.onFinishInflate();
 
-            /* 不裁剪children */
-            setClip( false );
-
             /* 添加pager */
             mViewPager = createPager( getContext() );
             addView( mViewPager, 0 );
+
+            /* 不裁剪children */
+            setClip( false );
+            mViewPager.setClip( false );
       }
 
       protected ExtendViewPager createPager ( Context context ) {
@@ -305,7 +297,6 @@ public class ViewPagerBanner extends LoopHandlerLayout {
                   if( adapter != null ) {
 
                         position = adapter.getAdapterPosition( position );
-                        Log.e( TAG, "onPageSelected : " + position );
                         for( OnPageChangeListener onPageChangeListener : mOnPageChangeListeners ) {
                               onPageChangeListener.onPageSelected( position );
                         }
