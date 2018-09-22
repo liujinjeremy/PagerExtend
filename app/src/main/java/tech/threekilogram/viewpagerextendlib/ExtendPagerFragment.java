@@ -13,8 +13,8 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import tech.threekilogram.viewpager.adapter.BasePagerAdapter;
-import tech.threekilogram.viewpager.pager.ExtendViewPager;
+import tech.threekilogram.pager.adapter.BasePagerAdapter;
+import tech.threekilogram.pager.pager.ExtendViewPager;
 
 /**
  * @author Liujin 2018-09-16:8:37

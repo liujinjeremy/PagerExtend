@@ -1,4 +1,4 @@
-package tech.threekilogram.viewpager.observer;
+package tech.threekilogram.pager.observer;
 
 /**
  * Created by LiuJin on 2017-12-31:9:03

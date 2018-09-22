@@ -1,4 +1,4 @@
-package tech.threekilogram.viewpager.observer;
+package tech.threekilogram.pager.observer;
 
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;

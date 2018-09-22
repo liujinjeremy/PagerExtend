@@ -1,4 +1,4 @@
-package tech.threekilogram.viewpager.banner;
+package tech.threekilogram.pager.banner;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -12,8 +12,7 @@ import android.support.v4.view.ViewPager.PageTransformer;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import java.util.ArrayList;
-import tech.threekilogram.viewpager.adapter.MaxCountAdapter;
-import tech.threekilogram.viewpager.pager.ExtendViewPager;
+import tech.threekilogram.pager.pager.ExtendViewPager;
 
 /**
  * @author Liujin 2018-09-22:8:27

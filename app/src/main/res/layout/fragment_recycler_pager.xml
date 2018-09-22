@@ -4,10 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-      <tech.threekilogram.viewpager.pager.RecyclerPager
+      <tech.threekilogram.pager.pager.RecyclerPager
           android:id="@+id/recyclerPager"
           android:layout_width="match_parent"
           android:layout_height="300dp">
-      </tech.threekilogram.viewpager.pager.RecyclerPager>
+      </tech.threekilogram.pager.pager.RecyclerPager>
 
 </android.support.constraint.ConstraintLayout>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<tech.threekilogram.viewpager.banner.ViewPagerBanner
+<tech.threekilogram.pager.banner.ViewPagerBanner
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/banner"
     android:layout_width="match_parent"
@@ -7,4 +7,4 @@
     android:padding="16dp"
     >
 
-</tech.threekilogram.viewpager.banner.ViewPagerBanner>
+</tech.threekilogram.pager.banner.ViewPagerBanner>

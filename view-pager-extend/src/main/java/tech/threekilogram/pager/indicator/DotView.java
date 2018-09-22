@@ -1,4 +1,4 @@
-package tech.threekilogram.viewpager.indicator;
+package tech.threekilogram.pager.indicator;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.FrameLayout.LayoutParams;
-import tech.threekilogram.viewpager.banner.ViewPagerBanner;
+import tech.threekilogram.pager.banner.ViewPagerBanner;
 
 /**
  * @author LiuJin

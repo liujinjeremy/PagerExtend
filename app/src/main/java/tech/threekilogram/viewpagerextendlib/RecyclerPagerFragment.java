@@ -10,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import tech.threekilogram.viewpager.pager.RecyclerPager;
+import tech.threekilogram.pager.pager.RecyclerPager;
 
 /**
  * @author Liujin 2018-09-19:16:15

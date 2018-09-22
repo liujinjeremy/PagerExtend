@@ -1,4 +1,4 @@
-package tech.threekilogram.viewpager;
+package tech.threekilogram.pager;
 
 import static org.junit.Assert.assertEquals;
 

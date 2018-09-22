@@ -1,4 +1,4 @@
-package tech.threekilogram.viewpager.adapter;
+package tech.threekilogram.pager.adapter;
 
 import android.util.SparseArray;
 import android.view.View;

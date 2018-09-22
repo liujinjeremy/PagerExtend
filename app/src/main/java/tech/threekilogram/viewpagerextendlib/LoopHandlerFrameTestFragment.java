@@ -11,8 +11,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
-import tech.threekilogram.viewpager.banner.LoopHandlerLayout;
-import tech.threekilogram.viewpager.banner.LoopHandlerLayout.OnLoopListener;
+import tech.threekilogram.pager.banner.LoopHandlerLayout;
+import tech.threekilogram.pager.banner.LoopHandlerLayout.OnLoopListener;
 
 /**
  * @author Liujin 2018-09-21:23:23

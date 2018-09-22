@@ -1,4 +1,4 @@
-package tech.threekilogram.viewpager.adapter;
+package tech.threekilogram.pager.banner;
 
 import android.database.DataSetObserver;
 import android.os.Parcelable;

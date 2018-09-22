@@ -12,8 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import tech.threekilogram.viewpager.adapter.BasePagerAdapter;
-import tech.threekilogram.viewpager.adapter.MaxCountAdapter;
+import tech.threekilogram.pager.adapter.BasePagerAdapter;
+import tech.threekilogram.pager.banner.MaxCountAdapter;
 
 /**
  * @author Liujin 2018-09-16:8:37

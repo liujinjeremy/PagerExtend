@@ -12,9 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import tech.threekilogram.viewpager.adapter.BasePagerAdapter;
-import tech.threekilogram.viewpager.observer.OnPagerScrollListener;
-import tech.threekilogram.viewpager.observer.PagerScroll;
+import tech.threekilogram.pager.adapter.BasePagerAdapter;
+import tech.threekilogram.pager.observer.OnPagerScrollListener;
+import tech.threekilogram.pager.observer.PagerScroll;
 
 /**
  * @author Liujin 2018-09-16:8:37

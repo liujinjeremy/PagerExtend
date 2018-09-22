@@ -1,4 +1,4 @@
-package tech.threekilogram.viewpager.pager;
+package tech.threekilogram.pager.pager;
 
 import android.content.Context;
 import android.support.annotation.Nullable;

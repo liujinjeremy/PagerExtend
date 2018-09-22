@@ -7,7 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import tech.threekilogram.viewpager.indicator.DotView;
+import tech.threekilogram.pager.indicator.DotView;
 
 /**
  * @author Liujin 2018-09-16:17:31

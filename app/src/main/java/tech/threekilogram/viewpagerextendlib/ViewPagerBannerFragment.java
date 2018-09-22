@@ -11,9 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import tech.threekilogram.viewpager.adapter.BasePagerAdapter;
-import tech.threekilogram.viewpager.banner.ViewPagerBanner;
-import tech.threekilogram.viewpager.indicator.DotView;
+import tech.threekilogram.pager.adapter.BasePagerAdapter;
+import tech.threekilogram.pager.banner.ViewPagerBanner;
+import tech.threekilogram.pager.indicator.DotView;
 
 /**
  * @author Liujin 2018-09-22:8:53

@@ -1,4 +1,4 @@
-package tech.threekilogram.viewpager.adapter;
+package tech.threekilogram.pager.adapter;
 
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;

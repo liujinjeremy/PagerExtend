@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.TextView;
-import tech.threekilogram.viewpager.adapter.BaseTypePagerAdapter;
+import tech.threekilogram.pager.adapter.BaseTypePagerAdapter;
 
 /**
  * @author Liujin 2018-09-16:8:37
