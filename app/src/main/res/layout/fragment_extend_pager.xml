@@ -4,10 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-      <tech.threekilogram.viewpager.ExtendViewPager
+      <tech.threekilogram.viewpager.pager.ExtendViewPager
           android:id="@+id/banner"
           android:layout_width="match_parent"
           android:layout_height="match_parent">
-      </tech.threekilogram.viewpager.ExtendViewPager>
+      </tech.threekilogram.viewpager.pager.ExtendViewPager>
 
 </FrameLayout>

@@ -1,4 +1,4 @@
-package tech.threekilogram.viewpager;
+package tech.threekilogram.viewpager.banner;
 
 import android.content.Context;
 import android.os.Handler;
