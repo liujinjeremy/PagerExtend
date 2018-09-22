@@ -39,6 +39,10 @@
                 android:id="@+id/menu09"
                 android:title="测试ViewPagerBanner"/>
 
+            <item
+                android:id="@+id/menu10"
+                android:title="测试RecyclerBanner"/>
+
       </group>
 
 </menu>

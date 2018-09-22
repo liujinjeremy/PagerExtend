@@ -74,7 +74,7 @@ public class RecyclerPagerFragment extends Fragment {
             }
       }
 
-      private class Holder extends RecyclerView.ViewHolder {
+      public class Holder extends RecyclerView.ViewHolder {
 
             private int[] colors = {
                 R.color.black,

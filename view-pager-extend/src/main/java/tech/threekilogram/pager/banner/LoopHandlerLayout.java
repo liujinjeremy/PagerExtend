@@ -90,7 +90,9 @@ public class LoopHandlerLayout extends FrameLayout {
 
                   if( isTouchPaused ) {
                         isTouchPaused = false;
-                        startLoop( mLoopTime );
+                        if( isAutoLoop ) {
+                              mLoopHandler.sendDelayedLoop( mLoopTime );
+                        }
                   }
             } else {
 
