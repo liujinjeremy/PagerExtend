@@ -13,7 +13,6 @@ import android.widget.Scroller;
 public class DurationChangedScroller extends Scroller {
 
       private int mDurationAdded = 0;
-      private int mScrollDuration;
 
       public DurationChangedScroller ( Context context ) {
 
@@ -44,15 +43,9 @@ public class DurationChangedScroller extends Scroller {
             return mDurationAdded;
       }
 
-      public int getScrollDuration ( ) {
-
-            return mScrollDuration;
-      }
-
       @Override
       public void startScroll ( int startX, int startY, int dx, int dy, int duration ) {
 
-            mScrollDuration = duration + mDurationAdded;
-            super.startScroll( startX, startY, dx, dy, mScrollDuration );
+            super.startScroll( startX, startY, dx, dy, duration + mDurationAdded );
       }
 }

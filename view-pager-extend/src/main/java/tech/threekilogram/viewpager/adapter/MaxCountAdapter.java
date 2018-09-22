@@ -13,14 +13,14 @@ import android.view.ViewGroup;
  *
  * @author wuxio
  */
-public class MaxValueAdapter extends PagerAdapter {
+public class MaxCountAdapter extends PagerAdapter {
 
       /**
        * 真实adapter
        */
       private PagerAdapter mPagerAdapter;
 
-      public MaxValueAdapter ( PagerAdapter pagerAdapter ) {
+      public MaxCountAdapter ( PagerAdapter pagerAdapter ) {
 
             mPagerAdapter = pagerAdapter;
       }
@@ -43,7 +43,7 @@ public class MaxValueAdapter extends PagerAdapter {
       }
 
       /**
-       * @return {@link #getCount()}的中间值,并且是{mPagerAdapter.getCount()}的倍数,使其正好是实际数据第一项
+       * @return {@link #getCount()}的中间值,并且是{mPagerAdapter.getAdapterCount()}的倍数,使其正好是实际数据第一项
        */
       public int getStartPosition ( ) {
 
@@ -55,7 +55,7 @@ public class MaxValueAdapter extends PagerAdapter {
       /**
        * 将loopViewPager的position 转换成 mAdapter的Position
        *
-       * @param position MaxValueAdapter 中的位置
+       * @param position MaxCountAdapter 中的位置
        *
        * @return mPagerAdapter 中的位置
        */

@@ -9,6 +9,10 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.FrameLayout.LayoutParams;
+import tech.threekilogram.viewpager.banner.ViewPagerBanner;
 
 /**
  * @author LiuJin
@@ -113,51 +117,49 @@ public class DotView extends View {
             invalidate();
       }
 
-//      public void setupWithBanner ( final LoopHandlerFrameLayout loopHandlerFrameLayout, int gravity, int margin ) {
-//
-//            int count = loopHandlerFrameLayout.getItemCount();
-//            setDotCount( count );
-//            int position = loopHandlerFrameLayout.getCurrentItemPosition();
-//            position = loopHandlerFrameLayout.getAdapterPosition( position );
-//            setSelected( position );
-//
-//            FrameLayout.LayoutParams params = new LayoutParams(
-//                ViewGroup.LayoutParams.WRAP_CONTENT,
-//                ViewGroup.LayoutParams.WRAP_CONTENT
-//            );
-//            params.gravity = gravity;
-//            params.leftMargin = margin;
-//            params.topMargin = margin;
-//            params.rightMargin = margin;
-//            params.bottomMargin = margin;
-//
-//            loopHandlerFrameLayout.addView(
-//                this,
-//                params
-//            );
-//
-//            if( mOnPageChangeListener != null ) {
-//                  loopHandlerFrameLayout.removeOnPageChangeListener( mOnPageChangeListener );
-//            }
-//
-//            mOnPageChangeListener = new OnPageChangeListener() {
-//
-//                  @Override
-//                  public void onPageScrolled (
-//                      int position, float positionOffset, int positionOffsetPixels ) { }
-//
-//                  @Override
-//                  public void onPageSelected ( int position ) {
-//
-//                        position = loopHandlerFrameLayout.getAdapterPosition( position );
-//                        setSelected( position );
-//                  }
-//
-//                  @Override
-//                  public void onPageScrollStateChanged ( int state ) { }
-//            };
-//            loopHandlerFrameLayout.addOnPageChangeListener( mOnPageChangeListener );
-//      }
+      public void setupWithBanner (
+          final ViewPagerBanner banner,
+          int gravity, int margin ) {
+
+            setDotCount( banner.getItemCount() );
+            setSelected( banner.getCurrentItem() );
+
+            FrameLayout.LayoutParams params = new LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            );
+            params.gravity = gravity;
+            params.leftMargin = margin;
+            params.topMargin = margin;
+            params.rightMargin = margin;
+            params.bottomMargin = margin;
+
+            banner.addView(
+                this,
+                params
+            );
+
+            if( mOnPageChangeListener != null ) {
+                  banner.removeOnPageChangeListener( mOnPageChangeListener );
+            }
+
+            mOnPageChangeListener = new OnPageChangeListener() {
+
+                  @Override
+                  public void onPageScrolled (
+                      int position, float positionOffset, int positionOffsetPixels ) { }
+
+                  @Override
+                  public void onPageSelected ( int position ) {
+
+                        setSelected( position );
+                  }
+
+                  @Override
+                  public void onPageScrollStateChanged ( int state ) { }
+            };
+            banner.addOnPageChangeListener( mOnPageChangeListener );
+      }
 
       @Override
       protected void onMeasure ( int widthMeasureSpec, int heightMeasureSpec ) {
