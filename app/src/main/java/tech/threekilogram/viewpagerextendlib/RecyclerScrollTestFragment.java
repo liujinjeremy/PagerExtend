@@ -14,7 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import tech.threekilogram.pager.scroll.recycler.OnRecyclerPagerScrollListener;
-import tech.threekilogram.pager.scroll.recycler.RecyclerPagerScrollListener;
+import tech.threekilogram.pager.scroll.recycler.RecyclerPagerScroll;
 
 /**
  * @author Liujin 2018-09-23:10:08
@@ -70,7 +70,7 @@ public class RecyclerScrollTestFragment extends Fragment {
                         Log.e( TAG, "run : " + width );
                   }
             } );
-            RecyclerPagerScrollListener listener = new RecyclerPagerScrollListener( mRecycler );
+            RecyclerPagerScroll listener = new RecyclerPagerScroll( mRecycler );
             listener.setOnRecyclerPagerScrollListener( new OnRecyclerPagerScrollListener() {
 
                   @Override
@@ -79,7 +79,7 @@ public class RecyclerScrollTestFragment extends Fragment {
 
                         Log.e(
                             TAG,
-                            "onScroll : " + RecyclerPagerScrollListener.scrollStateString( state )
+                            "onScroll : " + RecyclerPagerScroll.scrollStateString( state )
                                 + " " + currentPosition + " " + nextPosition + " " + offsetX
                                 + " " + offsetY
                         );
@@ -91,7 +91,6 @@ public class RecyclerScrollTestFragment extends Fragment {
                         Log.e( TAG, "onPageSelected : " + prevSelected + " " + newSelected );
                   }
             } );
-            mRecycler.addOnScrollListener( listener );
       }
 
       private class MainAdapter extends RecyclerView.Adapter<MainViewHolder> {

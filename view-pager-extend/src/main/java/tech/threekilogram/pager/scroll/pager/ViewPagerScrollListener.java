@@ -1,7 +1,6 @@
 package tech.threekilogram.pager.scroll.pager;
 
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 
 /**
  * Created by LiuJin on 2017-12-31:8:45
@@ -11,7 +10,6 @@ import android.util.Log;
  */
 class ViewPagerScrollListener implements ViewPager.OnPageChangeListener {
 
-      private static final String TAG = ViewPagerScrollListener.class.getSimpleName();
       /**
        * 用于获取当前pager状态
        */
@@ -25,9 +23,8 @@ class ViewPagerScrollListener implements ViewPager.OnPageChangeListener {
        */
       private int                       mCurrentIndex;
       /**
-       * 滚动时下一个条目索引
+       * 监听
        */
-      private int                       mNextIndex;
       private OnViewPagerScrollListener mOnViewPagerScrollListener;
 
       /**
@@ -54,30 +51,32 @@ class ViewPagerScrollListener implements ViewPager.OnPageChangeListener {
       @Override
       public void onPageScrolled ( int position, float positionOffset, int positionOffsetPixels ) {
 
+            //滚动时下一个条目索引
+            int nextIndex;
             if( position < mCurrentIndex ) {
 
                   float offset = 1 - positionOffset;
-                  mNextIndex = position;
+                  nextIndex = position;
                   if( positionOffset == 0 ) {
                         offset = 1;
                   }
 
                   mOnViewPagerScrollListener
-                      .onScroll( mState, mCurrentIndex, mNextIndex, offset );
+                      .onScroll( mState, mCurrentIndex, nextIndex, offset );
             } else {
 
                   float offset = -positionOffset;
-                  mNextIndex = position + 1;
+                  nextIndex = position + 1;
 
                   if( positionOffset == 0 ) {
                         offset = -1;
-                        mNextIndex -= 1;
+                        nextIndex -= 1;
                   }
 
-                  if( mCurrentIndex != mNextIndex ) {
+                  if( mCurrentIndex != nextIndex ) {
 
                         mOnViewPagerScrollListener
-                            .onScroll( mState, mCurrentIndex, mNextIndex, offset );
+                            .onScroll( mState, mCurrentIndex, nextIndex, offset );
                   }
             }
       }
@@ -96,6 +95,5 @@ class ViewPagerScrollListener implements ViewPager.OnPageChangeListener {
             }
 
             mState = state;
-            Log.e( TAG, "onPageScrollStateChanged : " + ViewPagerScroll.stateToString( state ) );
       }
 }

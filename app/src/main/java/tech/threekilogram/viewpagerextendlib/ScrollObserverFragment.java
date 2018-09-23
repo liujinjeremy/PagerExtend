@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -64,18 +63,17 @@ public class ScrollObserverFragment extends Fragment {
                   public void onScroll (
                       int state, int currentPosition, int nextPosition, float offset ) {
 
-                        Log.e(
-                            TAG,
-                            "onScroll : " + ViewPagerScroll.stateToString( state ) + " "
-                                + currentPosition + " " + nextPosition
-                                + " " + String.format( "%.4f", offset )
-                        );
+                        if( offset < 0 ) {
+
+                              mIndicator.setXOff( currentPosition, Math.abs( offset ) );
+                        } else {
+                              mIndicator.setXOff( currentPosition, -offset );
+                        }
                   }
 
                   @Override
                   public void onPageSelected ( int prevSelected, int newSelected ) {
 
-                        Log.e( TAG, "onPageSelected : " + prevSelected + " " + newSelected );
                   }
             } );
       }
