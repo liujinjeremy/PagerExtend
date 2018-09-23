@@ -43,9 +43,17 @@ public class ViewPagerScroll {
             mPager.addOnPageChangeListener( mViewPagerScrollListener );
       }
 
-      public OnViewPagerScrollListener getOnPagerScrollListener ( ) {
+      public static String stateToString ( int state ) {
 
-            return mViewPagerScrollListener == null ? null
-                : mViewPagerScrollListener.getOnViewPagerScrollListener();
+            String result = null;
+            if( state == ViewPager.SCROLL_STATE_IDLE ) {
+                  result = "SCROLL_STATE_IDLE";
+            } else if( state == ViewPager.SCROLL_STATE_DRAGGING ) {
+                  result = "SCROLL_STATE_DRAGGING";
+            } else if( state == ViewPager.SCROLL_STATE_SETTLING ) {
+                  result = "SCROLL_STATE_SETTLING";
+            }
+
+            return result;
       }
 }

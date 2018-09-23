@@ -57,24 +57,25 @@ public class ScrollObserverFragment extends Fragment {
             mIndicator = itemView.findViewById( R.id.indicator );
             mIndicator.setCount( adapter.getCount() );
 
-            ViewPagerScroll viewPagerScroll = new ViewPagerScroll( mViewPager );
+            final ViewPagerScroll viewPagerScroll = new ViewPagerScroll( mViewPager );
             viewPagerScroll.setOnPagerScrollListener( new OnViewPagerScrollListener() {
 
                   @Override
-                  public void onCurrent ( int currentPosition, float offset ) {
+                  public void onScroll (
+                      int state, int currentPosition, int nextPosition, float offset ) {
 
-                        mIndicator.setXOff( currentPosition, -offset );
+                        Log.e(
+                            TAG,
+                            "onScroll : " + ViewPagerScroll.stateToString( state ) + " "
+                                + currentPosition + " " + nextPosition
+                                + " " + String.format( "%.4f", offset )
+                        );
                   }
 
                   @Override
-                  public void onNext ( int nextPosition, float offset ) {
+                  public void onPageSelected ( int prevSelected, int newSelected ) {
 
-                  }
-
-                  @Override
-                  public void onPageSelected ( int prev, int position ) {
-
-                        Log.e( TAG, "onPageSelected : " + prev + " " + position );
+                        Log.e( TAG, "onPageSelected : " + prevSelected + " " + newSelected );
                   }
             } );
       }
