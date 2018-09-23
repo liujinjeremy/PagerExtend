@@ -1,1 +1,1 @@
-include ':app', ':view-pager-extend'
+include ':app', ':pager-extend'
