@@ -63,12 +63,7 @@ public class ScrollObserverFragment extends Fragment {
                   public void onScroll (
                       int state, int currentPosition, int nextPosition, float offset ) {
 
-                        if( offset < 0 ) {
-
-                              mIndicator.setXOff( currentPosition, Math.abs( offset ) );
-                        } else {
-                              mIndicator.setXOff( currentPosition, -offset );
-                        }
+                        mIndicator.setXOff( currentPosition, -offset );
                   }
 
                   @Override
