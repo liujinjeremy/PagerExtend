@@ -160,8 +160,8 @@ mViewPager.setCurrentItem( adapter.getStartPosition() );
 
 ```
 // 使用pager创建
-PagerScroll pagerScroll = new PagerScroll( mViewPager );
-pagerScroll.setOnPagerScrollListener( new OnPagerScrollListener() {
+PagerScroll viewPagerScroll = new PagerScroll( mViewPager );
+viewPagerScroll.setOnPagerScrollListener( new OnPagerScrollListener() {
       @Override
       public void onCurrent ( int currentPosition, float offset ) {
       		// 当当前条目滚动时,修改进度条

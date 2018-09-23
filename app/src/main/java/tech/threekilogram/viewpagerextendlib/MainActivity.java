@@ -81,6 +81,9 @@ public class MainActivity extends AppCompatActivity {
                         case R.id.menu10:
                               changeFragment( RecyclerBannerFragment.newInstance() );
                               break;
+                        case R.id.menu11:
+                              changeFragment( RecyclerScrollTestFragment.newInstance() );
+                              break;
                         default:
                               break;
                   }

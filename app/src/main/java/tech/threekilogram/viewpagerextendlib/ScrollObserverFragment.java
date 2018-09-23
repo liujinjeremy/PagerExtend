@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -13,8 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import tech.threekilogram.pager.adapter.BasePagerAdapter;
-import tech.threekilogram.pager.observer.OnPagerScrollListener;
-import tech.threekilogram.pager.observer.PagerScroll;
+import tech.threekilogram.pager.scroll.pager.OnViewPagerScrollListener;
+import tech.threekilogram.pager.scroll.pager.ViewPagerScroll;
 
 /**
  * @author Liujin 2018-09-16:8:37
@@ -56,8 +57,8 @@ public class ScrollObserverFragment extends Fragment {
             mIndicator = itemView.findViewById( R.id.indicator );
             mIndicator.setCount( adapter.getCount() );
 
-            PagerScroll pagerScroll = new PagerScroll( mViewPager );
-            pagerScroll.setOnPagerScrollListener( new OnPagerScrollListener() {
+            ViewPagerScroll viewPagerScroll = new ViewPagerScroll( mViewPager );
+            viewPagerScroll.setOnPagerScrollListener( new OnViewPagerScrollListener() {
 
                   @Override
                   public void onCurrent ( int currentPosition, float offset ) {
@@ -66,10 +67,15 @@ public class ScrollObserverFragment extends Fragment {
                   }
 
                   @Override
-                  public void onNext ( int nextPosition, float offset ) { }
+                  public void onNext ( int nextPosition, float offset ) {
+
+                  }
 
                   @Override
-                  public void onPageSelected ( int position ) { }
+                  public void onPageSelected ( int prev, int position ) {
+
+                        Log.e( TAG, "onPageSelected : " + prev + " " + position );
+                  }
             } );
       }
 

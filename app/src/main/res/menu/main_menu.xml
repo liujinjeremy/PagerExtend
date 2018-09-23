@@ -43,6 +43,10 @@
                 android:id="@+id/menu10"
                 android:title="测试RecyclerBanner"/>
 
+            <item
+                android:id="@+id/menu11"
+                android:title="测试RecyclerScroll"/>
+
       </group>
 
 </menu>

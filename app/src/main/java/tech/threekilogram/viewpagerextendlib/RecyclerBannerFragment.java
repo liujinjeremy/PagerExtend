@@ -57,7 +57,7 @@ public class RecyclerBannerFragment extends Fragment {
                   @Override
                   public void run ( ) {
 
-                        //mRecyclerBanner.startLoop();
+                        mRecyclerBanner.startLoop();
                   }
             } );
             mRecyclerBanner.addOnScrollListener( new OnScrollListener() {

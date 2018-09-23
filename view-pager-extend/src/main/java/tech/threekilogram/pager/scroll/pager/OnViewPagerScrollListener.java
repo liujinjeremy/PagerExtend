@@ -1,4 +1,4 @@
-package tech.threekilogram.pager.observer;
+package tech.threekilogram.pager.scroll.pager;
 
 import android.support.v4.view.ViewPager;
 
@@ -7,7 +7,7 @@ import android.support.v4.view.ViewPager;
  *
  * @author wuxio
  */
-public interface OnPagerScrollListener {
+public interface OnViewPagerScrollListener {
 
       /**
        * 当前正在显示页面滚动情况
@@ -29,7 +29,8 @@ public interface OnPagerScrollListener {
       /**
        * 当页面选定时回调
        *
-       * @param position 选中的位置
+       * @param prevSelected 之前选中的页面位置
+       * @param newSelected 现在选中的页面位置
        */
-      void onPageSelected ( int position );
+      void onPageSelected ( int prevSelected, int newSelected );
 }

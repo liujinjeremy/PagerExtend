@@ -39,7 +39,7 @@ public class RecyclerPager extends RecyclerView {
             snapHelper.attachToRecyclerView( this );
       }
 
-      public void setOrientation ( @RecyclerView.Orientation int orientation ) {
+      public void setOrientation ( @RecyclerPager.Orientation int orientation ) {
 
             ( (LinearLayoutManager) getLayoutManager() ).setOrientation( orientation );
       }

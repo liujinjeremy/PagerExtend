@@ -4,21 +4,20 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.LinearSmoothScroller;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.LayoutManager;
 import android.support.v7.widget.RecyclerView.OnScrollListener;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import tech.threekilogram.pager.pager.RecyclerPager;
+import tech.threekilogram.pager.pager.DurationAddSmoothScroller;
 
 /**
  * @author Liujin 2018-09-22:11:17
  */
 public class RecyclerPagerBanner extends LoopHandlerLayout {
 
-      protected RecyclerPager             mRecyclerPager;
+      protected RecyclerView              mRecyclerPager;
       protected DurationAddSmoothScroller mSmoothScroller;
 
       public RecyclerPagerBanner ( @NonNull Context context ) {
@@ -61,12 +60,12 @@ public class RecyclerPagerBanner extends LoopHandlerLayout {
             return super.dispatchTouchEvent( ev );
       }
 
-      protected RecyclerPager createPager ( Context context ) {
+      protected RecyclerView createPager ( Context context ) {
 
-            return new RecyclerPager( context );
+            return new RecyclerView( context );
       }
 
-      public RecyclerPager getRecyclerPager ( ) {
+      public RecyclerView getRecyclerPager ( ) {
 
             return mRecyclerPager;
       }
@@ -181,27 +180,6 @@ public class RecyclerPagerBanner extends LoopHandlerLayout {
             protected int getActualPosition ( int position ) {
 
                   return position % getActualCount();
-            }
-      }
-
-      private class DurationAddSmoothScroller extends LinearSmoothScroller {
-
-            private int mDurationAdded;
-
-            DurationAddSmoothScroller ( Context context ) {
-
-                  super( context );
-            }
-
-            public void setDurationAdded ( int durationAdded ) {
-
-                  mDurationAdded = durationAdded;
-            }
-
-            @Override
-            protected int calculateTimeForScrolling ( int dx ) {
-
-                  return super.calculateTimeForScrolling( dx ) + mDurationAdded;
             }
       }
 }
