@@ -19,15 +19,15 @@ import tech.threekilogram.pager.pager.ExtendViewPager;
 /**
  * @author Liujin 2018-09-16:8:37
  */
-public class ExtendPagerFragment extends Fragment implements OnClickListener {
+public class PagerExtendFragment extends Fragment implements OnClickListener {
 
       private ExtendViewPager mViewPager;
       private Button          mToNextItem;
       private Button          mToPrevItem;
 
-      public static ExtendPagerFragment newInstance ( ) {
+      public static PagerExtendFragment newInstance ( ) {
 
-            return new ExtendPagerFragment();
+            return new PagerExtendFragment();
       }
 
       @Nullable

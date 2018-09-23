@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -13,64 +12,58 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import tech.threekilogram.pager.adapter.BasePagerAdapter;
-import tech.threekilogram.pager.scroll.pager.OnViewPagerScrollListener;
-import tech.threekilogram.pager.scroll.pager.ViewPagerScroll;
+import tech.threekilogram.pager.banner.ViewPagerBanner;
+import tech.threekilogram.pager.indicator.DotView;
 
 /**
- * @author Liujin 2018-09-16:8:37
+ * @author Liujin 2018-09-22:8:53
  */
-public class ScrollObserverFragment extends Fragment {
+public class PagerBannerFragment extends Fragment {
 
-      private static final String TAG = ScrollObserverFragment.class.getSimpleName();
+      private static final String TAG = PagerBannerFragment.class.getSimpleName();
+      private ViewPagerBanner mBanner;
 
-      private ViewPager     mViewPager;
-      private IndicatorView mIndicator;
+      public static PagerBannerFragment newInstance ( ) {
 
-      public static ScrollObserverFragment newInstance ( ) {
+            Bundle args = new Bundle();
 
-            return new ScrollObserverFragment();
+            PagerBannerFragment fragment = new PagerBannerFragment();
+            fragment.setArguments( args );
+            return fragment;
       }
 
       @Nullable
       @Override
       public View onCreateView (
-          @NonNull LayoutInflater inflater,
-          @Nullable ViewGroup container,
+          @NonNull LayoutInflater inflater, @Nullable ViewGroup container,
           @Nullable Bundle savedInstanceState ) {
 
-            return inflater.inflate( R.layout.fragment_scroller, container, false );
+            return inflater.inflate( R.layout.fragment_view_pager_banner, container, false );
       }
 
       @Override
       public void onViewCreated ( @NonNull View view, @Nullable Bundle savedInstanceState ) {
 
+            super.onViewCreated( view, savedInstanceState );
             initView( view );
       }
 
       private void initView ( @NonNull final View itemView ) {
 
-            mViewPager = itemView.findViewById( R.id.banner );
-            FragmentAdapter adapter = new FragmentAdapter();
-            mViewPager.setAdapter( adapter );
-
-            mIndicator = itemView.findViewById( R.id.indicator );
-            mIndicator.setCount( adapter.getCount() );
-
-            final ViewPagerScroll viewPagerScroll = new ViewPagerScroll( mViewPager );
-            viewPagerScroll.setOnPagerScrollListener( new OnViewPagerScrollListener() {
+            mBanner = itemView.findViewById( R.id.banner );
+            mBanner.setBannerAdapter( new FragmentAdapter() );
+            mBanner.post( new Runnable() {
 
                   @Override
-                  public void onScroll (
-                      int state, int currentPosition, int nextPosition, float offset ) {
+                  public void run ( ) {
 
-                        mIndicator.setXOff( currentPosition, -offset );
-                  }
-
-                  @Override
-                  public void onPageSelected ( int prevSelected, int newSelected ) {
-
+                        mBanner.startLoop();
                   }
             } );
+            mBanner.setPageMargin( 40 );
+
+            DotView dotView = new DotView( getContext() );
+            dotView.setupWithBanner( mBanner, Gravity.BOTTOM | Gravity.END, 50 );
       }
 
       private class FragmentAdapter extends BasePagerAdapter<String, TextView> {
@@ -86,7 +79,7 @@ public class ScrollObserverFragment extends Fragment {
             @Override
             public int getCount ( ) {
 
-                  return 5;
+                  return mBackGround.length;
             }
 
             @Override

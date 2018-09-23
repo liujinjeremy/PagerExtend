@@ -19,13 +19,13 @@ import tech.threekilogram.pager.adapter.BaseTypePagerAdapter;
 /**
  * @author Liujin 2018-09-16:8:37
  */
-public class TypeAdapterFragment extends Fragment {
+public class AdapterTypeFragment extends Fragment {
 
       private ViewPager mViewPager;
 
-      public static TypeAdapterFragment newInstance ( ) {
+      public static AdapterTypeFragment newInstance ( ) {
 
-            return new TypeAdapterFragment();
+            return new AdapterTypeFragment();
       }
 
       @Nullable

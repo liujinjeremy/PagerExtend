@@ -52,19 +52,19 @@ public class MainActivity extends AppCompatActivity {
 
                   switch( item.getItemId() ) {
                         case R.id.menu00:
-                              changeFragment( MaxCountAdapterFragment.newInstance() );
+                              changeFragment( AdapterMaxFragment.newInstance() );
                               break;
                         case R.id.menu01:
                               changeFragment( AdapterFragment.newInstance() );
                               break;
                         case R.id.menu02:
-                              changeFragment( TypeAdapterFragment.newInstance() );
+                              changeFragment( AdapterTypeFragment.newInstance() );
                               break;
                         case R.id.menu03:
-                              changeFragment( ExtendPagerFragment.newInstance() );
+                              changeFragment( PagerExtendFragment.newInstance() );
                               break;
                         case R.id.menu05:
-                              changeFragment( ScrollObserverFragment.newInstance() );
+                              changeFragment( PagerScrollFragment.newInstance() );
                               break;
                         case R.id.menu06:
                               changeFragment( DotViewFragment.newInstance() );
@@ -73,10 +73,10 @@ public class MainActivity extends AppCompatActivity {
                               changeFragment( RecyclerPagerFragment.newInstance() );
                               break;
                         case R.id.menu08:
-                              changeFragment( LoopHandlerFrameTestFragment.newInstance() );
+                              changeFragment( FrameLoopHandlerTestFragment.newInstance() );
                               break;
                         case R.id.menu09:
-                              changeFragment( ViewPagerBannerFragment.newInstance() );
+                              changeFragment( PagerBannerFragment.newInstance() );
                               break;
                         case R.id.menu10:
                               changeFragment( RecyclerBannerFragment.newInstance() );

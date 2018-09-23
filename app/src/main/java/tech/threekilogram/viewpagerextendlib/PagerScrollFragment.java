@@ -13,18 +13,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import tech.threekilogram.pager.adapter.BasePagerAdapter;
-import tech.threekilogram.pager.banner.MaxCountAdapter;
+import tech.threekilogram.pager.scroll.pager.OnViewPagerScrollListener;
+import tech.threekilogram.pager.scroll.pager.ViewPagerScroll;
+import tech.threekilogram.viewpagerextendlib.widget.IndicatorView;
 
 /**
  * @author Liujin 2018-09-16:8:37
  */
-public class MaxCountAdapterFragment extends Fragment {
+public class PagerScrollFragment extends Fragment {
 
-      private ViewPager mViewPager;
+      private static final String TAG = PagerScrollFragment.class.getSimpleName();
 
-      public static MaxCountAdapterFragment newInstance ( ) {
+      private ViewPager     mViewPager;
+      private IndicatorView mIndicator;
 
-            return new MaxCountAdapterFragment();
+      public static PagerScrollFragment newInstance ( ) {
+
+            return new PagerScrollFragment();
       }
 
       @Nullable
@@ -34,7 +39,7 @@ public class MaxCountAdapterFragment extends Fragment {
           @Nullable ViewGroup container,
           @Nullable Bundle savedInstanceState ) {
 
-            return inflater.inflate( R.layout.fragment_maxcount, container, false );
+            return inflater.inflate( R.layout.fragment_scroller, container, false );
       }
 
       @Override
@@ -46,9 +51,27 @@ public class MaxCountAdapterFragment extends Fragment {
       private void initView ( @NonNull final View itemView ) {
 
             mViewPager = itemView.findViewById( R.id.banner );
-            MaxCountAdapter adapter = new MaxCountAdapter( new FragmentAdapter() );
+            FragmentAdapter adapter = new FragmentAdapter();
             mViewPager.setAdapter( adapter );
-            mViewPager.setCurrentItem( adapter.getStartPosition() );
+
+            mIndicator = itemView.findViewById( R.id.indicator );
+            mIndicator.setCount( adapter.getCount() );
+
+            final ViewPagerScroll viewPagerScroll = new ViewPagerScroll( mViewPager );
+            viewPagerScroll.setOnPagerScrollListener( new OnViewPagerScrollListener() {
+
+                  @Override
+                  public void onScroll (
+                      int state, int currentPosition, int nextPosition, float offset ) {
+
+                        mIndicator.setXOff( currentPosition, -offset );
+                  }
+
+                  @Override
+                  public void onPageSelected ( int prevSelected, int newSelected ) {
+
+                  }
+            } );
       }
 
       private class FragmentAdapter extends BasePagerAdapter<String, TextView> {

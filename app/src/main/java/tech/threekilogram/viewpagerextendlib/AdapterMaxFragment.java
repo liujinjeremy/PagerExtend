@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -12,58 +13,42 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import tech.threekilogram.pager.adapter.BasePagerAdapter;
-import tech.threekilogram.pager.banner.ViewPagerBanner;
-import tech.threekilogram.pager.indicator.DotView;
+import tech.threekilogram.pager.banner.MaxCountAdapter;
 
 /**
- * @author Liujin 2018-09-22:8:53
+ * @author Liujin 2018-09-16:8:37
  */
-public class ViewPagerBannerFragment extends Fragment {
+public class AdapterMaxFragment extends Fragment {
 
-      private static final String TAG = ViewPagerBannerFragment.class.getSimpleName();
-      private ViewPagerBanner mBanner;
+      private ViewPager mViewPager;
 
-      public static ViewPagerBannerFragment newInstance ( ) {
+      public static AdapterMaxFragment newInstance ( ) {
 
-            Bundle args = new Bundle();
-
-            ViewPagerBannerFragment fragment = new ViewPagerBannerFragment();
-            fragment.setArguments( args );
-            return fragment;
+            return new AdapterMaxFragment();
       }
 
       @Nullable
       @Override
       public View onCreateView (
-          @NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+          @NonNull LayoutInflater inflater,
+          @Nullable ViewGroup container,
           @Nullable Bundle savedInstanceState ) {
 
-            return inflater.inflate( R.layout.fragment_view_pager_banner, container, false );
+            return inflater.inflate( R.layout.fragment_maxcount, container, false );
       }
 
       @Override
       public void onViewCreated ( @NonNull View view, @Nullable Bundle savedInstanceState ) {
 
-            super.onViewCreated( view, savedInstanceState );
             initView( view );
       }
 
       private void initView ( @NonNull final View itemView ) {
 
-            mBanner = itemView.findViewById( R.id.banner );
-            mBanner.setBannerAdapter( new FragmentAdapter() );
-            mBanner.post( new Runnable() {
-
-                  @Override
-                  public void run ( ) {
-
-                        mBanner.startLoop();
-                  }
-            } );
-            mBanner.setPageMargin( 40 );
-
-            DotView dotView = new DotView( getContext() );
-            dotView.setupWithBanner( mBanner, Gravity.BOTTOM | Gravity.END, 50 );
+            mViewPager = itemView.findViewById( R.id.banner );
+            MaxCountAdapter adapter = new MaxCountAdapter( new FragmentAdapter() );
+            mViewPager.setAdapter( adapter );
+            mViewPager.setCurrentItem( adapter.getStartPosition() );
       }
 
       private class FragmentAdapter extends BasePagerAdapter<String, TextView> {
@@ -79,7 +64,7 @@ public class ViewPagerBannerFragment extends Fragment {
             @Override
             public int getCount ( ) {
 
-                  return mBackGround.length;
+                  return 5;
             }
 
             @Override

@@ -17,16 +17,16 @@ import tech.threekilogram.pager.banner.LoopHandlerLayout.OnLoopListener;
 /**
  * @author Liujin 2018-09-21:23:23
  */
-public class LoopHandlerFrameTestFragment extends Fragment {
+public class FrameLoopHandlerTestFragment extends Fragment {
 
-      private static final String TAG = LoopHandlerFrameTestFragment.class.getSimpleName();
+      private static final String TAG = FrameLoopHandlerTestFragment.class.getSimpleName();
       private LoopHandlerLayout mLoopFrame;
 
-      public static LoopHandlerFrameTestFragment newInstance ( ) {
+      public static FrameLoopHandlerTestFragment newInstance ( ) {
 
             Bundle args = new Bundle();
 
-            LoopHandlerFrameTestFragment fragment = new LoopHandlerFrameTestFragment();
+            FrameLoopHandlerTestFragment fragment = new FrameLoopHandlerTestFragment();
             fragment.setArguments( args );
             return fragment;
       }

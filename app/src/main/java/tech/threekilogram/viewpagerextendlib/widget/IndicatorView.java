@@ -1,4 +1,4 @@
-package tech.threekilogram.viewpagerextendlib;
+package tech.threekilogram.viewpagerextendlib.widget;
 
 import android.content.Context;
 import android.graphics.Canvas;
