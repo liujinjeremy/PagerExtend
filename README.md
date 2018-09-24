@@ -1,4 +1,4 @@
-## ViewPager 工具集
+## Pager 工具集
 
 ### 引入
 
@@ -25,7 +25,7 @@ Add it in your root build.gradle at the end of repositories:
 
 ### BasePagerAdapter
 
-> 简化PagerAdapter使用,使其增加view复用,自动响应数据变化,更易读
+> 简化PagerAdapter使用,使其增加view复用,自动响应数据变化
 
 ```
 private class FragmentAdapter extends BasePagerAdapter<String, TextView> {
@@ -140,37 +140,21 @@ mViewPager.setAdapter( new FragmentAdapter() );
 
 
 
-### MaxCountAdapter
-
-> 包装PagerAdapter使其可以返回无限多数据
-
-```
-MaxCountAdapter adapter = new MaxCountAdapter( new FragmentAdapter() );
-mViewPager.setAdapter( adapter );
-mViewPager.setCurrentItem( adapter.getStartPosition() );
-```
-
-![](img/pic02.gif)
-
-
-
-### PagerScroll
+### ViewPagerScroll
 
 > 扩展ViewPager.OnPageChangeListener使其可以观察当前条目和下一个条目滚动方向及进度
 
 ```
-// 使用pager创建
-PagerScroll viewPagerScroll = new PagerScroll( mViewPager );
-viewPagerScroll.setOnPagerScrollListener( new OnPagerScrollListener() {
+final ViewPagerScroll viewPagerScroll = new ViewPagerScroll( mViewPager );
+viewPagerScroll.setOnPagerScrollListener( new OnViewPagerScrollListener() {
       @Override
-      public void onScroll ( int currentPosition, float offset ) {
-      		// 当当前条目滚动时,修改进度条
+      public void onScroll (
+          int state, int currentPosition, int nextPosition, float offset ) {
             mIndicator.setXOff( currentPosition, -offset );
       }
       @Override
-      public void onNext ( int nextPosition, float offset ) { }
-      @Override
-      public void onPageSelected ( int position ) { }
+      public void onPageSelected ( int prevSelected, int newSelected ) {
+      }
 } );
 ```
 
@@ -178,14 +162,44 @@ viewPagerScroll.setOnPagerScrollListener( new OnPagerScrollListener() {
 
 
 
-### BannerView
-
-> 实际是FrameLayout,只是封装了了一个ViewPager在里面作为轮播图
+## RecyclerPagerScroll
 
 ```
-// 设置一个pagerAdapter就可以使用了
-FragmentAdapter pagerAdapter = new FragmentAdapter();
-mBanner.setPagerAdapter( pagerAdapter );
+RecyclerPagerScroll listener = new RecyclerPagerScroll( mRecycler );
+listener.setOnRecyclerPagerScrollListener( new OnRecyclerPagerScrollListener() {
+      @Override
+      public void onScroll (
+          int state, int currentPosition, int nextPosition, int offsetX, int offsetY ) {
+            mIndicator.setXOff( currentPosition, offsetX * 1f / mRecycler.getWidth() );
+      }
+      @Override
+      public void onPageSelected ( int prevSelected, int newSelected ) {
+      }
+} );
+```
+
+![](img/pic05.gif)
+
+
+
+### ViewBannerView
+
+> 实际是LoopHandlerLayout,封装了了一个ViewPager在里面,定时执行轮播
+
+```
+<tech.threekilogram.pager.banner.ViewPagerBanner
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/banner"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    >
+
+</tech.threekilogram.pager.banner.ViewPagerBanner>
+```
+
+```
+mBanner.setBannerAdapter( new FragmentAdapter() );
 ```
 
 * 控制轮播
@@ -211,7 +225,66 @@ mBanner.setPageMargin( TypedValue.COMPLEX_UNIT_DIP, 16 );
 
 ```
 DotView dotView = new DotView( getContext() );
-dotView.setupWithBanner( mBanner, Gravity.BOTTOM | Gravity.RIGHT, 50 );
+dotView.setupWithBanner( mBanner, Gravity.BOTTOM | Gravity.END, 50 );
 ```
 
 ![](img/pic04.gif)
+
+
+
+## RecyclerPager
+
+> 使用RecyclerView实现的ViewPager,不会重新布局,可以设置方向
+
+```
+mRecyclerPager.setAdapter( new RecyclerAdapter() );
+```
+
+![](img/pic06.gif)
+
+
+
+## RecyclerPagerBanner
+
+> 使用RecyclerPagerBanner实现的Banner
+
+```
+<tech.threekilogram.pager.banner.RecyclerPagerBanner
+    android:id="@+id/recyclerBanner"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+</tech.threekilogram.pager.banner.RecyclerPagerBanner>
+```
+
+```
+mRecyclerBanner.setBannerAdapter( new RecyclerAdapter() );
+```
+
+```
+private class RecyclerAdapter extends BannerAdapter<Holder> {
+      @Override
+      public int getActualCount ( ) {
+            return 5;
+      }
+      @NonNull
+      @Override
+      public Holder onCreateViewHolder ( @NonNull ViewGroup parent, int viewType ) {
+            LayoutInflater inflater = LayoutInflater.from( parent.getContext() );
+            View view = inflater.inflate( R.layout.item_recycler_pager, parent, false );
+            return new Holder( view );
+      }
+      @Override
+      public void onBindViewHolder (
+          @NonNull Holder holder, int position ) {
+            holder.bind( getActualPosition( position ) );
+      }
+}
+```
+
+```
+mRecyclerBanner.startLoop();
+mRecyclerBanner.stopLoop();
+```
+
+![](img/pic07.gif)
+

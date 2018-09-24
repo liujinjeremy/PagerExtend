@@ -15,7 +15,7 @@ public class ExtendViewPager extends ViewPager {
       /**
        * 将viewPager的scroller替换使其可以增加滚动时间
        */
-      protected DurationChangedScroller mScroller;
+      protected DurationAddScroller mScroller;
 
       /**
        * 入过为true,表示调用了{@link #requestLayout()}
@@ -111,7 +111,7 @@ public class ExtendViewPager extends ViewPager {
                   Field interpolator = ViewPager.class.getDeclaredField( "sInterpolator" );
                   interpolator.setAccessible( true );
 
-                  mScroller = new DurationChangedScroller(
+                  mScroller = new DurationAddScroller(
                       this.getContext(), (Interpolator) interpolator.get( null ) );
 
                   scrollerInPager.set( this, mScroller );

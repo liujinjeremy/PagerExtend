@@ -7,14 +7,15 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView.Adapter;
 import android.support.v7.widget.RecyclerView.ViewHolder;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import tech.threekilogram.pager.scroll.recycler.OnRecyclerPagerScrollListener;
 import tech.threekilogram.pager.scroll.recycler.RecyclerPagerScroll;
+import tech.threekilogram.viewpagerextendlib.widget.IndicatorView;
 
 /**
  * @author Liujin 2018-09-23:10:08
@@ -22,7 +23,8 @@ import tech.threekilogram.pager.scroll.recycler.RecyclerPagerScroll;
 public class RecyclerScrollTestFragment extends Fragment {
 
       private static final String TAG = RecyclerScrollTestFragment.class.getSimpleName();
-      private RecyclerView mRecycler;
+      private RecyclerView  mRecycler;
+      private IndicatorView mIndicator;
 
       public static RecyclerScrollTestFragment newInstance ( ) {
 
@@ -52,24 +54,20 @@ public class RecyclerScrollTestFragment extends Fragment {
       private void initView ( @NonNull final View itemView ) {
 
             mRecycler = itemView.findViewById( R.id.recycler );
+            mIndicator = itemView.findViewById( R.id.indicator );
 
-            mRecycler = itemView.findViewById( R.id.recycler );
             LinearLayoutManager layoutManager = new LinearLayoutManager( getContext() );
             layoutManager.setOrientation( LinearLayoutManager.HORIZONTAL );
             mRecycler.setLayoutManager( layoutManager );
-            mRecycler.setAdapter( new MainAdapter() );
+
+            MainAdapter adapter = new MainAdapter();
+            mRecycler.setAdapter( adapter );
+
             PagerSnapHelper snapHelper = new PagerSnapHelper();
             snapHelper.attachToRecyclerView( mRecycler );
 
-            mRecycler.post( new Runnable() {
+            mIndicator.setCount( adapter.getItemCount() );
 
-                  @Override
-                  public void run ( ) {
-
-                        int width = mRecycler.getWidth();
-                        Log.e( TAG, "run : " + width );
-                  }
-            } );
             RecyclerPagerScroll listener = new RecyclerPagerScroll( mRecycler );
             listener.setOnRecyclerPagerScrollListener( new OnRecyclerPagerScrollListener() {
 
@@ -77,23 +75,17 @@ public class RecyclerScrollTestFragment extends Fragment {
                   public void onScroll (
                       int state, int currentPosition, int nextPosition, int offsetX, int offsetY ) {
 
-                        Log.e(
-                            TAG,
-                            "onScroll : " + RecyclerPagerScroll.scrollStateString( state )
-                                + " " + currentPosition + " " + nextPosition + " " + offsetX
-                                + " " + offsetY
-                        );
+                        mIndicator.setXOff( currentPosition, offsetX * 1f / mRecycler.getWidth() );
                   }
 
                   @Override
                   public void onPageSelected ( int prevSelected, int newSelected ) {
 
-                        Log.e( TAG, "onPageSelected : " + prevSelected + " " + newSelected );
                   }
             } );
       }
 
-      private class MainAdapter extends RecyclerView.Adapter<MainViewHolder> {
+      private class MainAdapter extends Adapter<MainViewHolder> {
 
             private int[] mColors = {
                 R.color.blue,

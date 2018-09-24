@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView.Adapter;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import tech.threekilogram.pager.pager.RecyclerPager;
 public class RecyclerPagerFragment extends Fragment {
 
       private RecyclerPager mRecyclerPager;
+      private RecyclerPager mRecyclerPagerV;
 
       public static RecyclerPagerFragment newInstance ( ) {
 
@@ -47,10 +49,15 @@ public class RecyclerPagerFragment extends Fragment {
       private void initView ( @NonNull final View itemView ) {
 
             mRecyclerPager = itemView.findViewById( R.id.recyclerPager );
+            mRecyclerPagerV = itemView.findViewById( R.id.recyclerPagerV );
+
             mRecyclerPager.setAdapter( new RecyclerAdapter() );
+
+            mRecyclerPagerV.setOrientation( RecyclerView.VERTICAL );
+            mRecyclerPagerV.setAdapter( new RecyclerAdapter() );
       }
 
-      private class RecyclerAdapter extends RecyclerView.Adapter {
+      private class RecyclerAdapter extends Adapter {
 
             @NonNull
             @Override
@@ -70,11 +77,11 @@ public class RecyclerPagerFragment extends Fragment {
             @Override
             public int getItemCount ( ) {
 
-                  return 20;
+                  return 5;
             }
       }
 
-      public class Holder extends RecyclerView.ViewHolder {
+      public class Holder extends ViewHolder {
 
             private int[] colors = {
                 R.color.black,

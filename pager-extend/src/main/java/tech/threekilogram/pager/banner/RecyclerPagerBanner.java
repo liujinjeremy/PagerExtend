@@ -11,13 +11,14 @@ import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import tech.threekilogram.pager.pager.DurationAddSmoothScroller;
+import tech.threekilogram.pager.pager.RecyclerPager;
 
 /**
  * @author Liujin 2018-09-22:11:17
  */
 public class RecyclerPagerBanner extends LoopHandlerLayout {
 
-      protected RecyclerView              mRecyclerPager;
+      protected RecyclerPager             mRecyclerPager;
       protected DurationAddSmoothScroller mSmoothScroller;
 
       public RecyclerPagerBanner ( @NonNull Context context ) {
@@ -43,14 +44,15 @@ public class RecyclerPagerBanner extends LoopHandlerLayout {
 
             super.init();
             mSmoothScroller = new DurationAddSmoothScroller( getContext() );
-      }
+            mSmoothScroller.setDurationAdded( 120 );
 
-      @Override
-      protected void onFinishInflate ( ) {
-
-            super.onFinishInflate();
             mRecyclerPager = createPager( getContext() );
             addView( mRecyclerPager, 0 );
+      }
+
+      protected RecyclerPager createPager ( Context context ) {
+
+            return new RecyclerPager( context );
       }
 
       @Override
@@ -58,11 +60,6 @@ public class RecyclerPagerBanner extends LoopHandlerLayout {
 
             onTouchPauseLoop( ev );
             return super.dispatchTouchEvent( ev );
-      }
-
-      protected RecyclerView createPager ( Context context ) {
-
-            return new RecyclerView( context );
       }
 
       public RecyclerView getRecyclerPager ( ) {
@@ -93,6 +90,16 @@ public class RecyclerPagerBanner extends LoopHandlerLayout {
             return (BannerAdapter) mRecyclerPager.getAdapter();
       }
 
+      public void addScrollDuration ( int duration ) {
+
+            mSmoothScroller.setDurationAdded( duration );
+      }
+
+      public int getAddScrollDuration ( ) {
+
+            return mSmoothScroller.getDurationAdded();
+      }
+
       public void addOnScrollListener ( OnScrollListener listener ) {
 
             mRecyclerPager.addOnScrollListener( listener );
@@ -117,7 +124,6 @@ public class RecyclerPagerBanner extends LoopHandlerLayout {
 
             if( itemPosition + 1 < Integer.MAX_VALUE ) {
                   mSmoothScroller.setTargetPosition( itemPosition + 1 );
-                  mSmoothScroller.setDurationAdded( 180 );
                   layoutManager.startSmoothScroll( mSmoothScroller );
             }
       }

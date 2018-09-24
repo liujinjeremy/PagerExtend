@@ -20,7 +20,6 @@ import tech.threekilogram.pager.indicator.DotView;
  */
 public class PagerBannerFragment extends Fragment {
 
-      private static final String TAG = PagerBannerFragment.class.getSimpleName();
       private ViewPagerBanner mBanner;
 
       public static PagerBannerFragment newInstance ( ) {

@@ -9,7 +9,13 @@
       <android.support.v7.widget.RecyclerView
           android:id="@+id/recycler"
           android:layout_width="match_parent"
-          android:layout_height="match_parent">
+          android:layout_height="300dp">
       </android.support.v7.widget.RecyclerView>
+
+      <tech.threekilogram.viewpagerextendlib.widget.IndicatorView
+          android:id="@+id/indicator"
+          android:layout_width="match_parent"
+          android:layout_height="20dp"
+          android:layout_marginTop="300dp"/>
 
 </FrameLayout>

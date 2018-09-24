@@ -20,6 +20,11 @@ public class DurationAddSmoothScroller extends LinearSmoothScroller {
             mDurationAdded = durationAdded;
       }
 
+      public int getDurationAdded ( ) {
+
+            return mDurationAdded;
+      }
+
       @Override
       protected int calculateTimeForScrolling ( int dx ) {
 
