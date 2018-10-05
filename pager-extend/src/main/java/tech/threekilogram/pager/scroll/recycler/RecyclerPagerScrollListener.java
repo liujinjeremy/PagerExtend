@@ -15,7 +15,7 @@ class RecyclerPagerScrollListener extends OnScrollListener {
 
       private RecyclerView                  mRecyclerView;
       private int                           mCurrentPosition;
-      private int                           mState;
+      private int                           mState = RecyclerView.SCROLL_STATE_IDLE;
       private int                           mNextPosition;
       private int                           mOrientation;
       private int                           mDx;
@@ -36,6 +36,16 @@ class RecyclerPagerScrollListener extends OnScrollListener {
       OnRecyclerPagerScrollListener getOnRecyclerPagerScrollListener ( ) {
 
             return mOnRecyclerPagerScrollListener;
+      }
+
+      int getCurrentPosition ( ) {
+
+            return mCurrentPosition;
+      }
+
+      int getState ( ) {
+
+            return mState;
       }
 
       @Override

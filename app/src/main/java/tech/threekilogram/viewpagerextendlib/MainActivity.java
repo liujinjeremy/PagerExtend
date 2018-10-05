@@ -84,6 +84,9 @@ public class MainActivity extends AppCompatActivity {
                         case R.id.menu11:
                               changeFragment( RecyclerScrollTestFragment.newInstance() );
                               break;
+                        case R.id.menu12:
+                              changeFragment( ImageWatcherFragment.newInstance() );
+                              break;
                         default:
                               break;
                   }

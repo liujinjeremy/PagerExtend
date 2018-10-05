@@ -42,6 +42,16 @@ public class RecyclerPagerScroll {
                 : mRecyclerPagerScrollListener.getOnRecyclerPagerScrollListener();
       }
 
+      public int getCurrentPosition ( ) {
+
+            return mRecyclerPagerScrollListener.getCurrentPosition();
+      }
+
+      public int getState ( ) {
+
+            return mRecyclerPagerScrollListener.getState();
+      }
+
       public static String scrollStateString ( int newState ) {
 
             String state = null;
