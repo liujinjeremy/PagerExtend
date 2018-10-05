@@ -14,7 +14,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import java.util.Locale;
 import tech.threekilogram.pager.R;
 import tech.threekilogram.pager.pager.RecyclerPager;
 import tech.threekilogram.pager.scroll.recycler.OnRecyclerPagerScrollListener;
@@ -188,14 +187,34 @@ public class ImageWatcherPager extends FrameLayout {
             @Override
             public boolean onInterceptTouchEvent ( RecyclerView rv, MotionEvent e ) {
 
-                  if( mRecyclerPagerScroll.getState() != RecyclerView.SCROLL_STATE_IDLE ) {
+                  int state = mRecyclerPagerScroll.getState();
+
+                  if( state == RecyclerView.SCROLL_STATE_SETTLING ) {
+                        return false;
+                  }
+                  if( state == RecyclerView.SCROLL_STATE_DRAGGING ) {
+                        if( mItemView != null && !isScaleTouch ) {
+                              RectF drawableRect = mItemView.getDrawableRect();
+
+                              if( Math.abs( mDx ) >= Math.abs( mDy ) ) {
+
+                                    /* 水平滑动 */
+                                    if( mDx > 0 && drawableRect.left < 0 ) {
+                                          return true;
+                                    }
+                                    if( mDx < 0 &&
+                                        drawableRect.right > mItemView.getWidth() ) {
+                                          return true;
+                                    }
+                              }
+                        }
                         return false;
                   }
 
                   switch( e.getAction() ) {
 
                         case MotionEvent.ACTION_DOWN:
-                              if( mRecyclerPagerScroll.getState()
+                              if( state
                                   == RecyclerView.SCROLL_STATE_IDLE ) {
                                     int currentItem = mRecyclerPagerScroll.getCurrentPosition();
                                     mItemView = mRecyclerPager.findItemView( currentItem );
@@ -206,12 +225,6 @@ public class ImageWatcherPager extends FrameLayout {
                                     RectF drawableRect = mItemView.getDrawableRect();
 
                                     if( Math.abs( mDx ) >= Math.abs( mDy ) ) {
-
-                                          String format = String
-                                              .format( Locale.CANADA, "%.4f", mDx );
-                                          Log.e(
-                                              TAG, "onInterceptTouchEvent : " + format + " "
-                                                  + drawableRect );
 
                                           /* 水平滑动 */
                                           if( mDx > 0 && drawableRect.left < 0 ) {
