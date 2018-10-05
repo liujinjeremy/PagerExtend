@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.Adapter;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -23,8 +22,6 @@ import tech.threekilogram.pager.scroll.recycler.RecyclerPagerScroll;
  * @author Liujin 2018-10-05:11:18
  */
 public class ImageWatcherPager extends FrameLayout {
-
-      private static final String TAG = ImageWatcherPager.class.getSimpleName();
 
       /**
        * pager
@@ -228,12 +225,10 @@ public class ImageWatcherPager extends FrameLayout {
 
                                           /* 水平滑动 */
                                           if( mDx > 0 && drawableRect.left < 0 ) {
-                                                Log.e( TAG, "onInterceptTouchEvent : true" );
                                                 return true;
                                           }
                                           if( mDx < 0 &&
                                               drawableRect.right > mItemView.getWidth() ) {
-                                                Log.e( TAG, "onInterceptTouchEvent : " + true );
                                                 return true;
                                           }
                                     } else {
