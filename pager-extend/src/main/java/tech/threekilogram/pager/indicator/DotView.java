@@ -99,9 +99,16 @@ public class DotView extends View {
       public void setDotCount ( int dotCount ) {
 
             mDotCount = dotCount;
-            boolean[] temp = new boolean[ mDotCount ];
+            boolean[] temp = new boolean[ dotCount ];
             if( mSelect != null ) {
-                  System.arraycopy( mSelect, 0, temp, 0, mSelect.length );
+                  int count = Math.min( dotCount, mSelect.length );
+                  for( int i = 0; i < count; i++ ) {
+                        try {
+                              temp[ i ] = mSelect[ i ];
+                        } catch(Exception e) {
+                              break;
+                        }
+                  }
             }
             mSelect = temp;
             requestLayout();
