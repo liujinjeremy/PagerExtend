@@ -116,6 +116,10 @@ public class DotView extends View {
 
       public void setSelected ( int index ) {
 
+            if( mSelect[ index ] ) {
+                  return;
+            }
+
             for( int i = 0; i < mSelect.length; i++ ) {
                   mSelect[ i ] = false;
             }

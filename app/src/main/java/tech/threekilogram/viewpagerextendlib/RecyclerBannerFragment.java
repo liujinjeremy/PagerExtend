@@ -6,12 +6,15 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.OnScrollListener;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import tech.threekilogram.pager.banner.RecyclerPagerBanner;
 import tech.threekilogram.pager.banner.RecyclerPagerBanner.BannerAdapter;
+import tech.threekilogram.pager.scroll.recycler.OnRecyclerPagerScrollListener;
+import tech.threekilogram.pager.scroll.recycler.RecyclerPagerScroll;
 
 /**
  * @author Liujin 2018-09-22:12:32
@@ -50,7 +53,8 @@ public class RecyclerBannerFragment extends Fragment {
       private void initView ( @NonNull final View itemView ) {
 
             mRecyclerBanner = itemView.findViewById( R.id.recyclerBanner );
-            mRecyclerBanner.setBannerAdapter( new RecyclerAdapter() );
+            final RecyclerAdapter adapter = new RecyclerAdapter();
+            mRecyclerBanner.setBannerAdapter( adapter );
             mRecyclerBanner.post( new Runnable() {
 
                   @Override
@@ -71,6 +75,22 @@ public class RecyclerBannerFragment extends Fragment {
                   public void onScrolled ( RecyclerView recyclerView, int dx, int dy ) {
 
                         super.onScrolled( recyclerView, dx, dy );
+                  }
+            } );
+            RecyclerPagerScroll scroll = new RecyclerPagerScroll(
+                mRecyclerBanner.getRecyclerPager() );
+            scroll.setOnRecyclerPagerScrollListener( new OnRecyclerPagerScrollListener() {
+
+                  @Override
+                  public void onScroll (
+                      int state, int currentPosition, int nextPosition, int offsetX, int offsetY ) {
+
+                        Log.e( TAG, "onScroll : " + adapter.getActualPosition( currentPosition ) );
+                  }
+
+                  @Override
+                  public void onPageSelected ( int prevSelected, int newSelected ) {
+
                   }
             } );
       }
