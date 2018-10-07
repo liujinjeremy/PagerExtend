@@ -183,7 +183,7 @@ public class RecyclerPagerBanner extends LoopHandlerLayout {
              *
              * @return mPagerAdapter 中的位置
              */
-            protected int getActualPosition ( int position ) {
+            public int getActualPosition ( int position ) {
 
                   return position % getActualCount();
             }
