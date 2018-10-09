@@ -82,6 +82,11 @@ public class ImageWatcherPager extends FrameLayout {
             mRecyclerPagerScroll.setOnRecyclerPagerScrollListener( new PagerScrollListener() );
       }
 
+      public RecyclerPager getRecyclerPager ( ) {
+
+            return mRecyclerPager;
+      }
+
       /**
        * 设置{@link #mRecyclerPager}的adapter
        */

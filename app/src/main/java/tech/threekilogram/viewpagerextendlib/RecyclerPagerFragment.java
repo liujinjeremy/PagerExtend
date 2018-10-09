@@ -58,6 +58,16 @@ public class RecyclerPagerFragment extends Fragment {
 
             mRecyclerPagerV.setOrientation( RecyclerView.VERTICAL );
             mRecyclerPagerV.setAdapter( new RecyclerAdapter() );
+
+            mRecyclerPager.scrollToPosition( 4 );
+            mRecyclerPager.post( new Runnable() {
+
+                  @Override
+                  public void run ( ) {
+
+                        mRecyclerPager.smoothScrollToPosition( 0 );
+                  }
+            } );
       }
 
       private class RecyclerAdapter extends Adapter {
