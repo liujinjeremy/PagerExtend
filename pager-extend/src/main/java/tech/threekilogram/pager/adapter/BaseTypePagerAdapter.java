@@ -61,7 +61,7 @@ public abstract class BaseTypePagerAdapter extends PagerAdapter {
        *
        * @return 数据总数
        *
-       * @link PagerAdapter#getCount()
+       * @link ImageWatcherAdapter#getCount()
        */
       @Override
       public abstract int getCount ( );

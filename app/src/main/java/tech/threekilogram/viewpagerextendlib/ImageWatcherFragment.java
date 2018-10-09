@@ -56,15 +56,15 @@ public class ImageWatcherFragment extends Fragment {
             };
 
             @Override
-            protected int getImageCount ( ) {
-
-                  return res.length;
-            }
-
-            @Override
             protected Bitmap getImage ( int position ) {
 
                   return BitmapFactory.decodeResource( getResources(), res[ position ] );
+            }
+
+            @Override
+            public int getItemCount ( ) {
+
+                  return res.length;
             }
       }
 }

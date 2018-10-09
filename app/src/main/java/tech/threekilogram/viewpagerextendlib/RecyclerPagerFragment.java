@@ -1,5 +1,6 @@
 package tech.threekilogram.viewpagerextendlib;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -7,6 +8,8 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.Adapter;
 import android.support.v7.widget.RecyclerView.ViewHolder;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,9 +66,11 @@ public class RecyclerPagerFragment extends Fragment {
             @Override
             public ViewHolder onCreateViewHolder ( @NonNull ViewGroup parent, int viewType ) {
 
-                  LayoutInflater inflater = LayoutInflater.from( parent.getContext() );
-                  View view = inflater.inflate( R.layout.item_recycler_pager, parent, false );
-                  return new Holder( view );
+                  TextView textView = new TextView( getContext() );
+                  textView.setTextColor( Color.WHITE );
+                  textView.setTextSize( TypedValue.COMPLEX_UNIT_SP, 24 );
+                  textView.setGravity( Gravity.CENTER );
+                  return new Holder( textView );
             }
 
             @Override

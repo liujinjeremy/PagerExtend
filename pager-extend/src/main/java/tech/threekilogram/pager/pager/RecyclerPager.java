@@ -32,7 +32,8 @@ public class RecyclerPager extends RecyclerView {
 
       private void init ( ) {
 
-            LinearLayoutManager layoutManager = new LinearLayoutManager( getContext() );
+            MatchParentLinearLayoutManager layoutManager =
+                new MatchParentLinearLayoutManager( getContext() );
             layoutManager.setOrientation( HORIZONTAL );
             setLayoutManager( layoutManager );
 

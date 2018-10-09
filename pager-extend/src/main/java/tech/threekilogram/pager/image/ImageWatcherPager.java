@@ -6,14 +6,11 @@ import android.graphics.RectF;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.RecyclerView.Adapter;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import tech.threekilogram.pager.R;
 import tech.threekilogram.pager.pager.RecyclerPager;
 import tech.threekilogram.pager.scroll.recycler.OnRecyclerPagerScrollListener;
 import tech.threekilogram.pager.scroll.recycler.RecyclerPagerScroll;
@@ -27,10 +24,6 @@ public class ImageWatcherPager extends FrameLayout {
        * pager
        */
       private RecyclerPager       mRecyclerPager;
-      /**
-       * pager adapter
-       */
-      private ImageWatcherAdapter mImageWatcherAdapter;
       /**
        * item touch
        */
@@ -80,23 +73,21 @@ public class ImageWatcherPager extends FrameLayout {
             mRecyclerPager = new RecyclerPager( context );
             addView( mRecyclerPager );
 
+            /* 拦截手势事件 */
             mItemTouchListener = new ItemTouchListener();
             mRecyclerPager.addOnItemTouchListener( mItemTouchListener );
 
+            /* 用于获取当前状态 */
             mRecyclerPagerScroll = new RecyclerPagerScroll( mRecyclerPager );
             mRecyclerPagerScroll.setOnRecyclerPagerScrollListener( new PagerScrollListener() );
-
-            mRecyclerPager.setAdapter( new PagerAdapter() );
       }
 
-      public void setImageWatcherAdapter (
-          ImageWatcherAdapter imageWatcherAdapter ) {
+      /**
+       * 设置{@link #mRecyclerPager}的adapter
+       */
+      public void setImageWatcherAdapter ( ImageWatcherAdapter imageWatcherAdapter ) {
 
-            mImageWatcherAdapter = imageWatcherAdapter;
-            Adapter adapter = mRecyclerPager.getAdapter();
-            if( adapter != null ) {
-                  adapter.notifyDataSetChanged();
-            }
+            mRecyclerPager.setAdapter( imageWatcherAdapter );
       }
 
       @Override
@@ -133,17 +124,26 @@ public class ImageWatcherPager extends FrameLayout {
             return super.dispatchTouchEvent( e );
       }
 
-      private class PagerAdapter extends RecyclerView.Adapter<ImageViewHolder> {
+      /**
+       * 主要用于构建一个item是{@link ScaleImageView}的adapter
+       */
+      public static abstract class ImageWatcherAdapter extends
+                                                       RecyclerView.Adapter<ImageViewHolder> {
+
+            /**
+             * 获取位于该位置的图片
+             *
+             * @param position 位置
+             *
+             * @return 该位置图片
+             */
+            protected abstract Bitmap getImage ( int position );
 
             @NonNull
             @Override
             public ImageViewHolder onCreateViewHolder ( @NonNull ViewGroup parent, int viewType ) {
 
-                  ScaleImageView view = (ScaleImageView) LayoutInflater.from( parent.getContext() )
-                                                                       .inflate(
-                                                                           R.layout.item_image,
-                                                                           parent, false
-                                                                       );
+                  ScaleImageView view = new ScaleImageView( parent.getContext() );
                   view.setMinCanvasScaleX( 1f );
                   view.setMinCanvasScaleY( 1f );
                   return new ImageViewHolder( view );
@@ -153,32 +153,34 @@ public class ImageWatcherPager extends FrameLayout {
             public void onBindViewHolder (
                 @NonNull ImageViewHolder holder, int position ) {
 
-                  if( mImageWatcherAdapter != null ) {
-                        Bitmap image = mImageWatcherAdapter.getImage( position );
-                        holder.bindImage( position, image );
-                  }
-            }
-
-            @Override
-            public int getItemCount ( ) {
-
-                  return mImageWatcherAdapter == null ? 0 : mImageWatcherAdapter.getImageCount();
+                  holder.bindImage( position, getImage( position ) );
             }
       }
 
-      private class ImageViewHolder extends RecyclerView.ViewHolder {
+      /**
+       * ViewHolder
+       */
+      public static class ImageViewHolder extends RecyclerView.ViewHolder {
 
-            private ImageViewHolder ( View itemView ) {
+            public ImageViewHolder ( View itemView ) {
 
                   super( itemView );
             }
 
-            private void bindImage ( int position, Bitmap image ) {
+            public void bindImage ( int position, Bitmap image ) {
 
                   ( (ScaleImageView) itemView ).setImageBitmap( image );
             }
+
+            public ScaleImageView getItemView ( ) {
+
+                  return (ScaleImageView) itemView;
+            }
       }
 
+      /**
+       * 处理触摸事件
+       */
       private class ItemTouchListener implements RecyclerView.OnItemTouchListener {
 
             @Override
@@ -297,6 +299,9 @@ public class ImageWatcherPager extends FrameLayout {
             }
       }
 
+      /**
+       * 获取状态
+       */
       private class PagerScrollListener implements OnRecyclerPagerScrollListener {
 
             @Override
@@ -305,28 +310,5 @@ public class ImageWatcherPager extends FrameLayout {
 
             @Override
             public void onPageSelected ( int prevSelected, int newSelected ) { }
-      }
-
-      /**
-       * 辅助工作,获取图片
-       */
-      @SuppressWarnings("AlibabaAbstractClassShouldStartWithAbstractNaming")
-      public static abstract class ImageWatcherAdapter {
-
-            /**
-             * 数量
-             *
-             * @return image数量
-             */
-            protected abstract int getImageCount ( );
-
-            /**
-             * 获取位于该位置的图片
-             *
-             * @param position 位置
-             *
-             * @return 该位置图片
-             */
-            protected abstract Bitmap getImage ( int position );
       }
 }
