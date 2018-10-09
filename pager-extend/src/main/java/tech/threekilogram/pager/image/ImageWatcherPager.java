@@ -143,10 +143,18 @@ public class ImageWatcherPager extends FrameLayout {
             @Override
             public ImageViewHolder onCreateViewHolder ( @NonNull ViewGroup parent, int viewType ) {
 
-                  ScaleImageView view = new ScaleImageView( parent.getContext() );
+                  return new ImageViewHolder( createScaleImageView( parent.getContext() ) );
+            }
+
+            /**
+             * 创建{@link ScaleImageView}
+             */
+            protected ScaleImageView createScaleImageView ( Context context ) {
+
+                  ScaleImageView view = new ScaleImageView( context );
                   view.setMinCanvasScaleX( 1f );
                   view.setMinCanvasScaleY( 1f );
-                  return new ImageViewHolder( view );
+                  return view;
             }
 
             @Override
