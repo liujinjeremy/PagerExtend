@@ -1,5 +1,6 @@
 package tech.threekilogram.pager.image;
 
+import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -74,11 +75,12 @@ public class ScaleImageView extends android.support.v7.widget.AppCompatImageView
       /**
        * 保存drawable显示区域坐标
        */
-      protected RectF mDrawableRect;
+      protected RectF         mDrawableRect;
       /**
        * 保存canvas显示区域坐标
        */
-      protected Rect  mCanvasRect;
+      protected Rect          mCanvasRect;
+      private   ValueAnimator mAnimator;
 
       public ScaleImageView ( Context context ) {
 
@@ -147,7 +149,6 @@ public class ScaleImageView extends android.support.v7.widget.AppCompatImageView
             /* 修正显示区域 */
             mDrawableRect.set( dLeft, dTop, dRight, dBottom );
 
-            canvas.save();
             /* 缩放 */
             canvas.scale(
                 mCanvasScaleX,
@@ -161,7 +162,6 @@ public class ScaleImageView extends android.support.v7.widget.AppCompatImageView
             canvas.translate( dx, dy );
             /* 绘制 */
             super.onDraw( canvas );
-            canvas.restore();
       }
 
       /**
@@ -633,9 +633,6 @@ public class ScaleImageView extends android.support.v7.widget.AppCompatImageView
                   scaleX = mMinCanvasScaleX;
             }
 
-            mCanvasScaleX = scaleX;
-            mCanvasScaleY = scaleY;
-
             if( pivotX < 0 ) {
                   pivotX = 0;
             } else if( pivotX > 1 ) {
@@ -646,6 +643,14 @@ public class ScaleImageView extends android.support.v7.widget.AppCompatImageView
             } else if( pivotY > 1 ) {
                   pivotY = 1;
             }
+
+            if( scaleX == mCanvasScaleX && scaleY == mCanvasScaleY && pivotX == mPivotPointX
+                && pivotY == mPivotPointY ) {
+                  return;
+            }
+
+            mCanvasScaleX = scaleX;
+            mCanvasScaleY = scaleY;
             mPivotPointX = pivotX;
             mPivotPointY = pivotY;
 
@@ -713,6 +718,27 @@ public class ScaleImageView extends android.support.v7.widget.AppCompatImageView
             if( call ) {
                   invalidate();
             }
+      }
+
+      public void setChange (
+          float scaleX, float scaleY,
+          float translateX, float translateY ) {
+
+            setChange( scaleX, scaleY, mPivotPointX, mPivotPointY, translateX, translateY );
+      }
+
+      public void setChange (
+          float scaleX, float scaleY,
+          float pivotX, float pivotY,
+          float translateX, float translateY ) {
+
+            setCanvasScale( scaleX, scaleY, pivotX, pivotY );
+            setTranslate( translateX, translateY );
+      }
+
+      public void reset ( ) {
+
+            setChange( 1, 1, 0.5f, 0.5f, 0, 0 );
       }
 
       /**
