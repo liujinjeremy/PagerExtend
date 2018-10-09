@@ -288,3 +288,29 @@ mRecyclerBanner.stopLoop();
 
 ![](img/pic07.gif)
 
+## ImageWatcherPager
+
+> 该类用于查看一组图片,支持手势缩放
+
+```
+mImageWatcher.setImageWatcherAdapter( new ImageAdapter() );
+```
+
+```
+private class ImageAdapter extends ImageWatcherAdapter {
+      private int[] res = {
+          R.drawable.c130,
+          R.drawable.c274,
+          R.drawable.c465
+      };
+      @Override
+      protected Bitmap getImage ( int position ) {
+            return BitmapFactory.decodeResource( getResources(), res[ position ] );
+      }
+      @Override
+      public int getItemCount ( ) {
+            return res.length;
+      }
+}
+```
+
