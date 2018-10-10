@@ -82,7 +82,9 @@ public class RecyclerPager extends RecyclerView {
       @SuppressWarnings("unchecked")
       public <T extends View> T findItemView ( int position ) {
 
-            return (T) findViewHolderForAdapterPosition( position ).itemView;
+            ViewHolder holder = findViewHolderForLayoutPosition( position );
+
+            return holder == null ? null : (T) holder.itemView;
       }
 
       @Override
