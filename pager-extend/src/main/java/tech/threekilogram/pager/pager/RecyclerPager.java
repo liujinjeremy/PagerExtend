@@ -6,7 +6,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import tech.threekilogram.pager.scroll.recycler.OnRecyclerPagerScrollListener;
 import tech.threekilogram.pager.scroll.recycler.RecyclerPagerScroll;
@@ -15,8 +14,6 @@ import tech.threekilogram.pager.scroll.recycler.RecyclerPagerScroll;
  * @author Liujin 2018-09-19:16:05
  */
 public class RecyclerPager extends RecyclerView {
-
-      private static final String TAG = RecyclerPager.class.getSimpleName();
 
       private int                 mCurrentPosition;
       private RecyclerPagerScroll mRecyclerPagerScroll;
@@ -107,6 +104,11 @@ public class RecyclerPager extends RecyclerView {
             return mCurrentPosition;
       }
 
+      public <T extends View> T getCurrentItem ( ) {
+
+            return findItemView( mCurrentPosition );
+      }
+
       private class OnScrollGetPositionListener implements OnRecyclerPagerScrollListener {
 
             @Override
@@ -119,7 +121,6 @@ public class RecyclerPager extends RecyclerView {
             public void onPageSelected ( int prevSelected, int newSelected ) {
 
                   mCurrentPosition = newSelected;
-                  Log.e( TAG, "onPageSelected: " + prevSelected + " " + newSelected );
             }
       }
 }
