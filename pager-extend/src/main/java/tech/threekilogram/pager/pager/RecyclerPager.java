@@ -106,6 +106,7 @@ public class RecyclerPager extends RecyclerView {
             return mCurrentPosition;
       }
 
+      @Nullable
       public <T extends View> T getCurrentItem ( ) {
 
             return findItemView( mCurrentPosition );
