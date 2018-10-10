@@ -13,8 +13,15 @@
       <tech.threekilogram.pager.pager.RecyclerPager
           android:id="@+id/recyclerPagerV"
           android:layout_width="match_parent"
-          android:layout_marginTop="220dp"
-          android:layout_height="200dp">
+          android:layout_height="200dp"
+          android:layout_marginTop="220dp">
       </tech.threekilogram.pager.pager.RecyclerPager>
+
+      <Button
+          android:id="@+id/getPosition"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="bottom"
+          android:text="Button"/>
 
 </FrameLayout>

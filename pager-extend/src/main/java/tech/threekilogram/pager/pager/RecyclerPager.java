@@ -6,12 +6,20 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
+import tech.threekilogram.pager.scroll.recycler.OnRecyclerPagerScrollListener;
+import tech.threekilogram.pager.scroll.recycler.RecyclerPagerScroll;
 
 /**
  * @author Liujin 2018-09-19:16:05
  */
 public class RecyclerPager extends RecyclerView {
+
+      private static final String TAG = RecyclerPager.class.getSimpleName();
+
+      private int                 mCurrentPosition;
+      private RecyclerPagerScroll mRecyclerPagerScroll;
 
       public RecyclerPager ( Context context ) {
 
@@ -39,6 +47,10 @@ public class RecyclerPager extends RecyclerView {
 
             PagerSnapHelper snapHelper = new PagerSnapHelper();
             snapHelper.attachToRecyclerView( this );
+
+            mRecyclerPagerScroll = new RecyclerPagerScroll( this );
+            mRecyclerPagerScroll
+                .setOnRecyclerPagerScrollListener( new OnScrollGetPositionListener() );
       }
 
       public void setOrientation ( @RecyclerPager.Orientation int orientation ) {
@@ -74,5 +86,40 @@ public class RecyclerPager extends RecyclerView {
       public <T extends View> T findItemView ( int position ) {
 
             return (T) findViewHolderForAdapterPosition( position ).itemView;
+      }
+
+      @Override
+      public void scrollToPosition ( int position ) {
+
+            mCurrentPosition = position;
+            super.scrollToPosition( position );
+      }
+
+      @Override
+      public void smoothScrollToPosition ( int position ) {
+
+            mCurrentPosition = position;
+            super.smoothScrollToPosition( position );
+      }
+
+      public int getCurrentPosition ( ) {
+
+            return mCurrentPosition;
+      }
+
+      private class OnScrollGetPositionListener implements OnRecyclerPagerScrollListener {
+
+            @Override
+            public void onScroll (
+                int state, int currentPosition, int nextPosition, int offsetX, int offsetY ) {
+
+            }
+
+            @Override
+            public void onPageSelected ( int prevSelected, int newSelected ) {
+
+                  mCurrentPosition = newSelected;
+                  Log.e( TAG, "onPageSelected: " + prevSelected + " " + newSelected );
+            }
       }
 }

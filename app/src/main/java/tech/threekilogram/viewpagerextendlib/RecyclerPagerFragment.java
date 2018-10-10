@@ -7,22 +7,30 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.Adapter;
+import android.support.v7.widget.RecyclerView.OnScrollListener;
 import android.support.v7.widget.RecyclerView.ViewHolder;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import tech.threekilogram.pager.pager.RecyclerPager;
+import tech.threekilogram.pager.scroll.recycler.RecyclerPagerScroll;
 
 /**
  * @author Liujin 2018-09-19:16:15
  */
-public class RecyclerPagerFragment extends Fragment {
+public class RecyclerPagerFragment extends Fragment implements OnClickListener {
+
+      private static final String TAG = RecyclerPagerFragment.class.getSimpleName();
 
       private RecyclerPager mRecyclerPager;
       private RecyclerPager mRecyclerPagerV;
+      private Button        mGetPosition;
 
       public static RecyclerPagerFragment newInstance ( ) {
 
@@ -68,6 +76,46 @@ public class RecyclerPagerFragment extends Fragment {
                         mRecyclerPager.smoothScrollToPosition( 0 );
                   }
             } );
+
+            Log.e( TAG, "initView : " + mRecyclerPager.getCurrentPosition() );
+            mGetPosition = itemView.findViewById( R.id.getPosition );
+            mGetPosition.setOnClickListener( this );
+
+            mRecyclerPager.addOnScrollListener( new OnScrollListener() {
+
+                  private int mPosition = mRecyclerPager.getCurrentPosition();
+
+                  @Override
+                  public void onScrollStateChanged ( RecyclerView recyclerView, int newState ) {
+
+                        Log.e( TAG, "onScrollStateChanged : " + RecyclerPagerScroll
+                            .scrollStateString( newState ) );
+                        super.onScrollStateChanged( recyclerView, newState );
+                  }
+
+                  @Override
+                  public void onScrolled ( RecyclerView recyclerView, int dx, int dy ) {
+
+                        super.onScrolled( recyclerView, dx, dy );
+                        int currentPosition = mRecyclerPager.getCurrentPosition();
+                        if( currentPosition != mPosition ) {
+                              mPosition = currentPosition;
+                              Log.e( TAG, "onScrolled : new mPosition " + mPosition );
+                        }
+                  }
+            } );
+      }
+
+      @Override
+      public void onClick ( View v ) {
+
+            switch( v.getId() ) {
+                  case R.id.getPosition:
+                        Log.e( TAG, "initView : " + mRecyclerPager.getCurrentPosition() );
+                        break;
+                  default:
+                        break;
+            }
       }
 
       private class RecyclerAdapter extends Adapter {

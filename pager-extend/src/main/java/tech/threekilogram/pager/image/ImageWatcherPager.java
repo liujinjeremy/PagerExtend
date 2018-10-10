@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,8 @@ import tech.threekilogram.pager.scroll.recycler.RecyclerPagerScroll;
  * @author Liujin 2018-10-05:11:18
  */
 public class ImageWatcherPager extends FrameLayout {
+
+      private static final String TAG = ImageWatcherPager.class.getSimpleName();
 
       /**
        * pager
@@ -286,6 +289,7 @@ public class ImageWatcherPager extends FrameLayout {
                                   && drawableRect.left + mDx >= 0 ) {
 
                                     dx = -drawableRect.left;
+                                    Log.e( TAG, "onTouchEvent : at left edge " + ( mDx - dx ) );
                               } else {
 
                                     int width = mItemView.getWidth();
@@ -294,6 +298,8 @@ public class ImageWatcherPager extends FrameLayout {
                                         && right + mDx <= width ) {
 
                                           dx = width - right;
+                                          Log.e(
+                                              TAG, "onTouchEvent : at right edge" + ( mDx - dx ) );
                                     }
                               }
 
@@ -307,9 +313,7 @@ public class ImageWatcherPager extends FrameLayout {
             }
 
             @Override
-            public void onRequestDisallowInterceptTouchEvent ( boolean disallowIntercept ) {
-
-            }
+            public void onRequestDisallowInterceptTouchEvent ( boolean disallowIntercept ) { }
       }
 
       /**
