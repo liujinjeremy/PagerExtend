@@ -19,7 +19,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import tech.threekilogram.pager.pager.RecyclerPager;
-import tech.threekilogram.pager.scroll.recycler.RecyclerPagerScroll;
 
 /**
  * @author Liujin 2018-09-19:16:15
@@ -86,12 +85,7 @@ public class RecyclerPagerFragment extends Fragment implements OnClickListener {
                   private int mPosition = mRecyclerPager.getCurrentPosition();
 
                   @Override
-                  public void onScrollStateChanged ( RecyclerView recyclerView, int newState ) {
-
-                        Log.e( TAG, "onScrollStateChanged : " + RecyclerPagerScroll
-                            .scrollStateString( newState ) );
-                        super.onScrollStateChanged( recyclerView, newState );
-                  }
+                  public void onScrollStateChanged ( RecyclerView recyclerView, int newState ) { }
 
                   @Override
                   public void onScrolled ( RecyclerView recyclerView, int dx, int dy ) {

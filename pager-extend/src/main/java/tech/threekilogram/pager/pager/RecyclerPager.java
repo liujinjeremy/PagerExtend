@@ -17,8 +17,7 @@ public class RecyclerPager extends RecyclerView {
       /**
        * 记录当前操作的item
        */
-      private int  mCurrentPosition;
-      private View mCurrentView;
+      private int mCurrentPosition;
 
       public RecyclerPager ( Context context ) {
 
@@ -62,7 +61,21 @@ public class RecyclerPager extends RecyclerView {
 
       public View getCurrentView ( ) {
 
-            return mCurrentView;
+            return getLayoutManager().findViewByPosition( mCurrentPosition );
+      }
+
+      @Override
+      public void scrollToPosition ( int position ) {
+
+            super.scrollToPosition( position );
+            mCurrentPosition = position;
+      }
+
+      @Override
+      public void smoothScrollToPosition ( int position ) {
+
+            super.smoothScrollToPosition( position );
+            mCurrentPosition = position;
       }
 
       @Override
@@ -70,10 +83,12 @@ public class RecyclerPager extends RecyclerView {
 
             /* 按下时获取当前item */
             if( ev.getAction() == MotionEvent.ACTION_DOWN
-                && getScrollState() == RecyclerView.SCROLL_STATE_IDLE ) {
-                  LinearLayoutManager layoutManager = (LinearLayoutManager) getLayoutManager();
-                  mCurrentPosition = layoutManager.findFirstVisibleItemPosition();
-                  mCurrentView = layoutManager.findViewByPosition( mCurrentPosition );
+                || ev.getAction() == MotionEvent.ACTION_UP ) {
+
+                  if( getScrollState() == RecyclerView.SCROLL_STATE_IDLE ) {
+                        LinearLayoutManager layoutManager = (LinearLayoutManager) getLayoutManager();
+                        mCurrentPosition = layoutManager.findFirstVisibleItemPosition();
+                  }
             }
 
             return super.dispatchTouchEvent( ev );
@@ -91,8 +106,6 @@ public class RecyclerPager extends RecyclerView {
                         LinearLayoutManager layoutManager = (LinearLayoutManager) getLayoutManager();
                         mCurrentPosition = layoutManager
                             .findFirstVisibleItemPosition();
-                        mCurrentView = layoutManager
-                            .findViewByPosition( mCurrentPosition );
                   }
             }
 
@@ -103,7 +116,6 @@ public class RecyclerPager extends RecyclerView {
                         LinearLayoutManager layoutManager = (LinearLayoutManager) getLayoutManager();
                         mCurrentPosition = layoutManager
                             .findFirstVisibleItemPosition();
-                        mCurrentView = layoutManager.findViewByPosition( mCurrentPosition );
                   }
             }
       }
