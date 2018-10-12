@@ -6,17 +6,19 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
-import tech.threekilogram.pager.scroll.recycler.OnRecyclerPagerScrollListener;
-import tech.threekilogram.pager.scroll.recycler.RecyclerPagerScroll;
 
 /**
  * @author Liujin 2018-09-19:16:05
  */
 public class RecyclerPager extends RecyclerView {
 
-      private int                 mCurrentPosition;
-      private RecyclerPagerScroll mRecyclerPagerScroll;
+      /**
+       * 记录当前操作的item
+       */
+      private int  mCurrentPosition;
+      private View mCurrentView;
 
       public RecyclerPager ( Context context ) {
 
@@ -45,9 +47,7 @@ public class RecyclerPager extends RecyclerView {
             PagerSnapHelper snapHelper = new PagerSnapHelper();
             snapHelper.attachToRecyclerView( this );
 
-            mRecyclerPagerScroll = new RecyclerPagerScroll( this );
-            mRecyclerPagerScroll
-                .setOnRecyclerPagerScrollListener( new OnScrollGetPositionListener() );
+            addOnScrollListener( new GetCurrentScrollListener() );
       }
 
       public void setOrientation ( @RecyclerPager.Orientation int orientation ) {
@@ -55,75 +55,56 @@ public class RecyclerPager extends RecyclerView {
             ( (LinearLayoutManager) getLayoutManager() ).setOrientation( orientation );
       }
 
-      public int findFirstCompletelyVisibleItemPosition ( ) {
-
-            return ( (LinearLayoutManager) getLayoutManager() )
-                .findFirstCompletelyVisibleItemPosition();
-      }
-
-      public int findFirstVisibleItemPosition ( ) {
-
-            return ( (LinearLayoutManager) getLayoutManager() )
-                .findFirstVisibleItemPosition();
-      }
-
-      public int findLastCompletelyVisibleItemPosition ( ) {
-
-            return ( (LinearLayoutManager) getLayoutManager() )
-                .findLastCompletelyVisibleItemPosition();
-      }
-
-      public int findLastVisibleItemPosition ( ) {
-
-            return ( (LinearLayoutManager) getLayoutManager() )
-                .findLastVisibleItemPosition();
-      }
-
-      @SuppressWarnings("unchecked")
-      public <T extends View> T findItemView ( int position ) {
-
-            ViewHolder holder = findViewHolderForLayoutPosition( position );
-
-            return holder == null ? null : (T) holder.itemView;
-      }
-
-      @Override
-      public void scrollToPosition ( int position ) {
-
-            mCurrentPosition = position;
-            super.scrollToPosition( position );
-      }
-
-      @Override
-      public void smoothScrollToPosition ( int position ) {
-
-            mCurrentPosition = position;
-            super.smoothScrollToPosition( position );
-      }
-
       public int getCurrentPosition ( ) {
 
             return mCurrentPosition;
       }
 
-      @Nullable
-      public <T extends View> T getCurrentItem ( ) {
+      public View getCurrentView ( ) {
 
-            return findItemView( mCurrentPosition );
+            return mCurrentView;
       }
 
-      private class OnScrollGetPositionListener implements OnRecyclerPagerScrollListener {
+      @Override
+      public boolean dispatchTouchEvent ( MotionEvent ev ) {
+
+            /* 按下时获取当前item */
+            if( ev.getAction() == MotionEvent.ACTION_DOWN
+                && getScrollState() == RecyclerView.SCROLL_STATE_IDLE ) {
+                  LinearLayoutManager layoutManager = (LinearLayoutManager) getLayoutManager();
+                  mCurrentPosition = layoutManager.findFirstVisibleItemPosition();
+                  mCurrentView = layoutManager.findViewByPosition( mCurrentPosition );
+            }
+
+            return super.dispatchTouchEvent( ev );
+      }
+
+      /**
+       * 处理滚动事件,滚动时更新当前状态
+       */
+      private class GetCurrentScrollListener extends OnScrollListener {
 
             @Override
-            public void onScroll (
-                int state, int currentPosition, int nextPosition, int offsetX, int offsetY ) {
+            public void onScrollStateChanged ( RecyclerView recyclerView, int newState ) {
 
+                  if( newState == RecyclerView.SCROLL_STATE_IDLE ) {
+                        LinearLayoutManager layoutManager = (LinearLayoutManager) getLayoutManager();
+                        mCurrentPosition = layoutManager
+                            .findFirstVisibleItemPosition();
+                        mCurrentView = layoutManager
+                            .findViewByPosition( mCurrentPosition );
+                  }
             }
 
             @Override
-            public void onPageSelected ( int prevSelected, int newSelected ) {
+            public void onScrolled ( RecyclerView recyclerView, int dx, int dy ) {
 
-                  mCurrentPosition = newSelected;
+                  if( dx == 0 && recyclerView.getScrollState() == RecyclerView.SCROLL_STATE_IDLE ) {
+                        LinearLayoutManager layoutManager = (LinearLayoutManager) getLayoutManager();
+                        mCurrentPosition = layoutManager
+                            .findFirstVisibleItemPosition();
+                        mCurrentView = layoutManager.findViewByPosition( mCurrentPosition );
+                  }
             }
       }
 }
