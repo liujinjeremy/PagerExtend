@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView.OnScrollListener;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.View;
 import tech.threekilogram.pager.pager.DurationAddSmoothScroller;
 import tech.threekilogram.pager.pager.RecyclerPager;
 
@@ -50,6 +51,9 @@ public class RecyclerPagerBanner extends LoopHandlerLayout {
             addView( mRecyclerPager, 0 );
       }
 
+      /**
+       * 配置pager
+       */
       protected RecyclerPager createPager ( Context context ) {
 
             return new RecyclerPager( context );
@@ -62,9 +66,28 @@ public class RecyclerPagerBanner extends LoopHandlerLayout {
             return super.dispatchTouchEvent( ev );
       }
 
-      public RecyclerView getRecyclerPager ( ) {
+      /**
+       * 获取{@link #mRecyclerPager}
+       */
+      public RecyclerPager getRecyclerPager ( ) {
 
             return mRecyclerPager;
+      }
+
+      /**
+       * 获取当前的位置
+       */
+      public int getCurrentPosition ( ) {
+
+            return getRecyclerPager().getCurrentPosition();
+      }
+
+      /**
+       * 获取当前的item的view
+       */
+      public View getCurrentItemView ( ) {
+
+            return getRecyclerPager().getCurrentView();
       }
 
       /**
@@ -90,31 +113,49 @@ public class RecyclerPagerBanner extends LoopHandlerLayout {
             return (BannerAdapter) mRecyclerPager.getAdapter();
       }
 
+      /**
+       * 增加滚动时间
+       */
       public void addScrollDuration ( int duration ) {
 
             mSmoothScroller.setDurationAdded( duration );
       }
 
+      /**
+       * 获取设置的增加的滚动时间
+       */
       public int getAddScrollDuration ( ) {
 
             return mSmoothScroller.getDurationAdded();
       }
 
+      /**
+       * 添加滚动监听
+       */
       public void addOnScrollListener ( OnScrollListener listener ) {
 
             mRecyclerPager.addOnScrollListener( listener );
       }
 
+      /**
+       * 移除滚动监听
+       */
       public void removeOnScrollListener ( OnScrollListener listener ) {
 
             mRecyclerPager.removeOnScrollListener( listener );
       }
 
+      /**
+       * 清除所有滚动监听
+       */
       public void clearOnScrollListeners ( ) {
 
             mRecyclerPager.clearOnScrollListeners();
       }
 
+      /**
+       * 滚动到下一个位置
+       */
       public void smoothToNext ( ) {
 
             LayoutManager layoutManager = mRecyclerPager
@@ -128,6 +169,9 @@ public class RecyclerPagerBanner extends LoopHandlerLayout {
             }
       }
 
+      /**
+       * 滚动到前一个位置
+       */
       public void smoothToPrev ( ) {
 
             int itemPosition = ( (LinearLayoutManager) mRecyclerPager
@@ -152,8 +196,9 @@ public class RecyclerPagerBanner extends LoopHandlerLayout {
       }
 
       /**
-       * base adapter
+       * 辅助构建界面
        */
+      @SuppressWarnings("AlibabaAbstractClassShouldStartWithAbstractNaming")
       public static abstract class BannerAdapter<VH extends ViewHolder> extends
                                                                         RecyclerView.Adapter<VH> {
 
