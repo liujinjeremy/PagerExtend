@@ -218,7 +218,11 @@ public class RecyclerPagerBanner extends LoopHandlerLayout {
             public int getStartPosition ( ) {
 
                   int i = Integer.MAX_VALUE / 2;
-                  return i - ( i % getActualCount() );
+                  if( getActualCount() == 0 ) {
+                        return i;
+                  } else {
+                        return i - ( i % getActualCount() );
+                  }
             }
 
             /**

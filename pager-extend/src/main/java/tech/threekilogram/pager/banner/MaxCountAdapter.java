@@ -48,8 +48,13 @@ public class MaxCountAdapter extends PagerAdapter {
       public int getStartPosition ( ) {
 
             int i = Integer.MAX_VALUE / 2;
-            //保证count是mPagerAdapter的count的倍数
-            return i - ( i % mPagerAdapter.getCount() );
+            if( mPagerAdapter.getCount() == 0 ) {
+
+                  return i;
+            } else {
+
+                  return i - ( i % mPagerAdapter.getCount() );
+            }
       }
 
       /**
