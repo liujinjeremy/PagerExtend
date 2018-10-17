@@ -13,13 +13,13 @@ import android.support.v7.widget.RecyclerView.OnScrollListener;
  */
 public class RecyclerPagerScrollListener extends OnScrollListener {
 
-      private int                           mCurrentPosition;
-      private int                           mState = RecyclerView.SCROLL_STATE_IDLE;
-      private int                           mNextPosition;
-      private int                           mOrientation;
-      private int                           mDx;
-      private int                           mDy;
-      private OnRecyclerPagerScrollListener mOnRecyclerPagerScrollListener;
+      protected int                           mCurrentPosition;
+      protected int                           mState = RecyclerView.SCROLL_STATE_IDLE;
+      protected int                           mNextPosition;
+      protected int                           mOrientation;
+      protected int                           mDx;
+      protected int                           mDy;
+      protected OnRecyclerPagerScrollListener mOnRecyclerPagerScrollListener;
 
       public void setOnRecyclerPagerScrollListener (
           OnRecyclerPagerScrollListener onRecyclerPagerScrollListener ) {
