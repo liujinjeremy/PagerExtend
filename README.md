@@ -19,7 +19,7 @@ Add it in your root build.gradle at the end of repositories:
 
 ```
 	dependencies {
-	        implementation 'com.github.threekilogram:PagerExtend:1.2.8'
+	        implementation 'com.github.threekilogram:PagerExtend:1.2.9'
 	}
 ```
 
@@ -140,20 +140,17 @@ mViewPager.setAdapter( new FragmentAdapter() );
 
 
 
-### ViewPagerScroll
+## ViewPagerScrollListener
 
 > 扩展ViewPager.OnPageChangeListener使其可以观察当前条目和下一个条目滚动方向及进度
 
 ```
-final ViewPagerScroll viewPagerScroll = new ViewPagerScroll( mViewPager );
-viewPagerScroll.setOnPagerScrollListener( new OnViewPagerScrollListener() {
+mViewPager.addOnPageChangeListener( new ViewPagerScrollListener( mViewPager ) {
       @Override
-      public void onScroll (
-          int state, int currentPosition, int nextPosition, float offset ) {
-            mIndicator.setXOff( currentPosition, -offset );
-      }
-      @Override
-      public void onPageSelected ( int prevSelected, int newSelected ) {
+      protected void onScroll (
+          int state, int currentIndex, int nextIndex, float offset ) {
+            super.onScroll( state, currentIndex, nextIndex, offset );
+            mIndicator.setXOff( currentIndex, -offset );
       }
 } );
 ```
@@ -165,15 +162,12 @@ viewPagerScroll.setOnPagerScrollListener( new OnViewPagerScrollListener() {
 ## RecyclerPagerScroll
 
 ```
-RecyclerPagerScroll listener = new RecyclerPagerScroll( mRecycler );
-listener.setOnRecyclerPagerScrollListener( new OnRecyclerPagerScrollListener() {
+mRecycler.addOnScrollListener( new RecyclerPagerScrollListener() {
       @Override
-      public void onScroll (
-          int state, int currentPosition, int nextPosition, int offsetX, int offsetY ) {
-            mIndicator.setXOff( currentPosition, offsetX * 1f / mRecycler.getWidth() );
-      }
-      @Override
-      public void onPageSelected ( int prevSelected, int newSelected ) {
+      protected void onScroll (
+          int state, int currentPosition, int nextPosition, int dx, int dy ) {
+            super.onScroll( state, currentPosition, nextPosition, dx, dy );
+            mIndicator.setXOff( currentPosition, dx * 1f / mRecycler.getWidth() );
       }
 } );
 ```
