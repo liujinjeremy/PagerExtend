@@ -13,8 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import tech.threekilogram.pager.adapter.BasePagerAdapter;
-import tech.threekilogram.pager.scroll.pager.OnViewPagerScrollListener;
-import tech.threekilogram.pager.scroll.pager.ViewPagerScroll;
+import tech.threekilogram.pager.scroll.pager.ViewPagerScrollListener;
 import tech.threekilogram.viewpagerextendlib.widget.IndicatorView;
 
 /**
@@ -57,19 +56,14 @@ public class PagerScrollFragment extends Fragment {
             mIndicator = itemView.findViewById( R.id.indicator );
             mIndicator.setCount( adapter.getCount() );
 
-            final ViewPagerScroll viewPagerScroll = new ViewPagerScroll( mViewPager );
-            viewPagerScroll.setOnPagerScrollListener( new OnViewPagerScrollListener() {
+            mViewPager.addOnPageChangeListener( new ViewPagerScrollListener( mViewPager ) {
 
                   @Override
-                  public void onScroll (
-                      int state, int currentPosition, int nextPosition, float offset ) {
+                  protected void onScroll (
+                      int state, int currentIndex, int nextIndex, float offset ) {
 
-                        mIndicator.setXOff( currentPosition, -offset );
-                  }
-
-                  @Override
-                  public void onPageSelected ( int prevSelected, int newSelected ) {
-
+                        super.onScroll( state, currentIndex, nextIndex, offset );
+                        mIndicator.setXOff( currentIndex, -offset );
                   }
             } );
       }

@@ -11,9 +11,8 @@ import android.support.v7.widget.RecyclerView.OnScrollListener;
 /**
  * @author Liujin 2018-09-23:9:49
  */
-class RecyclerPagerScrollListener extends OnScrollListener {
+public class RecyclerPagerScrollListener extends OnScrollListener {
 
-      private RecyclerView                  mRecyclerView;
       private int                           mCurrentPosition;
       private int                           mState = RecyclerView.SCROLL_STATE_IDLE;
       private int                           mNextPosition;
@@ -22,28 +21,23 @@ class RecyclerPagerScrollListener extends OnScrollListener {
       private int                           mDy;
       private OnRecyclerPagerScrollListener mOnRecyclerPagerScrollListener;
 
-      RecyclerPagerScrollListener ( RecyclerView recyclerView ) {
-
-            mRecyclerView = recyclerView;
-      }
-
-      void setOnRecyclerPagerScrollListener (
+      public void setOnRecyclerPagerScrollListener (
           OnRecyclerPagerScrollListener onRecyclerPagerScrollListener ) {
 
             mOnRecyclerPagerScrollListener = onRecyclerPagerScrollListener;
       }
 
-      OnRecyclerPagerScrollListener getOnRecyclerPagerScrollListener ( ) {
+      public OnRecyclerPagerScrollListener getOnRecyclerPagerScrollListener ( ) {
 
             return mOnRecyclerPagerScrollListener;
       }
 
-      int getCurrentPosition ( ) {
+      public int getCurrentPosition ( ) {
 
             return mCurrentPosition;
       }
 
-      int getState ( ) {
+      public int getState ( ) {
 
             return mState;
       }
@@ -54,21 +48,25 @@ class RecyclerPagerScrollListener extends OnScrollListener {
             super.onScrollStateChanged( recyclerView, newState );
 
             if( newState == SCROLL_STATE_IDLE ) {
+
                   if( mState == SCROLL_STATE_SETTLING ) {
-                        mCurrentPosition = ( (LinearLayoutManager) mRecyclerView
+                        mCurrentPosition = ( (LinearLayoutManager) recyclerView
                             .getLayoutManager() )
                             .findFirstVisibleItemPosition();
                   }
-            } else if( newState == SCROLL_STATE_DRAGGING ) {
+
                   mDx = mDy = 0;
-                  mOrientation = ( (LinearLayoutManager) mRecyclerView
+                  mOrientation = ( (LinearLayoutManager) recyclerView
+                      .getLayoutManager() ).getOrientation();
+            } else if( newState == SCROLL_STATE_DRAGGING ) {
+
+                  mDx = mDy = 0;
+                  mOrientation = ( (LinearLayoutManager) recyclerView
                       .getLayoutManager() ).getOrientation();
             } else if( newState == SCROLL_STATE_SETTLING ) {
-                  if( mState == SCROLL_STATE_DRAGGING ) {
-                        if( mCurrentPosition != mNextPosition ) {
-                              mOnRecyclerPagerScrollListener
-                                  .onPageSelected( mCurrentPosition, mNextPosition );
-                        }
+
+                  if( mCurrentPosition != mNextPosition ) {
+                        onPageSelected( mCurrentPosition, mNextPosition );
                   }
             }
 
@@ -102,8 +100,22 @@ class RecyclerPagerScrollListener extends OnScrollListener {
 
             if( mCurrentPosition != mNextPosition ) {
 
+                  onScroll( mState, mCurrentPosition, mNextPosition, mDx, mDy );
+            }
+      }
+
+      protected void onPageSelected ( int currentPosition, int nextPosition ) {
+
+            if( mOnRecyclerPagerScrollListener != null ) {
+                  mOnRecyclerPagerScrollListener.onPageSelected( currentPosition, nextPosition );
+            }
+      }
+
+      protected void onScroll ( int state, int currentPosition, int nextPosition, int dx, int dy ) {
+
+            if( mOnRecyclerPagerScrollListener != null ) {
                   mOnRecyclerPagerScrollListener
-                      .onScroll( mState, mCurrentPosition, mNextPosition, mDx, mDy );
+                      .onScroll( state, currentPosition, nextPosition, dx, dy );
             }
       }
 }

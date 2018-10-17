@@ -13,8 +13,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import tech.threekilogram.pager.banner.RecyclerPagerBanner;
 import tech.threekilogram.pager.banner.RecyclerPagerBanner.BannerAdapter;
-import tech.threekilogram.pager.scroll.recycler.OnRecyclerPagerScrollListener;
-import tech.threekilogram.pager.scroll.recycler.RecyclerPagerScroll;
+import tech.threekilogram.pager.scroll.recycler.RecyclerPagerScrollListener;
 
 /**
  * @author Liujin 2018-09-22:12:32
@@ -77,20 +76,14 @@ public class RecyclerBannerFragment extends Fragment {
                         super.onScrolled( recyclerView, dx, dy );
                   }
             } );
-            RecyclerPagerScroll scroll = new RecyclerPagerScroll(
-                mRecyclerBanner.getRecyclerPager() );
-            scroll.setOnRecyclerPagerScrollListener( new OnRecyclerPagerScrollListener() {
+            mRecyclerBanner.addOnScrollListener( new RecyclerPagerScrollListener() {
 
                   @Override
-                  public void onScroll (
-                      int state, int currentPosition, int nextPosition, int offsetX, int offsetY ) {
+                  protected void onScroll (
+                      int state, int currentPosition, int nextPosition, int dx, int dy ) {
 
+                        super.onScroll( state, currentPosition, nextPosition, dx, dy );
                         Log.e( TAG, "onScroll : " + adapter.getActualPosition( currentPosition ) );
-                  }
-
-                  @Override
-                  public void onPageSelected ( int prevSelected, int newSelected ) {
-
                   }
             } );
       }

@@ -8,42 +8,42 @@ import android.support.v4.view.ViewPager;
  *
  * @author liujin
  */
-class ViewPagerScrollListener implements ViewPager.OnPageChangeListener {
+public class ViewPagerScrollListener implements ViewPager.OnPageChangeListener {
 
       /**
        * 用于获取当前pager状态
        */
-      private ViewPager                 mPager;
+      protected ViewPager                 mPager;
       /**
        * 当前滚动状态
        */
-      private int                       mState;
+      protected int                       mState;
       /**
        * 当前条目索引
        */
-      private int                       mCurrentIndex;
+      protected int                       mCurrentIndex;
       /**
        * 监听
        */
-      private OnViewPagerScrollListener mOnViewPagerScrollListener;
+      protected OnViewPagerScrollListener mOnViewPagerScrollListener;
 
       /**
        * 创建
        *
        * @param pager pager
        */
-      ViewPagerScrollListener ( ViewPager pager ) {
+      public ViewPagerScrollListener ( ViewPager pager ) {
 
             mPager = pager;
       }
 
-      void setOnViewPagerScrollListener (
+      public void setOnViewPagerScrollListener (
           OnViewPagerScrollListener onViewPagerScrollListener ) {
 
             mOnViewPagerScrollListener = onViewPagerScrollListener;
       }
 
-      OnViewPagerScrollListener getOnViewPagerScrollListener ( ) {
+      public OnViewPagerScrollListener getOnViewPagerScrollListener ( ) {
 
             return mOnViewPagerScrollListener;
       }
@@ -61,8 +61,7 @@ class ViewPagerScrollListener implements ViewPager.OnPageChangeListener {
                         offset = 1;
                   }
 
-                  mOnViewPagerScrollListener
-                      .onScroll( mState, mCurrentIndex, nextIndex, offset );
+                  onScroll( mState, mCurrentIndex, nextIndex, offset );
             } else {
 
                   float offset = -positionOffset;
@@ -75,16 +74,29 @@ class ViewPagerScrollListener implements ViewPager.OnPageChangeListener {
 
                   if( mCurrentIndex != nextIndex ) {
 
-                        mOnViewPagerScrollListener
-                            .onScroll( mState, mCurrentIndex, nextIndex, offset );
+                        onScroll( mState, mCurrentIndex, nextIndex, offset );
                   }
+            }
+      }
+
+      protected void onScroll ( int state, int currentIndex, int nextIndex, float offset ) {
+
+            if( mOnViewPagerScrollListener != null ) {
+                  mOnViewPagerScrollListener.onScroll( state, currentIndex, nextIndex, offset );
             }
       }
 
       @Override
       public void onPageSelected ( int position ) {
 
-            mOnViewPagerScrollListener.onPageSelected( mCurrentIndex, position );
+            onPageSelected( mCurrentIndex, position );
+      }
+
+      protected void onPageSelected ( int currentIndex, int position ) {
+
+            if( mOnViewPagerScrollListener != null ) {
+                  mOnViewPagerScrollListener.onPageSelected( currentIndex, position );
+            }
       }
 
       @Override

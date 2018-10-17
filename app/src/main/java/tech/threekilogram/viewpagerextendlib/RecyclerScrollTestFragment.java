@@ -13,8 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import tech.threekilogram.pager.scroll.recycler.OnRecyclerPagerScrollListener;
-import tech.threekilogram.pager.scroll.recycler.RecyclerPagerScroll;
+import tech.threekilogram.pager.scroll.recycler.RecyclerPagerScrollListener;
 import tech.threekilogram.viewpagerextendlib.widget.IndicatorView;
 
 /**
@@ -22,9 +21,9 @@ import tech.threekilogram.viewpagerextendlib.widget.IndicatorView;
  */
 public class RecyclerScrollTestFragment extends Fragment {
 
-      private static final String TAG = RecyclerScrollTestFragment.class.getSimpleName();
-      private RecyclerView  mRecycler;
-      private IndicatorView mIndicator;
+      private static final String        TAG = RecyclerScrollTestFragment.class.getSimpleName();
+      private              RecyclerView  mRecycler;
+      private              IndicatorView mIndicator;
 
       public static RecyclerScrollTestFragment newInstance ( ) {
 
@@ -68,19 +67,14 @@ public class RecyclerScrollTestFragment extends Fragment {
 
             mIndicator.setCount( adapter.getItemCount() );
 
-            RecyclerPagerScroll listener = new RecyclerPagerScroll( mRecycler );
-            listener.setOnRecyclerPagerScrollListener( new OnRecyclerPagerScrollListener() {
+            mRecycler.addOnScrollListener( new RecyclerPagerScrollListener() {
 
                   @Override
-                  public void onScroll (
-                      int state, int currentPosition, int nextPosition, int offsetX, int offsetY ) {
+                  protected void onScroll (
+                      int state, int currentPosition, int nextPosition, int dx, int dy ) {
 
-                        mIndicator.setXOff( currentPosition, offsetX * 1f / mRecycler.getWidth() );
-                  }
-
-                  @Override
-                  public void onPageSelected ( int prevSelected, int newSelected ) {
-
+                        super.onScroll( state, currentPosition, nextPosition, dx, dy );
+                        mIndicator.setXOff( currentPosition, dx * 1f / mRecycler.getWidth() );
                   }
             } );
       }
