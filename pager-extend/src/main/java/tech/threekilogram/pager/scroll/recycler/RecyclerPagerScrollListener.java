@@ -13,8 +13,6 @@ import android.support.v7.widget.RecyclerView.OnScrollListener;
  */
 public class RecyclerPagerScrollListener extends OnScrollListener {
 
-      private static final String TAG = RecyclerPagerScrollListener.class.getSimpleName();
-
       /**
        * 上一次状态
        */
