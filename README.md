@@ -19,7 +19,7 @@ Add it in your root build.gradle at the end of repositories:
 
 ```
 	dependencies {
-	        implementation 'com.github.threekilogram:PagerExtend:1.2.9'
+	        implementation 'com.github.threekilogram:PagerExtend:1.3.0'
 	}
 ```
 

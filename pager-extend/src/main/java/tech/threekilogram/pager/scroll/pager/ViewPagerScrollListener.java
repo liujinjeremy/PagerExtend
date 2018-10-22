@@ -61,7 +61,7 @@ public class ViewPagerScrollListener implements ViewPager.OnPageChangeListener {
                         offset = 1;
                   }
 
-                  onScroll( mState, mCurrentIndex, nextIndex, offset );
+                  onScroll( mState, mCurrentIndex, nextIndex, offset, positionOffsetPixels );
             } else {
 
                   float offset = -positionOffset;
@@ -74,15 +74,17 @@ public class ViewPagerScrollListener implements ViewPager.OnPageChangeListener {
 
                   if( mCurrentIndex != nextIndex ) {
 
-                        onScroll( mState, mCurrentIndex, nextIndex, offset );
+                        onScroll( mState, mCurrentIndex, nextIndex, offset, positionOffsetPixels );
                   }
             }
       }
 
-      protected void onScroll ( int state, int currentIndex, int nextIndex, float offset ) {
+      protected void onScroll (
+          int state, int currentIndex, int nextIndex, float offset, int offsetPix ) {
 
             if( mOnViewPagerScrollListener != null ) {
-                  mOnViewPagerScrollListener.onScroll( state, currentIndex, nextIndex, offset );
+                  mOnViewPagerScrollListener
+                      .onScroll( state, currentIndex, nextIndex, offset, offsetPix );
             }
       }
 
@@ -92,17 +94,23 @@ public class ViewPagerScrollListener implements ViewPager.OnPageChangeListener {
             onPageSelected( mCurrentIndex, position );
       }
 
-      protected void onPageSelected ( int currentIndex, int position ) {
+      /**
+       * 当页面选中时回调
+       *
+       * @param prev 前一个选中的
+       * @param current 当前选中的
+       */
+      protected void onPageSelected ( int prev, int current ) {
 
             if( mOnViewPagerScrollListener != null ) {
-                  mOnViewPagerScrollListener.onPageSelected( currentIndex, position );
+                  mOnViewPagerScrollListener.onPageSelected( prev, current );
             }
       }
 
       @Override
       public void onPageScrollStateChanged ( int state ) {
 
-            if( state == ViewPager.SCROLL_STATE_DRAGGING ) {
+            if( state == ViewPager.SCROLL_STATE_DRAGGING || state == ViewPager.SCROLL_STATE_IDLE ) {
                   mCurrentIndex = mPager.getCurrentItem();
             }
 
