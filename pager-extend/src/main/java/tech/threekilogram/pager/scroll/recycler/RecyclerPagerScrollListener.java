@@ -13,6 +13,8 @@ import android.support.v7.widget.RecyclerView.OnScrollListener;
  */
 public class RecyclerPagerScrollListener extends OnScrollListener {
 
+      private static final String TAG = RecyclerPagerScrollListener.class.getSimpleName();
+
       protected int                           mState = RecyclerView.SCROLL_STATE_IDLE;
       protected int                           mCurrentPosition;
       protected int                           mNextPosition;
@@ -47,18 +49,24 @@ public class RecyclerPagerScrollListener extends OnScrollListener {
 
             super.onScrollStateChanged( recyclerView, newState );
 
+            if( mState == SCROLL_STATE_SETTLING && newState == SCROLL_STATE_DRAGGING ) {
+                  return;
+            }
+
             if( newState == SCROLL_STATE_IDLE ) {
 
-                  if( mState == SCROLL_STATE_SETTLING ) {
-                        mCurrentPosition = ( (LinearLayoutManager) recyclerView
-                            .getLayoutManager() )
-                            .findFirstVisibleItemPosition();
-                  }
+                  mCurrentPosition = ( (LinearLayoutManager) recyclerView
+                      .getLayoutManager() )
+                      .findFirstVisibleItemPosition();
 
                   mDx = mDy = 0;
                   mOrientation = ( (LinearLayoutManager) recyclerView
                       .getLayoutManager() ).getOrientation();
             } else if( newState == SCROLL_STATE_DRAGGING ) {
+
+                  mCurrentPosition = ( (LinearLayoutManager) recyclerView
+                      .getLayoutManager() )
+                      .findFirstVisibleItemPosition();
 
                   mDx = mDy = 0;
                   mOrientation = ( (LinearLayoutManager) recyclerView

@@ -60,9 +60,9 @@ public class PagerScrollFragment extends Fragment {
 
                   @Override
                   protected void onScroll (
-                      int state, int currentIndex, int nextIndex, float offset ) {
+                      int state, int currentIndex, int nextIndex, float offset, int o ) {
 
-                        super.onScroll( state, currentIndex, nextIndex, offset );
+                        super.onScroll( state, currentIndex, nextIndex, offset, o );
                         mIndicator.setXOff( currentIndex, -offset );
                   }
             } );
