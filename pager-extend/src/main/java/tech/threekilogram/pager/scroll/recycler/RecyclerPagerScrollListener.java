@@ -15,12 +15,33 @@ public class RecyclerPagerScrollListener extends OnScrollListener {
 
       private static final String TAG = RecyclerPagerScrollListener.class.getSimpleName();
 
+      /**
+       * 上一次状态
+       */
       protected int                           mState = RecyclerView.SCROLL_STATE_IDLE;
+      /**
+       * 当前操作的item位置
+       */
       protected int                           mCurrentPosition;
+      /**
+       * 滚动时下一个item位置
+       */
       protected int                           mNextPosition;
+      /**
+       * 滚动方向
+       */
       protected int                           mOrientation;
+      /**
+       * 滚动时移动距离
+       */
       protected int                           mDx;
+      /**
+       * 滚动时移动距离
+       */
       protected int                           mDy;
+      /**
+       * 监听
+       */
       protected OnRecyclerPagerScrollListener mOnRecyclerPagerScrollListener;
 
       public void setOnRecyclerPagerScrollListener (
@@ -34,11 +55,19 @@ public class RecyclerPagerScrollListener extends OnScrollListener {
             return mOnRecyclerPagerScrollListener;
       }
 
+      /**
+       * 获取当前操作位置
+       *
+       * @return 当前操作位置
+       */
       public int getCurrentPosition ( ) {
 
             return mCurrentPosition;
       }
 
+      /**
+       * 当前状态
+       */
       public int getState ( ) {
 
             return mState;
