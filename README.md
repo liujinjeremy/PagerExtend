@@ -176,7 +176,7 @@ mRecycler.addOnScrollListener( new RecyclerPagerScrollListener() {
 
 
 
-### ViewBannerView
+### ViewPagerBanner
 
 > 实际是LoopHandlerLayout,封装了了一个ViewPager在里面,定时执行轮播
 

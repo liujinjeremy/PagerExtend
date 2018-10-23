@@ -10,13 +10,13 @@ import java.util.ArrayList;
  *
  * @author wuxio
  */
-class PagerKnife<D, V extends View> {
+class PagerItemPool<D, V extends View> {
 
       private ArrayList<PagerItemInfo<D, V>> mItemsInfo = new ArrayList<>();
 
       private BasePagerAdapter<D, V> mPagerAdapter;
 
-      PagerKnife ( BasePagerAdapter<D, V> pagerAdapter ) {
+      PagerItemPool ( BasePagerAdapter<D, V> pagerAdapter ) {
 
             mPagerAdapter = pagerAdapter;
       }

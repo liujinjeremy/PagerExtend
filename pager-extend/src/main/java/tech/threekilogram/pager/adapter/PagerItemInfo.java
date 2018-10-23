@@ -28,7 +28,7 @@ class PagerItemInfo<D, V extends View> {
             return position;
       }
 
-      public void setPosition ( int position ) {
+      void setPosition ( int position ) {
 
             this.position = position;
       }
@@ -38,7 +38,7 @@ class PagerItemInfo<D, V extends View> {
             return mData;
       }
 
-      public void setData ( D data ) {
+      void setData ( D data ) {
 
             mData = data;
       }
@@ -48,7 +48,7 @@ class PagerItemInfo<D, V extends View> {
             return mView;
       }
 
-      public void setView ( V view ) {
+      void setView ( V view ) {
 
             mView = view;
       }

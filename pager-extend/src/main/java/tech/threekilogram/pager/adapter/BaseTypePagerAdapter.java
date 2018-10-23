@@ -14,18 +14,18 @@ import android.view.ViewGroup;
 @SuppressWarnings("WeakerAccess")
 public abstract class BaseTypePagerAdapter extends PagerAdapter {
 
-      private TypePagerKnife mKnife;
+      private TypePagerItemPool mPools;
 
       public BaseTypePagerAdapter ( ) {
 
-            mKnife = new TypePagerKnife( this );
+            mPools = new TypePagerItemPool( this );
       }
 
       @NonNull
       @Override
       public Object instantiateItem ( @NonNull ViewGroup container, int position ) {
 
-            PagerItemInfo info = mKnife.getPagerItemInfo( container, position );
+            PagerItemInfo info = mPools.getPagerItemInfo( container, position );
             container.addView( info.getView() );
             return info;
       }
@@ -88,6 +88,7 @@ public abstract class BaseTypePagerAdapter extends PagerAdapter {
       /**
        * 返回该位置的view,{@link PagerAdapter#instantiateItem(ViewGroup, int)}不一定会回调该方法,只有没有缓存的view的时候回调
        *
+       * @param container container
        * @param position item位置
        * @param type item位置的view类型
        *
@@ -115,7 +116,7 @@ public abstract class BaseTypePagerAdapter extends PagerAdapter {
        */
       public View getItemView ( int position ) {
 
-            PagerItemInfo item = mKnife.getPagerItem( position );
+            PagerItemInfo item = mPools.getPagerItem( position );
             return item == null ? null : item.getView();
       }
 
@@ -128,7 +129,7 @@ public abstract class BaseTypePagerAdapter extends PagerAdapter {
        */
       public Object getItemData ( int position ) {
 
-            PagerItemInfo item = mKnife.getPagerItem( position );
+            PagerItemInfo item = mPools.getPagerItem( position );
             return item == null ? null : item.getData();
       }
 }

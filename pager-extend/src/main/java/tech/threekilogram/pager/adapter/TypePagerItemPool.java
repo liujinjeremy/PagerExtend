@@ -10,15 +10,13 @@ import java.util.ArrayList;
  *
  * @author wuxio
  */
-class TypePagerKnife {
-
-      private ArrayList<PagerItemInfo> mItemsInfo;
+class TypePagerItemPool {
 
       private SparseArray<ArrayList<PagerItemInfo>> mTypeItems;
 
       private BaseTypePagerAdapter mPagerAdapter;
 
-      TypePagerKnife ( BaseTypePagerAdapter pagerAdapter ) {
+      TypePagerItemPool ( BaseTypePagerAdapter pagerAdapter ) {
 
             mPagerAdapter = pagerAdapter;
             mTypeItems = new SparseArray<>();
@@ -28,15 +26,15 @@ class TypePagerKnife {
       public PagerItemInfo getPagerItemInfo ( ViewGroup container, int position ) {
 
             int type = mPagerAdapter.getViewType( position );
-            mItemsInfo = mTypeItems.get( type );
-            if( mItemsInfo == null ) {
-                  mItemsInfo = new ArrayList<>();
-                  mTypeItems.put( type, mItemsInfo );
+            ArrayList<PagerItemInfo> itemInfoList = mTypeItems.get( type );
+            if( itemInfoList == null ) {
+                  itemInfoList = new ArrayList<>();
+                  mTypeItems.put( type, itemInfoList );
             }
 
             PagerItemInfo info = null;
-            for( int i = 0; i < mItemsInfo.size(); i++ ) {
-                  PagerItemInfo infoNew = mItemsInfo.get( i );
+            for( int i = 0; i < itemInfoList.size(); i++ ) {
+                  PagerItemInfo infoNew = itemInfoList.get( i );
                   if( infoNew.getPosition() == -1 ) {
                         info = infoNew;
                         break;
@@ -44,7 +42,7 @@ class TypePagerKnife {
             }
             if( info == null ) {
                   info = new PagerItemInfo();
-                  mItemsInfo.add( info );
+                  itemInfoList.add( info );
             }
             info.setPosition( position );
 
@@ -63,14 +61,14 @@ class TypePagerKnife {
       public PagerItemInfo getPagerItem ( int position ) {
 
             int type = mPagerAdapter.getViewType( position );
-            mItemsInfo = mTypeItems.get( type );
-            if( mItemsInfo == null ) {
+            ArrayList<PagerItemInfo> itemsInfoList = mTypeItems.get( type );
+            if( itemsInfoList == null ) {
                   return null;
             }
 
-            int size = mItemsInfo.size();
+            int size = itemsInfoList.size();
             for( int i = 0; i < size; i++ ) {
-                  PagerItemInfo item = mItemsInfo.get( i );
+                  PagerItemInfo item = itemsInfoList.get( i );
                   if( item.getPosition() == position ) {
                         return item;
                   }

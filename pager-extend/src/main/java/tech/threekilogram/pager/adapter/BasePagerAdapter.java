@@ -14,18 +14,18 @@ import android.view.ViewGroup;
  */
 public abstract class BasePagerAdapter<D, V extends View> extends PagerAdapter {
 
-      private PagerKnife<D, V> mKnife;
+      private PagerItemPool<D, V> mPool;
 
       public BasePagerAdapter ( ) {
 
-            mKnife = new PagerKnife<>( this );
+            mPool = new PagerItemPool<>( this );
       }
 
       @NonNull
       @Override
       public Object instantiateItem ( @NonNull ViewGroup container, int position ) {
 
-            PagerItemInfo<D, V> info = mKnife.getPagerItemInfo( container, position );
+            PagerItemInfo<D, V> info = mPool.getPagerItemInfo( container, position );
             container.addView( info.getView() );
             return info;
       }
@@ -103,7 +103,7 @@ public abstract class BasePagerAdapter<D, V extends View> extends PagerAdapter {
        */
       public V getItemView ( int position ) {
 
-            PagerItemInfo<D, V> item = mKnife.getPagerItem( position );
+            PagerItemInfo<D, V> item = mPool.getPagerItem( position );
             return item == null ? null : item.getView();
       }
 
@@ -116,7 +116,7 @@ public abstract class BasePagerAdapter<D, V extends View> extends PagerAdapter {
        */
       public D getItemData ( int position ) {
 
-            PagerItemInfo<D, V> item = mKnife.getPagerItem( position );
+            PagerItemInfo<D, V> item = mPool.getPagerItem( position );
             return item == null ? null : item.getData();
       }
 }
