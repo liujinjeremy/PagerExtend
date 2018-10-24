@@ -2,6 +2,7 @@ package tech.threekilogram.pager.image;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.RectF;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -22,33 +23,35 @@ public class ScaleImageViewPager extends ViewPager {
       /**
        * 当前滑动状态
        */
-      private int         mState           = ViewPager.SCROLL_STATE_IDLE;
+      private int              mState           = ViewPager.SCROLL_STATE_IDLE;
       /**
        * 记录是否触发缩放事件,如果触发缩放事件之后,那么滑动时间不在触发,直到下一次手指按下
        */
-      private boolean     isScaleHandled;
+      private boolean          isScaleHandled;
       /**
        * 记录上一次的传递给viewpager的event
        */
-      private MotionEvent mLastMotionEvent;
+      private MotionEvent      mLastMotionEvent;
       /**
        * 记录移动距离
        */
-      private float       mDownX;
-      private float       mDownY;
-      private float       mLastX;
-      private float       mLastY;
-      private float       mDx;
-      private float       mDy;
+      private float            mDownX;
+      private float            mDownY;
+      private float            mLastX;
+      private float            mLastY;
+      private float            mDx;
+      private float            mDy;
       /**
        * 记录上一次手指抬起时间,用于双击判断
        */
-      private long        mLastUpEventTime = 0;
+      private long             mLastUpEventTime = 0;
       /**
        * 手指按下时处于idle状态时的scrollX,用于判断pager是否已经滑动,以及滑动距离
        */
-      private int         mDownIdleScrollX;
-
+      private int              mDownIdleScrollX;
+      /**
+       * 用于scale item 处于放大时,fling操作
+       */
       private Scroller         mScroller;
       private VelocityTracker  mTracker;
       private ScaleItemFlinger mFlinger;
@@ -71,6 +74,12 @@ public class ScaleImageViewPager extends ViewPager {
             addOnPageChangeListener( new ScrollSateListener() );
             mScroller = new Scroller( getContext() );
             mFlinger = new ScaleItemFlinger();
+      }
+
+      @Override
+      protected void onSizeChanged ( int w, int h, int oldw, int oldh ) {
+
+            super.onSizeChanged( w, h, oldw, oldh );
       }
 
       @Override
@@ -189,9 +198,10 @@ public class ScaleImageViewPager extends ViewPager {
                                     }
                               }
 
-                              /* 处理 scale item 消耗距离 */
+                              /* 处理 scale item 滚动 */
                               float movedX = scaleItemMovedX( view );
                               float movedY = scaleItemMovedY( view );
+
                               float dx = mDx - movedX;
                               float dy = mDy - movedY;
                               MotionEvent event = createMoveMotionEvent(
@@ -208,6 +218,8 @@ public class ScaleImageViewPager extends ViewPager {
 
                               mDownX = mDownY = mLastX = mLastY = mDx = mDy = 0;
 
+                              view.getEdgeEffectUtil().releaseAllEdge();
+
                               if( isScaleHandled ) {
 
                                     isScaleHandled = false;
@@ -216,12 +228,6 @@ public class ScaleImageViewPager extends ViewPager {
                                           mTracker.recycle();
                                           mTracker = null;
                                     }
-
-                                    MotionEvent upMotionEvent = createUpMotionEvent(
-                                        mLastMotionEvent, ev );
-                                    mLastMotionEvent.recycle();
-                                    mLastMotionEvent = null;
-                                    return super.onTouchEvent( upMotionEvent );
                               } else {
 
                                     if( mTracker != null ) {
@@ -233,13 +239,13 @@ public class ScaleImageViewPager extends ViewPager {
                                           mTracker = null;
                                           mFlinger.startFling( view, xVelocity, yVelocity );
                                     }
-
-                                    MotionEvent upMotionEvent = createUpMotionEvent(
-                                        mLastMotionEvent, ev );
-                                    mLastMotionEvent.recycle();
-                                    mLastMotionEvent = null;
-                                    return super.onTouchEvent( upMotionEvent );
                               }
+
+                              MotionEvent upMotionEvent = createUpMotionEvent(
+                                  mLastMotionEvent, ev );
+                              mLastMotionEvent.recycle();
+                              mLastMotionEvent = null;
+                              return super.onTouchEvent( upMotionEvent );
 
                         default:
                               break;
@@ -249,6 +255,9 @@ public class ScaleImageViewPager extends ViewPager {
             return super.onTouchEvent( ev );
       }
 
+      /**
+       * 模拟一个移动手势
+       */
       private MotionEvent createUpMotionEvent (
           MotionEvent lastMotionEvent, MotionEvent upEvent ) {
 
@@ -262,6 +271,9 @@ public class ScaleImageViewPager extends ViewPager {
             );
       }
 
+      /**
+       * 模拟一个抬起手势
+       */
       private MotionEvent createMoveMotionEvent (
           MotionEvent lastMotionEvent, float dx, float dy, MotionEvent currentMotionEvent ) {
 
@@ -275,6 +287,9 @@ public class ScaleImageViewPager extends ViewPager {
             );
       }
 
+      /**
+       * 当前是scale item时,获取item水平移动消费的距离
+       */
       private float scaleItemMovedX ( ScaleImageView imageView ) {
 
             RectF rect = imageView.getDrawableRect();
@@ -303,6 +318,9 @@ public class ScaleImageViewPager extends ViewPager {
             return 0;
       }
 
+      /**
+       * 当前是scale item时,获取item垂直移动消费的距离
+       */
       private float scaleItemMovedY ( ScaleImageView imageView ) {
 
             RectF rect = imageView.getDrawableRect();
@@ -356,6 +374,12 @@ public class ScaleImageViewPager extends ViewPager {
                   mFlinger.setScaleTranslate();
                   invalidate();
             }
+      }
+
+      @Override
+      public void draw ( Canvas canvas ) {
+
+            super.draw( canvas );
       }
 
       public void setAdapter ( @Nullable BaseImageAdapter adapter ) {
