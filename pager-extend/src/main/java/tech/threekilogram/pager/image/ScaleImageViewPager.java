@@ -8,8 +8,10 @@ import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Scroller;
 import tech.threekilogram.pager.adapter.BaseTypePagerAdapter;
 
 /**
@@ -17,34 +19,39 @@ import tech.threekilogram.pager.adapter.BaseTypePagerAdapter;
  */
 public class ScaleImageViewPager extends ViewPager {
 
-      private static final String TAG = ScaleImageViewPager.class.getSimpleName();
-
-      private int mSate = ViewPager.SCROLL_STATE_IDLE;
-      private int mPositionOffsetPixels;
-      private int mScrollPosition;
-
       /**
-       * 记录是否触发缩放事件
+       * 当前滑动状态
+       */
+      private int         mState           = ViewPager.SCROLL_STATE_IDLE;
+      /**
+       * 记录是否触发缩放事件,如果触发缩放事件之后,那么滑动时间不在触发,直到下一次手指按下
        */
       private boolean     isScaleHandled;
       /**
        * 记录上一次的传递给viewpager的event
        */
       private MotionEvent mLastMotionEvent;
+      /**
+       * 记录移动距离
+       */
+      private float       mDownX;
+      private float       mDownY;
+      private float       mLastX;
+      private float       mLastY;
+      private float       mDx;
+      private float       mDy;
+      /**
+       * 记录上一次手指抬起时间,用于双击判断
+       */
+      private long        mLastUpEventTime = 0;
+      /**
+       * 手指按下时处于idle状态时的scrollX,用于判断pager是否已经滑动,以及滑动距离
+       */
+      private int         mDownIdleScrollX;
 
-      /**
-       * recode move distance
-       */
-      private float mDownX;
-      private float mDownY;
-      private float mLastX;
-      private float mLastY;
-      private float mDx;
-      private float mDy;
-      /**
-       * 记录上一次按下时间,用于双击判断
-       */
-      private long  mLastDownEventTime = 0;
+      private Scroller         mScroller;
+      private VelocityTracker  mTracker;
+      private ScaleItemFlinger mFlinger;
 
       public ScaleImageViewPager ( @NonNull Context context ) {
 
@@ -62,13 +69,25 @@ public class ScaleImageViewPager extends ViewPager {
       private void init ( ) {
 
             addOnPageChangeListener( new ScrollSateListener() );
+            mScroller = new Scroller( getContext() );
+            mFlinger = new ScaleItemFlinger();
       }
 
       @Override
       public boolean dispatchTouchEvent ( MotionEvent ev ) {
 
-            if( mSate == ViewPager.SCROLL_STATE_SETTLING ) {
-                  return false;
+//            if( mState == ViewPager.SCROLL_STATE_SETTLING ) {
+//                  return false;
+//            }
+
+            if( ev.getAction() == MotionEvent.ACTION_DOWN ) {
+                  mScroller.forceFinished( true );
+            }
+
+            if( ev.getAction() == MotionEvent.ACTION_DOWN
+                && mState == ViewPager.SCROLL_STATE_IDLE ) {
+
+                  mDownIdleScrollX = getScrollX();
             }
 
             return super.dispatchTouchEvent( ev );
@@ -100,15 +119,29 @@ public class ScaleImageViewPager extends ViewPager {
 
                               mDownX = mLastX = ev.getX();
                               mDownY = mLastY = ev.getY();
-                              if( isDoubleTap() ) {
-                                    view.reset();
-                              }
+
                               mLastMotionEvent = MotionEvent.obtain( ev );
+
+                              if( mTracker == null ) {
+                                    mTracker = VelocityTracker.obtain();
+                              }
+                              mTracker.addMovement( ev );
+
                               break;
                         case MotionEvent.ACTION_MOVE:
 
                               if( isScaleHandled ) {
-                                    return true;
+                                    MotionEvent event = createMoveMotionEvent(
+                                        mLastMotionEvent, 0, 0, ev );
+                                    mLastMotionEvent.recycle();
+                                    mLastMotionEvent = MotionEvent.obtain( event );
+
+                                    if( mTracker != null ) {
+                                          mTracker.recycle();
+                                          mTracker = null;
+                                    }
+
+                                    return super.onTouchEvent( event );
                               }
 
                               float x = ev.getX();
@@ -117,25 +150,96 @@ public class ScaleImageViewPager extends ViewPager {
                               mDy = y - mLastY;
                               mLastX = x;
                               mLastY = y;
+                              if( mTracker != null ) {
+                                    mTracker.addMovement( ev );
+                              }
 
+                              /* 先处理pager滚动 */
+                              int scrollX = getScrollX();
+                              if( scrollX > mDownIdleScrollX ) {
+                                    if( mDx > 0 ) {
+                                          int offset = mDownIdleScrollX - scrollX;
+
+                                          float dx = mDx;
+                                          if( offset + dx > 0 ) {
+                                                dx = -offset;
+                                          }
+
+                                          MotionEvent event = createMoveMotionEvent(
+                                              mLastMotionEvent, dx, mDy, ev );
+                                          mLastMotionEvent.recycle();
+                                          mLastMotionEvent = MotionEvent.obtain( event );
+                                          return super.onTouchEvent( event );
+                                    }
+                              }
+                              if( scrollX < mDownIdleScrollX ) {
+                                    if( mDx < 0 ) {
+                                          int offset = mDownIdleScrollX - scrollX;
+
+                                          float dx = mDx;
+                                          if( mDx + offset < 0 ) {
+                                                dx = -offset;
+                                          }
+
+                                          MotionEvent event = createMoveMotionEvent(
+                                              mLastMotionEvent, dx, mDy, ev );
+                                          mLastMotionEvent.recycle();
+                                          mLastMotionEvent = MotionEvent.obtain( event );
+                                          return super.onTouchEvent( event );
+                                    }
+                              }
+
+                              /* 处理 scale item 消耗距离 */
                               float movedX = scaleItemMovedX( view );
+                              float movedY = scaleItemMovedY( view );
                               float dx = mDx - movedX;
-
+                              float dy = mDy - movedY;
                               MotionEvent event = createMoveMotionEvent(
-                                  mLastMotionEvent, dx, mDy, ev );
+                                  mLastMotionEvent, dx, dy, ev );
                               mLastMotionEvent.recycle();
-                              mLastMotionEvent = event;
+                              mLastMotionEvent = MotionEvent.obtain( event );
                               return super.onTouchEvent( event );
 
                         case MotionEvent.ACTION_UP:
 
+                              if( isDoubleTap() ) {
+                                    view.reset();
+                              }
+
                               mDownX = mDownY = mLastX = mLastY = mDx = mDy = 0;
-                              isScaleHandled = false;
-                              MotionEvent upMotionEvent = createUpMotionEvent(
-                                  mLastMotionEvent, ev );
-                              mLastMotionEvent.recycle();
-                              mLastMotionEvent = null;
-                              return super.onTouchEvent( upMotionEvent );
+
+                              if( isScaleHandled ) {
+
+                                    isScaleHandled = false;
+
+                                    if( mTracker != null ) {
+                                          mTracker.recycle();
+                                          mTracker = null;
+                                    }
+
+                                    MotionEvent upMotionEvent = createUpMotionEvent(
+                                        mLastMotionEvent, ev );
+                                    mLastMotionEvent.recycle();
+                                    mLastMotionEvent = null;
+                                    return super.onTouchEvent( upMotionEvent );
+                              } else {
+
+                                    if( mTracker != null ) {
+
+                                          mTracker.computeCurrentVelocity( 256 );
+                                          float xVelocity = mTracker.getXVelocity();
+                                          float yVelocity = mTracker.getYVelocity();
+                                          mTracker.recycle();
+                                          mTracker = null;
+                                          mFlinger.startFling( view, xVelocity, yVelocity );
+                                    }
+
+                                    MotionEvent upMotionEvent = createUpMotionEvent(
+                                        mLastMotionEvent, ev );
+                                    mLastMotionEvent.recycle();
+                                    mLastMotionEvent = null;
+                                    return super.onTouchEvent( upMotionEvent );
+                              }
 
                         default:
                               break;
@@ -199,6 +303,34 @@ public class ScaleImageViewPager extends ViewPager {
             return 0;
       }
 
+      private float scaleItemMovedY ( ScaleImageView imageView ) {
+
+            RectF rect = imageView.getDrawableRect();
+            if( rect.top < 0 && mDy > 0 ) {
+
+                  float dy = mDy;
+                  if( rect.top + mDy > 0 ) {
+                        dy = -rect.top;
+                  }
+                  imageView.setTranslateY( imageView.getTranslateY() + dy );
+                  return dy;
+            }
+
+            int height = imageView.getHeight();
+
+            if( rect.bottom > height && mDy < 0 ) {
+
+                  float dy = mDy;
+                  if( rect.bottom + mDy < height ) {
+                        dy = height - rect.bottom;
+                  }
+                  imageView.setTranslateY( imageView.getTranslateY() + dy );
+                  return dy;
+            }
+
+            return 0;
+      }
+
       /**
        * 判断是否是双击
        *
@@ -207,12 +339,23 @@ public class ScaleImageViewPager extends ViewPager {
       private boolean isDoubleTap ( ) {
 
             long currentTime = System.currentTimeMillis();
-            final int i = 300;
-            if( currentTime - mLastDownEventTime < i ) {
+            final int i = 256;
+            if( currentTime - mLastUpEventTime < i ) {
                   return true;
             }
-            mLastDownEventTime = currentTime;
+            mLastUpEventTime = currentTime;
             return false;
+      }
+
+      @Override
+      public void computeScroll ( ) {
+
+            super.computeScroll();
+
+            if( mFlinger.computeScrollOffset() ) {
+                  mFlinger.setScaleTranslate();
+                  invalidate();
+            }
       }
 
       public void setAdapter ( @Nullable BaseImageAdapter adapter ) {
@@ -290,15 +433,15 @@ public class ScaleImageViewPager extends ViewPager {
             }
       }
 
+      /**
+       * 监听滚动状态
+       */
       private class ScrollSateListener implements OnPageChangeListener {
 
             @Override
             public void onPageScrolled (
                 int position, float positionOffset, int positionOffsetPixels ) {
 
-                  mScrollPosition = position;
-                  mPositionOffsetPixels = positionOffsetPixels;
-                  int currentItem = getCurrentItem();
             }
 
             @Override
@@ -309,7 +452,90 @@ public class ScaleImageViewPager extends ViewPager {
             @Override
             public void onPageScrollStateChanged ( int state ) {
 
-                  mSate = state;
+                  mState = state;
+            }
+      }
+
+      /**
+       * scale item fling
+       */
+      private class ScaleItemFlinger {
+
+            private int            mXVelocity;
+            private int            mYVelocity;
+            private ScaleImageView mScaleImageView;
+            private float          mTranslateX;
+            private float          mTranslateY;
+
+            private void startFling ( ScaleImageView imageView, float xVelocity, float yVelocity ) {
+
+                  this.mXVelocity = (int) xVelocity;
+                  this.mYVelocity = (int) yVelocity;
+                  mScaleImageView = imageView;
+                  RectF rect = mScaleImageView.getDrawableRect();
+                  int width = mScaleImageView.getWidth();
+                  int height = mScaleImageView.getHeight();
+                  mTranslateX = mScaleImageView.getTranslateX();
+                  mTranslateY = mScaleImageView.getTranslateY();
+
+                  int minX = 0;
+                  if( xVelocity < 0 ) {
+                        if( rect.right > width ) {
+                              minX = (int) ( width - rect.right );
+                        }
+                  }
+                  int maxX = 0;
+                  if( xVelocity > 0 ) {
+                        if( rect.left < 0 ) {
+                              maxX = (int) -rect.left;
+                        }
+                  }
+                  int minY = 0;
+                  if( yVelocity < 0 ) {
+                        if( rect.bottom > height ) {
+                              minY = (int) ( height - rect.bottom );
+                        }
+                  }
+                  int maxY = 0;
+                  if( yVelocity > 0 ) {
+                        if( rect.top < 0 ) {
+                              maxY = (int) -rect.top;
+                        }
+                  }
+
+                  mScroller.fling(
+                      0, 0,
+                      mXVelocity, mYVelocity,
+                      minX / 2, maxX / 2,
+                      minY / 2, maxY / 2
+                  );
+                  invalidate();
+            }
+
+            private boolean computeScrollOffset ( ) {
+
+                  return mScroller.computeScrollOffset();
+            }
+
+            private int getCurrX ( ) {
+
+                  return mScroller.getCurrX();
+            }
+
+            private int getCurrY ( ) {
+
+                  return mScroller.getCurrY();
+            }
+
+            private void setScaleTranslate ( ) {
+
+                  int currX = mScroller.getCurrX();
+                  int currY = mScroller.getCurrY();
+
+                  mScaleImageView.setTranslate(
+                      mTranslateX + currX * 2,
+                      mTranslateY + currY * 2
+                  );
             }
       }
 }
