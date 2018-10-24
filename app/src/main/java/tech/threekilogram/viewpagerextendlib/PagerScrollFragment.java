@@ -59,11 +59,10 @@ public class PagerScrollFragment extends Fragment {
             mViewPager.addOnPageChangeListener( new ViewPagerScrollListener( mViewPager ) {
 
                   @Override
-                  protected void onScroll (
-                      int state, int currentIndex, int nextIndex, float offset, int o ) {
+                  protected void onScrolled (
+                      int state, int current, float offset, int offsetPixels ) {
 
-                        super.onScroll( state, currentIndex, nextIndex, offset, o );
-                        mIndicator.setXOff( currentIndex, -offset );
+                        mIndicator.setXOff( current, -offset );
                   }
             } );
       }

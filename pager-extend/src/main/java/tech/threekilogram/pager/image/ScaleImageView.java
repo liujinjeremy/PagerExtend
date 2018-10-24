@@ -753,7 +753,7 @@ public class ScaleImageView extends android.support.v7.widget.AppCompatImageView
             setChange( 1, 1, 0.5f, 0.5f, 0, 0 );
       }
 
-      public boolean isScaledOrTranslated ( ) {
+      public boolean isNotScaledOrTranslated ( ) {
 
             return mCanvasScaleX == 1 && mCanvasScaleY == 1 && mTranslateX == 0 && mTranslateY == 0;
       }

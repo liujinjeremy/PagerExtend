@@ -16,42 +16,27 @@ public class RecyclerPagerScrollListener extends OnScrollListener {
       /**
        * 上一次状态
        */
-      protected int                           mState = RecyclerView.SCROLL_STATE_IDLE;
+      protected int mState = RecyclerView.SCROLL_STATE_IDLE;
       /**
        * 当前操作的item位置
        */
-      protected int                           mCurrentPosition;
+      protected int mCurrentPosition;
       /**
        * 滚动时下一个item位置
        */
-      protected int                           mNextPosition;
+      protected int mNextPosition;
       /**
        * 滚动方向
        */
-      protected int                           mOrientation;
+      protected int mOrientation;
       /**
        * 滚动时移动距离
        */
-      protected int                           mDx;
+      protected int mDx;
       /**
        * 滚动时移动距离
        */
-      protected int                           mDy;
-      /**
-       * 监听
-       */
-      protected OnRecyclerPagerScrollListener mOnRecyclerPagerScrollListener;
-
-      public void setOnRecyclerPagerScrollListener (
-          OnRecyclerPagerScrollListener onRecyclerPagerScrollListener ) {
-
-            mOnRecyclerPagerScrollListener = onRecyclerPagerScrollListener;
-      }
-
-      public OnRecyclerPagerScrollListener getOnRecyclerPagerScrollListener ( ) {
-
-            return mOnRecyclerPagerScrollListener;
-      }
+      protected int mDy;
 
       /**
        * 获取当前操作位置
@@ -139,18 +124,8 @@ public class RecyclerPagerScrollListener extends OnScrollListener {
             }
       }
 
-      protected void onPageSelected ( int currentPosition, int nextPosition ) {
+      protected void onPageSelected ( int currentPosition, int nextPosition ) { }
 
-            if( mOnRecyclerPagerScrollListener != null ) {
-                  mOnRecyclerPagerScrollListener.onPageSelected( currentPosition, nextPosition );
-            }
-      }
-
-      protected void onScroll ( int state, int currentPosition, int nextPosition, int dx, int dy ) {
-
-            if( mOnRecyclerPagerScrollListener != null ) {
-                  mOnRecyclerPagerScrollListener
-                      .onScroll( state, currentPosition, nextPosition, dx, dy );
-            }
-      }
+      protected void onScroll (
+          int state, int currentPosition, int nextPosition, int dx, int dy ) { }
 }

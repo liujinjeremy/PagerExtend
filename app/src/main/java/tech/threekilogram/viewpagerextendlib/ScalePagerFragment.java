@@ -1,5 +1,6 @@
 package tech.threekilogram.viewpagerextendlib;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -10,9 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import tech.threekilogram.pager.adapter.BasePagerAdapter;
-import tech.threekilogram.pager.image.ScaleImageView;
 import tech.threekilogram.pager.image.ScaleImageViewPager;
+import tech.threekilogram.pager.image.ScaleImageViewPager.SimpleImageAdapter;
 
 /**
  * @author Liujin 2018-10-23:15:22
@@ -48,14 +48,21 @@ public class ScalePagerFragment extends Fragment {
             mPager = itemView.findViewById( R.id.pager );
             mRoot = itemView.findViewById( R.id.root );
 
-            mPager.setAdapter( new PagerAdapter() );
+            mPager.setAdapter( new PagerAdapter( getContext() ) );
       }
 
-      private class PagerAdapter extends BasePagerAdapter {
+      private static class PagerAdapter extends SimpleImageAdapter {
+
+            private Context mContext;
+
+            public PagerAdapter ( Context context ) {
+
+                  mContext = context;
+            }
 
             private int[] res = {
                 R.drawable.a292,
-                R.drawable.a2559,
+                //R.drawable.a2559,
                 R.drawable.a207,
                 R.drawable.a188
             };
@@ -67,21 +74,9 @@ public class ScalePagerFragment extends Fragment {
             }
 
             @Override
-            protected Object getData ( int position ) {
+            protected Bitmap getBitmapAt ( int position ) {
 
-                  return BitmapFactory.decodeResource( getResources(), res[ position ] );
-            }
-
-            @Override
-            protected View getView ( ViewGroup container, int position ) {
-
-                  return new ScaleImageView( container.getContext() );
-            }
-
-            @Override
-            protected void bindData ( int position, Object data, View view ) {
-
-                  ( (ScaleImageView) view ).setImageBitmap( (Bitmap) data );
+                  return BitmapFactory.decodeResource( mContext.getResources(), res[ position ] );
             }
       }
 }
