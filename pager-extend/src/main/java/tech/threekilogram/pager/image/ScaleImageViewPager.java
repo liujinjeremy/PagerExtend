@@ -392,6 +392,16 @@ public class ScaleImageViewPager extends ViewPager {
              * @return ScaleImageView
              */
             protected abstract ScaleImageView getScaleImageViewAt ( int position );
+
+            @Override
+            public void destroyItem (
+                @NonNull ViewGroup container, int position, @NonNull Object object ) {
+
+                  if( getViewType( position ) == TYPE_SCALE_IMAGE ) {
+                        getScaleImageViewAt( position ).reset();
+                  }
+                  super.destroyItem( container, position, object );
+            }
       }
 
       /**
