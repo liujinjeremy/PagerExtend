@@ -62,7 +62,7 @@ public class ScalePagerFragment extends Fragment {
 
             private int[] res = {
                 R.drawable.a292,
-                R.drawable.a2559,
+                //R.drawable.a2559,
                 R.drawable.a207,
                 R.drawable.a188
             };

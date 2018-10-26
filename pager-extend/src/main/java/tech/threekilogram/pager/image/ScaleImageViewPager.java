@@ -218,8 +218,6 @@ public class ScaleImageViewPager extends ViewPager {
 
                               mDownX = mDownY = mLastX = mLastY = mDx = mDy = 0;
 
-                              view.getEdgeEffectUtil().releaseAllEdge();
-
                               if( isScaleHandled ) {
 
                                     isScaleHandled = false;
