@@ -3,7 +3,7 @@
 ### 引入
 
 ```
-implementation 'tech.threekilogram:pager-extend:2.0.0'
+implementation 'tech.threekilogram:pager-extend:2.0.1'
 ```
 
 ### BasePagerAdapter
@@ -265,9 +265,4 @@ mRecyclerBanner.stopLoop();
 
 ![](img/pic07.gif)
 
-
-
-## ScaleImageViewPager
-
-> 图片查看器
 
