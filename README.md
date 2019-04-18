@@ -3,7 +3,7 @@
 ### 引入
 
 ```
-implementation 'tech.threekilogram:pager-extend:2.0.1'
+implementation 'tech.liujin:pager-extend:1.0.0'
 ```
 
 ### BasePagerAdapter
