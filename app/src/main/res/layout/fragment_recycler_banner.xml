@@ -4,11 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-      <tech.threekilogram.pager.banner.RecyclerPagerBanner
+      <tech.liujin.pager.banner.RecyclerPagerBanner
           android:id="@+id/recyclerBanner"
           android:layout_width="match_parent"
           android:layout_height="match_parent">
 
-      </tech.threekilogram.pager.banner.RecyclerPagerBanner>
+      </tech.liujin.pager.banner.RecyclerPagerBanner>
 
 </FrameLayout>
