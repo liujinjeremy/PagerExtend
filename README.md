@@ -3,7 +3,7 @@
 ### 引入
 
 ```
-implementation 'tech.liujin:pager-extend:1.0.0'
+implementation 'tech.liujin:pager-extend:1.0.1'
 ```
 
 ### BasePagerAdapter
